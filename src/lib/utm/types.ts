@@ -187,3 +187,45 @@ export interface GeneratedNaming {
   hasInput: boolean;
 }
 
+/**
+ * Models for Tool 5: Bulk UTM Builder
+ */
+export interface BulkUtmRow {
+  id: string;
+  destination: string;
+  source: string;
+  medium: string;
+  campaign: string;
+  term?: string;
+  content?: string;
+}
+
+export interface BulkRowValidation {
+  isValid: boolean;
+  errors: string[];
+  missingFields: Array<'destination' | 'source' | 'medium' | 'campaign'>;
+}
+
+export interface BulkUtmResult {
+  rowId: string;
+  rowNumber: number;
+  row: BulkUtmRow;
+  generatedUrl: string;
+  isValid: boolean;
+  errors: string[];
+  missingFields: Array<'destination' | 'source' | 'medium' | 'campaign'>;
+}
+
+export interface BulkPreset {
+  id: string;
+  nameKey: string;
+  source: string;
+  medium: string;
+}
+
+export interface BulkCsvImportResult {
+  rows: BulkUtmRow[];
+  rowCount: number;
+  errors: string[];
+}
+

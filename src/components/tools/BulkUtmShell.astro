@@ -1,6 +1,7 @@
 ---
 import { useTranslations } from '../../i18n/utils';
 import type { SupportedLocale } from '../../i18n/ui';
+import { BULK_PRESETS, EXAMPLE_BULK_ROWS } from '../../lib/utm/bulk.ts';
 
 export interface Props {
   locale?: SupportedLocale;
@@ -10,33 +11,808 @@ const { locale = 'en' } = Astro.props;
 const t = useTranslations(locale);
 ---
 
-<div class="w-full max-w-3xl mx-auto space-y-5">
-  <div class="text-center space-y-1.5">
-    <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
+<div class="w-full max-w-5xl mx-auto space-y-6 sm:space-y-8" id="bulk-shell">
+  <!-- Hero Section -->
+  <div class="text-center space-y-2">
+    <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-[var(--text-primary)]">
       {t('bulk.heading')}
     </h1>
-    <p class="text-xs sm:text-sm text-[var(--text-secondary)] max-w-md mx-auto">
+    <p class="text-xs sm:text-sm text-[var(--text-secondary)] max-w-lg mx-auto">
       {t('bulk.subheading')}
     </p>
   </div>
 
-  <div class="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4 sm:p-5 shadow-[var(--card-shadow)] space-y-4">
-    <div class="space-y-1">
-      <label class="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
-        {t('bulk.inputLabel')}
-      </label>
-      <textarea
-        rows="4"
-        disabled
-        placeholder="https://example.com/page-1&#10;https://example.com/page-2&#10;https://example.com/page-3"
-        class="w-full rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] p-3 text-xs sm:text-sm font-mono text-[var(--text-muted)] placeholder:text-[var(--text-muted)] cursor-not-allowed opacity-80 resize-none"
-      ></textarea>
+  <!-- Main Work Area -->
+  <div class="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] shadow-[var(--card-shadow)] overflow-hidden">
+    <!-- Top Action Toolbar -->
+    <div class="p-3.5 sm:p-4 border-b border-[var(--border-subtle)] bg-[var(--bg-subtle)]/40 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex flex-wrap items-center gap-2">
+        <button
+          type="button"
+          id="btn-add-row"
+          class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--text-primary)] text-[var(--bg-app)] text-xs font-semibold hover:opacity-90 transition-opacity focus-ring"
+        >
+          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
+          </svg>
+          <span>{t('bulk.addRow')}</span>
+        </button>
+
+        <button
+          type="button"
+          id="btn-use-example"
+          class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--border-strong)] transition-colors focus-ring"
+        >
+          <svg class="w-3.5 h-3.5 text-[var(--accent)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+          <span>{t('bulk.useExample')}</span>
+        </button>
+
+        <button
+          type="button"
+          id="btn-open-import"
+          class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--border-strong)] transition-colors focus-ring"
+        >
+          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+          </svg>
+          <span>{t('bulk.pasteCsv')}</span>
+        </button>
+
+        <button
+          type="button"
+          id="btn-clear-all"
+          class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs text-[var(--text-muted)] hover:text-[var(--color-error)] transition-colors focus-ring hidden"
+        >
+          <span>{t('bulk.clearAll')}</span>
+        </button>
+      </div>
+
+      <!-- Quick Preset Helper -->
+      <div class="flex items-center gap-2">
+        <label for="preset-select" class="text-xs text-[var(--text-muted)] whitespace-nowrap">
+          {t('bulk.presetLabel')}:
+        </label>
+        <select
+          id="preset-select"
+          class="rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] px-2.5 py-1 text-xs text-[var(--text-primary)] focus-ring outline-none"
+        >
+          <option value="">-- {t('bulk.presetLabel')} --</option>
+          {BULK_PRESETS.map((preset) => (
+            <option value={preset.id} data-source={preset.source} data-medium={preset.medium}>
+              {t(preset.nameKey as any)} ({preset.source} / {preset.medium})
+            </option>
+          ))}
+        </select>
+      </div>
     </div>
 
-    <div class="rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-subtle)]/50 p-3.5 text-center">
-      <div class="text-xs font-mono text-[var(--text-muted)]">
-        {t('bulk.status')}
+    <!-- CSV Import Section (Hidden by default) -->
+    <div id="import-panel" class="hidden border-b border-[var(--border-subtle)] bg-[var(--bg-subtle)]/80 p-4 sm:p-5 space-y-3">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-xs sm:text-sm font-semibold text-[var(--text-primary)]">
+            {t('bulk.importTitle')}
+          </h2>
+          <p class="text-[11px] sm:text-xs text-[var(--text-muted)]">
+            {t('bulk.importDesc')}
+          </p>
+        </div>
+        <button
+          type="button"
+          id="btn-close-import"
+          class="text-xs text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors focus-ring px-2 py-1"
+        >
+          ✕
+        </button>
+      </div>
+
+      <textarea
+        id="import-textarea"
+        rows="4"
+        placeholder={t('bulk.importPlaceholder')}
+        class="w-full rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] p-3 text-xs font-mono text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus-ring resize-y outline-none"
+      ></textarea>
+
+      <div class="flex items-center justify-between pt-1">
+        <div id="import-status" class="text-xs text-[var(--text-muted)] font-mono"></div>
+        <div class="flex items-center gap-2">
+          <button
+            type="button"
+            id="btn-cancel-import"
+            class="px-3 py-1.5 rounded-lg border border-[var(--border-subtle)] text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors focus-ring"
+          >
+            {t('bulk.importCancel')}
+          </button>
+          <button
+            type="button"
+            id="btn-apply-import"
+            class="px-3.5 py-1.5 rounded-lg bg-[var(--accent)] text-white text-xs font-semibold hover:opacity-90 transition-opacity focus-ring"
+          >
+            {t('bulk.importApply')}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div id="empty-state" class="py-12 px-4 text-center space-y-3">
+      <div class="w-10 h-10 mx-auto rounded-xl bg-[var(--bg-subtle)] border border-[var(--border-subtle)] flex items-center justify-center text-[var(--accent)]">
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 4h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+      </div>
+      <div class="space-y-1">
+        <h2 class="text-sm font-semibold text-[var(--text-primary)]">
+          {t('bulk.emptyTitle')}
+        </h2>
+        <p class="text-xs text-[var(--text-muted)] max-w-sm mx-auto">
+          {t('bulk.emptyDesc')}
+        </p>
+      </div>
+      <div class="pt-2 flex justify-center gap-2">
+        <button
+          type="button"
+          id="btn-empty-add"
+          class="px-3.5 py-1.5 rounded-lg bg-[var(--text-primary)] text-[var(--bg-app)] text-xs font-semibold hover:opacity-90 transition-opacity focus-ring"
+        >
+          {t('bulk.addRow')}
+        </button>
+        <button
+          type="button"
+          id="btn-empty-example"
+          class="px-3.5 py-1.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors focus-ring"
+        >
+          {t('bulk.useExample')}
+        </button>
+      </div>
+    </div>
+
+    <!-- Table Editor Container -->
+    <div id="table-container" class="hidden w-full overflow-x-auto bulk-scroll overscroll-x-contain">
+      <table class="w-full text-left border-separate border-spacing-0 min-w-[1140px]">
+        <thead>
+          <tr class="text-[11px] font-semibold uppercase tracking-wider text-[var(--text-muted)]">
+            <th scope="col" class="py-2.5 px-3 w-12 text-center border-b border-[var(--border-subtle)] bg-[var(--bg-subtle)]/40">{t('bulk.colNum')}</th>
+            <th scope="col" class="py-2.5 px-3 w-[320px] min-w-[300px] border-b border-[var(--border-subtle)] bg-[var(--bg-subtle)]/40">{t('bulk.colDestination')} <span class="text-[var(--color-error)]" aria-hidden="true">*</span></th>
+            <th scope="col" class="py-2.5 px-2.5 w-[140px] min-w-[130px] border-b border-[var(--border-subtle)] bg-[var(--bg-subtle)]/40">{t('bulk.colSource')} <span class="text-[var(--color-error)]" aria-hidden="true">*</span></th>
+            <th scope="col" class="py-2.5 px-2.5 w-[140px] min-w-[130px] border-b border-[var(--border-subtle)] bg-[var(--bg-subtle)]/40">{t('bulk.colMedium')} <span class="text-[var(--color-error)]" aria-hidden="true">*</span></th>
+            <th scope="col" class="py-2.5 px-2.5 w-[170px] min-w-[160px] border-b border-[var(--border-subtle)] bg-[var(--bg-subtle)]/40">{t('bulk.colCampaign')} <span class="text-[var(--color-error)]" aria-hidden="true">*</span></th>
+            <th scope="col" class="py-2.5 px-2.5 w-[130px] min-w-[120px] border-b border-[var(--border-subtle)] bg-[var(--bg-subtle)]/40">{t('bulk.colTerm')}</th>
+            <th scope="col" class="py-2.5 px-2.5 w-[160px] min-w-[150px] border-b border-[var(--border-subtle)] bg-[var(--bg-subtle)]/40">{t('bulk.colContent')}</th>
+            <th scope="col" class="py-2.5 px-2 w-[88px] min-w-[88px] text-center sticky right-0 z-20 bg-[var(--bg-subtle)] border-b border-l border-[var(--border-subtle)] shadow-[-6px_0_10px_-2px_rgba(0,0,0,0.5)]">{t('bulk.colActions')}</th>
+          </tr>
+        </thead>
+        <tbody id="rows-tbody" class="text-xs">
+          <!-- Rows rendered dynamically by client script -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Live Results Section -->
+  <div id="results-container" class="hidden space-y-4">
+    <div class="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4 sm:p-5 shadow-[var(--card-shadow)] space-y-4">
+      <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-[var(--border-subtle)]">
+        <div>
+          <div class="flex items-center gap-2">
+            <h2 class="text-sm sm:text-base font-semibold text-[var(--text-primary)]">
+              {t('bulk.resultsTitle')}
+            </h2>
+            <span id="results-count-badge" class="px-2 py-0.5 rounded-full text-[11px] font-mono font-medium bg-[var(--accent)]/15 text-[var(--accent)] border border-[var(--accent)]/30">
+              0 ready
+            </span>
+          </div>
+          <p class="text-xs text-[var(--text-muted)] mt-0.5">
+            {t('bulk.resultsSubtitle')}
+          </p>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button
+            type="button"
+            id="btn-copy-all"
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--text-primary)] text-[var(--bg-app)] text-xs font-semibold hover:opacity-90 transition-opacity focus-ring"
+          >
+            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+            <span id="copy-all-text">{t('bulk.copyAll')}</span>
+          </button>
+
+          <button
+            type="button"
+            id="btn-export-csv"
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--border-strong)] transition-colors focus-ring"
+          >
+            <svg class="w-3.5 h-3.5 text-[var(--accent)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            <span>{t('bulk.exportCsv')}</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Generated URLs List -->
+      <div id="results-list" class="space-y-3">
+        <!-- Results rendered dynamically by client script -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Naming Generator Integration Banner -->
+  <div class="rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-subtle)]/30 p-3.5 text-center">
+    <a
+      href={`/${locale}/utm-naming-generator`}
+      class="text-xs text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors inline-flex items-center gap-1.5 group font-medium"
+    >
+      <span>{t('bulk.namingLink')}</span>
+    </a>
+  </div>
+
+  <!-- Explanatory Guide Section (Genuine Educational Content) -->
+  <div class="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 sm:p-6 shadow-[var(--card-shadow)] space-y-4 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
+    <h2 class="text-sm sm:text-base font-semibold text-[var(--text-primary)]">
+      {t('bulk.guideTitle')}
+    </h2>
+    <p>
+      {t('bulk.guideP1')}
+    </p>
+    <p>
+      {t('bulk.guideP2')}
+    </p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+      <div class="p-3 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-subtle)]/40 space-y-1">
+        <div class="font-semibold text-[var(--text-primary)] flex items-center gap-1.5 text-xs">
+          <span class="w-1.5 h-1.5 rounded-full bg-[var(--accent)]"></span>
+          Standardized Taxonomy
+        </div>
+        <p class="text-[11px] text-[var(--text-muted)]">
+          {t('bulk.guideTip1')}
+        </p>
+      </div>
+
+      <div class="p-3 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-subtle)]/40 space-y-1">
+        <div class="font-semibold text-[var(--text-primary)] flex items-center gap-1.5 text-xs">
+          <span class="w-1.5 h-1.5 rounded-full bg-[var(--accent)]"></span>
+          Pre-Flight Link Check
+        </div>
+        <p class="text-[11px] text-[var(--text-muted)]">
+          {t('bulk.guideTip2')}
+        </p>
+      </div>
+
+      <div class="p-3 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-subtle)]/40 space-y-1">
+        <div class="font-semibold text-[var(--text-primary)] flex items-center gap-1.5 text-xs">
+          <span class="w-1.5 h-1.5 rounded-full bg-[var(--accent)]"></span>
+          Direct CSV Ingestion
+        </div>
+        <p class="text-[11px] text-[var(--text-muted)]">
+          {t('bulk.guideTip3')}
+        </p>
       </div>
     </div>
   </div>
 </div>
+
+<!-- Embedded Preset & Example Data -->
+<script
+  id="bulk-data"
+  is:inline
+  type="application/json"
+  set:html={JSON.stringify({
+    presets: BULK_PRESETS,
+    examples: EXAMPLE_BULK_ROWS,
+    i18n: {
+      copied: t('bulk.copied'),
+      copy: t('bulk.copy'),
+      copiedAll: t('bulk.copiedAll'),
+      copyAll: t('bulk.copyAll'),
+      duplicate: t('bulk.duplicateRow'),
+      remove: t('bulk.removeRow'),
+      resultsCount: t('bulk.resultsCount'),
+      invalidRowBadge: t('bulk.invalidRowBadge'),
+      validRowBadge: t('bulk.validRowBadge'),
+      validationMissing: t('bulk.validationMissing'),
+      validationInvalid: t('bulk.validationInvalid'),
+      importDetected: t('bulk.importDetected'),
+      importError: t('bulk.importError'),
+      colDestination: t('bulk.colDestination'),
+      colSource: t('bulk.colSource'),
+      colMedium: t('bulk.colMedium'),
+      colCampaign: t('bulk.colCampaign'),
+      colTerm: t('bulk.colTerm'),
+      colContent: t('bulk.colContent'),
+    },
+  })}
+/>
+
+<!-- Client-Side Reactive Controller -->
+<script>
+  import {
+    processBulkRows,
+    parseBulkCsv,
+    exportBulkCsv,
+  } from '../../lib/utm/bulk.ts';
+  import type { BulkUtmRow } from '../../lib/utm/types.ts';
+
+  // Read data attributes
+  const dataScript = document.getElementById('bulk-data');
+  const payload = dataScript ? JSON.parse(dataScript.textContent || '{}') : {};
+  const { examples = [], i18n = {} } = payload;
+
+  // State
+  let rows: BulkUtmRow[] = [];
+  let rowCounter = 0;
+
+  // DOM references
+  const btnAddRow = document.getElementById('btn-add-row') as HTMLButtonElement;
+  const btnUseExample = document.getElementById('btn-use-example') as HTMLButtonElement;
+  const btnClearAll = document.getElementById('btn-clear-all') as HTMLButtonElement;
+  const btnEmptyAdd = document.getElementById('btn-empty-add') as HTMLButtonElement;
+  const btnEmptyExample = document.getElementById('btn-empty-example') as HTMLButtonElement;
+  const btnOpenImport = document.getElementById('btn-open-import') as HTMLButtonElement;
+  const btnCloseImport = document.getElementById('btn-close-import') as HTMLButtonElement;
+  const btnCancelImport = document.getElementById('btn-cancel-import') as HTMLButtonElement;
+  const btnApplyImport = document.getElementById('btn-apply-import') as HTMLButtonElement;
+  const btnCopyAll = document.getElementById('btn-copy-all') as HTMLButtonElement;
+  const btnExportCsv = document.getElementById('btn-export-csv') as HTMLButtonElement;
+  const copyAllText = document.getElementById('copy-all-text') as HTMLElement;
+  const presetSelect = document.getElementById('preset-select') as HTMLSelectElement;
+
+  const importPanel = document.getElementById('import-panel') as HTMLElement;
+  const importTextarea = document.getElementById('import-textarea') as HTMLTextAreaElement;
+  const importStatus = document.getElementById('import-status') as HTMLElement;
+
+  const emptyState = document.getElementById('empty-state') as HTMLElement;
+  const tableContainer = document.getElementById('table-container') as HTMLElement;
+  const rowsTbody = document.getElementById('rows-tbody') as HTMLElement;
+  const resultsContainer = document.getElementById('results-container') as HTMLElement;
+  const resultsCountBadge = document.getElementById('results-count-badge') as HTMLElement;
+  const resultsList = document.getElementById('results-list') as HTMLElement;
+
+  function createRowId(): string {
+    rowCounter++;
+    return `row-${Date.now()}-${rowCounter}`;
+  }
+
+  function addRow(presetSource = '', presetMedium = ''): void {
+    const newRow: BulkUtmRow = {
+      id: createRowId(),
+      destination: '',
+      source: presetSource,
+      medium: presetMedium,
+      campaign: '',
+      term: '',
+      content: '',
+    };
+    rows.push(newRow);
+    render();
+
+    // Focus the destination input of the new row
+    setTimeout(() => {
+      const input = document.querySelector(`input[data-row-id="${newRow.id}"][data-field="destination"]`) as HTMLInputElement;
+      if (input) input.focus();
+    }, 50);
+  }
+
+  function duplicateRow(id: string): void {
+    const idx = rows.findIndex((r) => r.id === id);
+    if (idx === -1) return;
+    const orig = rows[idx];
+    const copy: BulkUtmRow = {
+      ...orig,
+      id: createRowId(),
+    };
+    rows.splice(idx + 1, 0, copy);
+    render();
+  }
+
+  function removeRow(id: string): void {
+    rows = rows.filter((r) => r.id !== id);
+    render();
+  }
+
+  function clearAll(): void {
+    rows = [];
+    render();
+  }
+
+  function loadExample(): void {
+    rows = examples.map((ex: BulkUtmRow) => ({
+      ...ex,
+      id: createRowId(),
+    }));
+    render();
+  }
+
+  function handleFieldChange(id: string, field: keyof BulkUtmRow, value: string): void {
+    const row = rows.find((r) => r.id === id);
+    if (row) {
+      row[field] = value;
+      renderResultsOnly();
+    }
+  }
+
+  function renderTableRows(): void {
+    rowsTbody.innerHTML = '';
+
+    rows.forEach((row, idx) => {
+      const tr = document.createElement('tr');
+      tr.className = 'group transition-colors';
+      tr.dataset.rowId = row.id;
+
+      // Col 1: Row Number
+      const tdNum = document.createElement('td');
+      tdNum.className = 'py-2 px-3 text-center text-xs font-mono text-[var(--text-muted)] border-b border-[var(--border-subtle)]/60 bg-[var(--bg-surface)] group-hover:bg-[var(--bg-subtle)]/30 transition-colors select-none';
+      tdNum.textContent = String(idx + 1);
+      tr.appendChild(tdNum);
+
+      // Col 2: Destination URL
+      const tdDest = document.createElement('td');
+      tdDest.className = 'py-2 px-2.5 border-b border-[var(--border-subtle)]/60 bg-[var(--bg-surface)] group-hover:bg-[var(--bg-subtle)]/30 transition-colors';
+      const inputDest = document.createElement('input');
+      inputDest.type = 'text';
+      inputDest.className = 'w-full px-2.5 py-1.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] text-xs text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus-ring outline-none transition-colors';
+      inputDest.placeholder = 'https://example.com/landing-page';
+      inputDest.value = row.destination;
+      inputDest.dataset.rowId = row.id;
+      inputDest.dataset.field = 'destination';
+      inputDest.setAttribute('aria-label', `${i18n.colDestination || 'Destination URL'} (Row ${idx + 1})`);
+      inputDest.addEventListener('input', (e) => handleFieldChange(row.id, 'destination', (e.target as HTMLInputElement).value));
+      tdDest.appendChild(inputDest);
+      tr.appendChild(tdDest);
+
+      // Col 3: Source
+      const tdSrc = document.createElement('td');
+      tdSrc.className = 'py-2 px-2.5 border-b border-[var(--border-subtle)]/60 bg-[var(--bg-surface)] group-hover:bg-[var(--bg-subtle)]/30 transition-colors';
+      const inputSrc = document.createElement('input');
+      inputSrc.type = 'text';
+      inputSrc.className = 'w-full px-2.5 py-1.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] text-xs text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus-ring outline-none transition-colors';
+      inputSrc.placeholder = 'google';
+      inputSrc.value = row.source;
+      inputSrc.dataset.rowId = row.id;
+      inputSrc.dataset.field = 'source';
+      inputSrc.setAttribute('aria-label', `${i18n.colSource || 'Source'} (Row ${idx + 1})`);
+      inputSrc.addEventListener('input', (e) => handleFieldChange(row.id, 'source', (e.target as HTMLInputElement).value));
+      tdSrc.appendChild(inputSrc);
+      tr.appendChild(tdSrc);
+
+      // Col 4: Medium
+      const tdMed = document.createElement('td');
+      tdMed.className = 'py-2 px-2.5 border-b border-[var(--border-subtle)]/60 bg-[var(--bg-surface)] group-hover:bg-[var(--bg-subtle)]/30 transition-colors';
+      const inputMed = document.createElement('input');
+      inputMed.type = 'text';
+      inputMed.className = 'w-full px-2.5 py-1.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] text-xs text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus-ring outline-none transition-colors';
+      inputMed.placeholder = 'cpc';
+      inputMed.value = row.medium;
+      inputMed.dataset.rowId = row.id;
+      inputMed.dataset.field = 'medium';
+      inputMed.setAttribute('aria-label', `${i18n.colMedium || 'Medium'} (Row ${idx + 1})`);
+      inputMed.addEventListener('input', (e) => handleFieldChange(row.id, 'medium', (e.target as HTMLInputElement).value));
+      tdMed.appendChild(inputMed);
+      tr.appendChild(tdMed);
+
+      // Col 5: Campaign
+      const tdCamp = document.createElement('td');
+      tdCamp.className = 'py-2 px-2.5 border-b border-[var(--border-subtle)]/60 bg-[var(--bg-surface)] group-hover:bg-[var(--bg-subtle)]/30 transition-colors';
+      const inputCamp = document.createElement('input');
+      inputCamp.type = 'text';
+      inputCamp.className = 'w-full px-2.5 py-1.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] text-xs text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus-ring outline-none transition-colors';
+      inputCamp.placeholder = 'summer_sale';
+      inputCamp.value = row.campaign;
+      inputCamp.dataset.rowId = row.id;
+      inputCamp.dataset.field = 'campaign';
+      inputCamp.setAttribute('aria-label', `${i18n.colCampaign || 'Campaign'} (Row ${idx + 1})`);
+      inputCamp.addEventListener('input', (e) => handleFieldChange(row.id, 'campaign', (e.target as HTMLInputElement).value));
+      tdCamp.appendChild(inputCamp);
+      tr.appendChild(tdCamp);
+
+      // Col 6: Term
+      const tdTerm = document.createElement('td');
+      tdTerm.className = 'py-2 px-2.5 border-b border-[var(--border-subtle)]/60 bg-[var(--bg-surface)] group-hover:bg-[var(--bg-subtle)]/30 transition-colors';
+      const inputTerm = document.createElement('input');
+      inputTerm.type = 'text';
+      inputTerm.className = 'w-full px-2.5 py-1.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] text-xs text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus-ring outline-none transition-colors';
+      inputTerm.placeholder = 'keyword';
+      inputTerm.value = row.term || '';
+      inputTerm.dataset.rowId = row.id;
+      inputTerm.dataset.field = 'term';
+      inputTerm.setAttribute('aria-label', `${i18n.colTerm || 'Term'} (Row ${idx + 1})`);
+      inputTerm.addEventListener('input', (e) => handleFieldChange(row.id, 'term', (e.target as HTMLInputElement).value));
+      tdTerm.appendChild(inputTerm);
+      tr.appendChild(tdTerm);
+
+      // Col 7: Content
+      const tdContent = document.createElement('td');
+      tdContent.className = 'py-2 px-2.5 border-b border-[var(--border-subtle)]/60 bg-[var(--bg-surface)] group-hover:bg-[var(--bg-subtle)]/30 transition-colors';
+      const inputContent = document.createElement('input');
+      inputContent.type = 'text';
+      inputContent.className = 'w-full px-2.5 py-1.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] text-xs text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus-ring outline-none transition-colors';
+      inputContent.placeholder = 'banner_01';
+      inputContent.value = row.content || '';
+      inputContent.dataset.rowId = row.id;
+      inputContent.dataset.field = 'content';
+      inputContent.setAttribute('aria-label', `${i18n.colContent || 'Content'} (Row ${idx + 1})`);
+      inputContent.addEventListener('input', (e) => handleFieldChange(row.id, 'content', (e.target as HTMLInputElement).value));
+      tdContent.appendChild(inputContent);
+      tr.appendChild(tdContent);
+
+      // Col 8: Actions (Sticky right column so actions are always reachable)
+      const tdActions = document.createElement('td');
+      tdActions.className = 'py-2 px-2 text-center whitespace-nowrap sticky right-0 z-10 bg-[var(--bg-surface)] border-b border-l border-[var(--border-subtle)]/80 group-hover:bg-[#151720] transition-colors shadow-[-6px_0_10px_-2px_rgba(0,0,0,0.5)]';
+      const actionsWrap = document.createElement('div');
+      actionsWrap.className = 'flex items-center justify-center gap-1.5';
+
+      // Duplicate button
+      const btnDup = document.createElement('button');
+      btnDup.type = 'button';
+      btnDup.className = 'w-7 h-7 inline-flex items-center justify-center rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-subtle)] transition-colors focus-ring';
+      btnDup.title = `${i18n.duplicate || 'Duplicate'} (${idx + 1})`;
+      btnDup.setAttribute('aria-label', `${i18n.duplicate || 'Duplicate'} row ${idx + 1}`);
+      btnDup.innerHTML = `<svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>`;
+      btnDup.addEventListener('click', () => duplicateRow(row.id));
+      actionsWrap.appendChild(btnDup);
+
+      // Remove button
+      const btnRem = document.createElement('button');
+      btnRem.type = 'button';
+      btnRem.className = 'w-7 h-7 inline-flex items-center justify-center rounded-lg text-[var(--text-muted)] hover:text-[var(--color-error)] hover:bg-[var(--color-error)]/10 transition-colors focus-ring';
+      btnRem.title = `${i18n.remove || 'Remove'} (${idx + 1})`;
+      btnRem.setAttribute('aria-label', `${i18n.remove || 'Remove'} row ${idx + 1}`);
+      btnRem.innerHTML = `<svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>`;
+      btnRem.addEventListener('click', () => removeRow(row.id));
+      actionsWrap.appendChild(btnRem);
+
+      tdActions.appendChild(actionsWrap);
+      tr.appendChild(tdActions);
+
+      rowsTbody.appendChild(tr);
+    });
+  }
+
+  function renderResultsOnly(): void {
+    const results = processBulkRows(rows);
+    const validCount = results.filter((r) => r.isValid).length;
+    const totalCount = results.length;
+
+    // Update count badge
+    resultsCountBadge.textContent = (i18n.resultsCount || '{valid} of {total} URLs ready')
+      .replace('{valid}', String(validCount))
+      .replace('{total}', String(totalCount));
+
+    resultsList.innerHTML = '';
+
+    results.forEach((res) => {
+      const card = document.createElement('div');
+      card.className = `p-3.5 rounded-lg border text-xs space-y-2 transition-colors min-w-0 ${
+        res.isValid
+          ? 'border-[var(--border-subtle)] bg-[var(--bg-subtle)]/20'
+          : 'border-[var(--border-subtle)] bg-[var(--bg-subtle)]/10 opacity-70'
+      }`;
+
+      // Card Header
+      const header = document.createElement('div');
+      header.className = 'flex items-center justify-between gap-2 text-xs min-w-0';
+
+      const titlePart = document.createElement('div');
+      titlePart.className = 'flex items-center gap-2 font-mono text-[var(--text-secondary)] truncate min-w-0';
+      const numBadge = document.createElement('span');
+      numBadge.className = 'font-bold text-[var(--text-primary)] shrink-0';
+      numBadge.textContent = `#${res.rowNumber}`;
+      titlePart.appendChild(numBadge);
+
+      if (res.row.destination) {
+        const destSpan = document.createElement('span');
+        destSpan.className = 'truncate text-[11px] text-[var(--text-muted)]';
+        destSpan.textContent = res.row.destination;
+        titlePart.appendChild(destSpan);
+      }
+      header.appendChild(titlePart);
+
+      // Status Badge
+      const badge = document.createElement('span');
+      badge.className = 'shrink-0';
+      if (res.isValid) {
+        badge.className = 'shrink-0 px-2 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider bg-[var(--color-success)]/10 text-[var(--color-success)] border border-[var(--color-success)]/20';
+        badge.textContent = i18n.validRowBadge || 'Ready';
+      } else {
+        badge.className = 'shrink-0 px-2 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider bg-[var(--color-error)]/10 text-[var(--color-error)] border border-[var(--color-error)]/20';
+        badge.textContent = i18n.invalidRowBadge || 'Incomplete';
+      }
+      header.appendChild(badge);
+      card.appendChild(header);
+
+      // Body: URL box or error details
+      if (res.isValid && res.generatedUrl) {
+        const urlRow = document.createElement('div');
+        urlRow.className = 'flex items-center gap-2 pt-1 min-w-0';
+
+        const codeBox = document.createElement('div');
+        codeBox.className = 'flex-1 min-w-0 px-3 py-2 rounded-lg bg-[var(--bg-input)] border border-[var(--border-subtle)] font-mono text-xs text-[var(--text-primary)] whitespace-nowrap overflow-x-auto select-all bulk-scroll';
+        codeBox.textContent = res.generatedUrl;
+        codeBox.setAttribute('tabindex', '0');
+        codeBox.setAttribute('aria-label', `Generated UTM URL for row ${res.rowNumber}`);
+        urlRow.appendChild(codeBox);
+
+        const btnCopy = document.createElement('button');
+        btnCopy.type = 'button';
+        btnCopy.className = 'shrink-0 px-3 py-2 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--accent)] transition-colors focus-ring inline-flex items-center gap-1.5';
+        btnCopy.setAttribute('aria-label', `${i18n.copy || 'Copy'} URL #${res.rowNumber}`);
+        btnCopy.innerHTML = `<svg class="w-3.5 h-3.5 text-[var(--text-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg><span>${i18n.copy || 'Copy'}</span>`;
+        btnCopy.addEventListener('click', () => {
+          navigator.clipboard.writeText(res.generatedUrl).then(() => {
+            btnCopy.innerHTML = `<svg class="w-3.5 h-3.5 text-[var(--accent)]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span class="text-[var(--accent)] font-semibold">${i18n.copied || 'Copied!'}</span>`;
+            setTimeout(() => {
+              btnCopy.innerHTML = `<svg class="w-3.5 h-3.5 text-[var(--text-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg><span>${i18n.copy || 'Copy'}</span>`;
+            }, 1500);
+          });
+        });
+        urlRow.appendChild(btnCopy);
+        card.appendChild(urlRow);
+      } else {
+        const errBox = document.createElement('div');
+        errBox.className = 'text-[11px] text-[var(--text-muted)] space-y-0.5 pt-0.5';
+
+        if (res.missingFields.length > 0) {
+          const missP = document.createElement('p');
+          missP.className = 'text-[var(--text-muted)]';
+          const fieldNames = res.missingFields.join(', ');
+          missP.textContent = (i18n.validationMissing || 'Missing: {fields}').replace('{fields}', fieldNames);
+          errBox.appendChild(missP);
+        }
+
+        res.errors.forEach((err) => {
+          if (!err.startsWith('Destination URL is required') && !err.endsWith('is required.')) {
+            const ep = document.createElement('p');
+            ep.className = 'text-[var(--color-error)]';
+            ep.textContent = err;
+            errBox.appendChild(ep);
+          }
+        });
+
+        card.appendChild(errBox);
+      }
+
+      resultsList.appendChild(card);
+    });
+  }
+
+  function render(): void {
+    const hasRows = rows.length > 0;
+
+    if (hasRows) {
+      emptyState.classList.add('hidden');
+      tableContainer.classList.remove('hidden');
+      resultsContainer.classList.remove('hidden');
+      btnClearAll.classList.remove('hidden');
+      renderTableRows();
+      renderResultsOnly();
+    } else {
+      emptyState.classList.remove('hidden');
+      tableContainer.classList.add('hidden');
+      resultsContainer.classList.add('hidden');
+      btnClearAll.classList.add('hidden');
+    }
+  }
+
+  // Event Listeners
+  btnAddRow.addEventListener('click', () => addRow());
+  btnEmptyAdd.addEventListener('click', () => addRow());
+  btnUseExample.addEventListener('click', () => loadExample());
+  btnEmptyExample.addEventListener('click', () => loadExample());
+  btnClearAll.addEventListener('click', () => clearAll());
+
+  // Preset Selection Listener
+  presetSelect.addEventListener('change', () => {
+    const selectedOption = presetSelect.selectedOptions[0];
+    if (!selectedOption || !selectedOption.value) return;
+
+    const src = selectedOption.dataset.source || '';
+    const med = selectedOption.dataset.medium || '';
+
+    // Add a new row populated with preset values
+    addRow(src, med);
+
+    // Reset dropdown back to default
+    presetSelect.value = '';
+  });
+
+  // CSV Import Modal Handlers
+  btnOpenImport.addEventListener('click', () => {
+    importPanel.classList.remove('hidden');
+    importTextarea.focus();
+  });
+
+  function closeImportModal(): void {
+    importPanel.classList.add('hidden');
+    importTextarea.value = '';
+    importStatus.textContent = '';
+  }
+
+  btnCloseImport.addEventListener('click', closeImportModal);
+  btnCancelImport.addEventListener('click', closeImportModal);
+
+  importTextarea.addEventListener('input', () => {
+    const txt = importTextarea.value;
+    if (!txt.trim()) {
+      importStatus.textContent = '';
+      return;
+    }
+    const parsed = parseBulkCsv(txt);
+    importStatus.textContent = (i18n.importDetected || '{count} rows detected').replace('{count}', String(parsed.rowCount));
+  });
+
+  btnApplyImport.addEventListener('click', () => {
+    const txt = importTextarea.value;
+    const parsed = parseBulkCsv(txt);
+    if (parsed.rowCount === 0) {
+      importStatus.textContent = i18n.importError || 'No valid rows found in pasted CSV.';
+      return;
+    }
+    rows = [...rows, ...parsed.rows];
+    closeImportModal();
+    render();
+  });
+
+  // Bulk Actions
+  btnCopyAll.addEventListener('click', () => {
+    const results = processBulkRows(rows);
+    const validUrls = results.filter((r) => r.isValid && r.generatedUrl).map((r) => r.generatedUrl);
+    if (validUrls.length === 0) return;
+
+    const payloadText = validUrls.join('\n');
+    navigator.clipboard.writeText(payloadText).then(() => {
+      const orig = copyAllText.textContent;
+      copyAllText.textContent = (i18n.copiedAll || 'Copied {count} URLs!').replace('{count}', String(validUrls.length));
+      setTimeout(() => {
+        copyAllText.textContent = orig;
+      }, 1800);
+    });
+  });
+
+  btnExportCsv.addEventListener('click', () => {
+    const results = processBulkRows(rows);
+    const csvContent = exportBulkCsv(results);
+    if (!csvContent || csvContent.split('\n').length <= 1) return;
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `utmverify-campaign-urls-${new Date().toISOString().slice(0, 10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  });
+
+  // Initial render (starts empty as requested)
+  render();
+</script>
+
+<style>
+  /* Refined, non-intrusive scrollbar for internal table and URL boxes */
+  .bulk-scroll::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
+  }
+  .bulk-scroll::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 9999px;
+  }
+  .bulk-scroll::-webkit-scrollbar-thumb {
+    background: var(--border-strong);
+    border-radius: 9999px;
+  }
+  .bulk-scroll::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+  }
+  .bulk-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-strong) transparent;
+  }
+</style>
+

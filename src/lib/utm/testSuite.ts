@@ -6,6 +6,16 @@ import {
   generateCampaignName,
   generateNaming,
 } from './naming.ts';
+import {
+  validateBulkRow,
+  generateBulkRowUrl,
+  processBulkRows,
+  parseCsv,
+  parseBulkCsv,
+  exportBulkCsv,
+  BULK_PRESETS,
+  EXAMPLE_BULK_ROWS,
+} from './bulk.ts';
 
 interface ValidationTestCase {
   id: number;
@@ -681,8 +691,346 @@ const namingTestCases: NamingTestCase[] = [
   },
 ];
 
+const bulkTestCases: Array<{
+  id: number;
+  name: string;
+  description: string;
+  run: () => { passed: boolean; actual?: any; expected?: any };
+}> = [
+  {
+    id: 51,
+    name: 'Bulk 1: Single valid bulk row',
+    description: 'Validates and generates a complete campaign URL for a single valid row.',
+    run: () => {
+      const row = {
+        id: 'r1',
+        destination: 'https://example.com/landing',
+        source: 'google',
+        medium: 'cpc',
+        campaign: 'spring_sale',
+        term: 'running_shoes',
+        content: 'hero_banner',
+      };
+      const val = validateBulkRow(row);
+      const url = generateBulkRowUrl(row);
+      const expected = 'https://example.com/landing?utm_source=google&utm_medium=cpc&utm_campaign=spring_sale&utm_term=running_shoes&utm_content=hero_banner';
+      const passed = val.isValid && url === expected;
+      return { passed, actual: url, expected };
+    },
+  },
+  {
+    id: 52,
+    name: 'Bulk 2: Multiple valid rows',
+    description: 'Processes multiple valid rows and produces valid results for each.',
+    run: () => {
+      const results = processBulkRows(EXAMPLE_BULK_ROWS);
+      const allValid = results.length === 3 && results.every((r) => r.isValid && r.generatedUrl.length > 0);
+      return { passed: allValid, actual: results.length, expected: 3 };
+    },
+  },
+  {
+    id: 53,
+    name: 'Bulk 3: Empty optional term',
+    description: 'Omits utm_term when optional term field is empty or undefined.',
+    run: () => {
+      const row = {
+        id: 'r3',
+        destination: 'https://example.com',
+        source: 'meta',
+        medium: 'paid_social',
+        campaign: 'brand_video',
+        term: '',
+        content: 'video_ad',
+      };
+      const url = generateBulkRowUrl(row);
+      const passed = !url.includes('utm_term') && url.includes('utm_content=video_ad');
+      return { passed, actual: url, expected: 'URL with utm_content but without utm_term' };
+    },
+  },
+  {
+    id: 54,
+    name: 'Bulk 4: Empty optional content',
+    description: 'Omits utm_content when optional content field is empty or undefined.',
+    run: () => {
+      const row = {
+        id: 'r4',
+        destination: 'https://example.com',
+        source: 'meta',
+        medium: 'paid_social',
+        campaign: 'brand_video',
+        term: 'retargeting',
+        content: '',
+      };
+      const url = generateBulkRowUrl(row);
+      const passed = url.includes('utm_term=retargeting') && !url.includes('utm_content');
+      return { passed, actual: url, expected: 'URL with utm_term but without utm_content' };
+    },
+  },
+  {
+    id: 55,
+    name: 'Bulk 5: Existing query string preservation',
+    description: 'Preserves existing query parameters in the destination URL while appending UTMs.',
+    run: () => {
+      const row = {
+        id: 'r5',
+        destination: 'https://example.com/catalog?category=shoes&sort=price',
+        source: 'google',
+        medium: 'cpc',
+        campaign: 'clearance',
+      };
+      const url = generateBulkRowUrl(row);
+      const passed =
+        url.includes('category=shoes') &&
+        url.includes('sort=price') &&
+        url.includes('utm_campaign=clearance') &&
+        (url.match(/\?/g) || []).length === 1;
+      return { passed, actual: url, expected: 'Single ? with existing params and appended UTMs' };
+    },
+  },
+  {
+    id: 56,
+    name: 'Bulk 6: Existing fragment preservation',
+    description: 'Preserves hash fragment and places it at the very end of the generated URL.',
+    run: () => {
+      const row = {
+        id: 'r6',
+        destination: 'https://example.com/pricing#enterprise',
+        source: 'newsletter',
+        medium: 'email',
+        campaign: 'q3_update',
+      };
+      const url = generateBulkRowUrl(row);
+      const passed = url.endsWith('#enterprise') && url.includes('?utm_source=newsletter');
+      return { passed, actual: url, expected: 'URL ending in #enterprise after query string' };
+    },
+  },
+  {
+    id: 57,
+    name: 'Bulk 7: Query + fragment combination',
+    description: 'Preserves both existing query parameters and hash fragment in canonical order.',
+    run: () => {
+      const row = {
+        id: 'r7',
+        destination: 'https://example.com/page?ref=home#details',
+        source: 'partner',
+        medium: 'referral',
+        campaign: 'co_marketing',
+      };
+      const url = generateBulkRowUrl(row);
+      const passed =
+        url.includes('ref=home') &&
+        url.includes('utm_source=partner') &&
+        url.endsWith('#details');
+      return { passed, actual: url, expected: 'Preserved query params and trailing #details' };
+    },
+  },
+  {
+    id: 58,
+    name: 'Bulk 8: Invalid destination URL',
+    description: 'Detects invalid destination URL syntax and marks row as invalid.',
+    run: () => {
+      const row = {
+        id: 'r8',
+        destination: 'not a valid url at all',
+        source: 'google',
+        medium: 'cpc',
+        campaign: 'test',
+      };
+      const val = validateBulkRow(row);
+      const passed = !val.isValid && val.errors.some((e) => e.includes('Invalid destination'));
+      return { passed, actual: val, expected: 'isValid=false with invalid destination error' };
+    },
+  },
+  {
+    id: 59,
+    name: 'Bulk 9: Missing source',
+    description: 'Flags row as invalid when utm_source is empty.',
+    run: () => {
+      const row = {
+        id: 'r9',
+        destination: 'https://example.com',
+        source: '',
+        medium: 'cpc',
+        campaign: 'sale',
+      };
+      const val = validateBulkRow(row);
+      const passed = !val.isValid && val.missingFields.includes('source');
+      return { passed, actual: val.missingFields, expected: 'missingFields includes source' };
+    },
+  },
+  {
+    id: 60,
+    name: 'Bulk 10: Missing medium',
+    description: 'Flags row as invalid when utm_medium is empty.',
+    run: () => {
+      const row = {
+        id: 'r10',
+        destination: 'https://example.com',
+        source: 'google',
+        medium: '',
+        campaign: 'sale',
+      };
+      const val = validateBulkRow(row);
+      const passed = !val.isValid && val.missingFields.includes('medium');
+      return { passed, actual: val.missingFields, expected: 'missingFields includes medium' };
+    },
+  },
+  {
+    id: 61,
+    name: 'Bulk 11: Missing campaign',
+    description: 'Flags row as invalid when utm_campaign is empty.',
+    run: () => {
+      const row = {
+        id: 'r11',
+        destination: 'https://example.com',
+        source: 'google',
+        medium: 'cpc',
+        campaign: '',
+      };
+      const val = validateBulkRow(row);
+      const passed = !val.isValid && val.missingFields.includes('campaign');
+      return { passed, actual: val.missingFields, expected: 'missingFields includes campaign' };
+    },
+  },
+  {
+    id: 62,
+    name: 'Bulk 12: Duplicate row behavior',
+    description: 'Duplicating a row produces an independent copy with identical values.',
+    run: () => {
+      const original = EXAMPLE_BULK_ROWS[0];
+      const duplicate = { ...original, id: 'copy-1' };
+      const urlOrig = generateBulkRowUrl(original);
+      const urlDup = generateBulkRowUrl(duplicate);
+      const passed = duplicate.id !== original.id && urlOrig === urlDup;
+      return { passed, actual: { id: duplicate.id, urlDup }, expected: 'Distinct id with matching URL' };
+    },
+  },
+  {
+    id: 63,
+    name: 'Bulk 13: CSV parsing basic',
+    description: 'Parses standard comma-separated text into structured row records.',
+    run: () => {
+      const csv = `destination_url,utm_source,utm_medium,utm_campaign\nhttps://example.com,google,cpc,summer_sale`;
+      const rawMatrix = parseCsv(csv);
+      const res = parseBulkCsv(csv);
+      const passed =
+        rawMatrix.length === 2 &&
+        rawMatrix[1][1] === 'google' &&
+        res.rowCount === 1 &&
+        res.rows[0].source === 'google' &&
+        res.rows[0].campaign === 'summer_sale';
+      return { passed, actual: res.rows[0], expected: 'source=google, campaign=summer_sale' };
+    },
+  },
+  {
+    id: 64,
+    name: 'Bulk 14: CSV quoted comma handling',
+    description: 'Preserves commas within quoted fields according to RFC 4180.',
+    run: () => {
+      const csv = `destination_url,utm_source,utm_medium,utm_campaign,utm_content\n"https://example.com/page?tags=shoes,boots",google,cpc,"summer, autumn sale",banner`;
+      const res = parseBulkCsv(csv);
+      const passed =
+        res.rowCount === 1 &&
+        res.rows[0].destination === 'https://example.com/page?tags=shoes,boots' &&
+        res.rows[0].campaign === 'summer, autumn sale';
+      return { passed, actual: res.rows[0], expected: 'Commas inside quotes preserved' };
+    },
+  },
+  {
+    id: 65,
+    name: 'Bulk 15: CSV escaped double quotes',
+    description: 'Handles escaped double quotes ("") inside quoted fields.',
+    run: () => {
+      const csv = `destination,source,medium,campaign\nhttps://example.com,google,cpc,"50% ""flash"" sale"`;
+      const res = parseBulkCsv(csv);
+      const passed = res.rowCount === 1 && res.rows[0].campaign === '50% "flash" sale';
+      return { passed, actual: res.rows[0]?.campaign, expected: '50% "flash" sale' };
+    },
+  },
+  {
+    id: 66,
+    name: 'Bulk 16: CSV blank lines handling',
+    description: 'Ignores empty lines and whitespace lines in CSV import.',
+    run: () => {
+      const csv = `destination,source,medium,campaign\n\nhttps://example.com/1,google,cpc,sale1\n\n  \nhttps://example.com/2,meta,social,sale2\n\n`;
+      const res = parseBulkCsv(csv);
+      const passed = res.rowCount === 2;
+      return { passed, actual: res.rowCount, expected: 2 };
+    },
+  },
+  {
+    id: 67,
+    name: 'Bulk 17: Mixed valid and invalid rows processing',
+    description: 'Correctly isolates valid rows while returning error states for incomplete rows.',
+    run: () => {
+      const rows = [
+        { id: '1', destination: 'https://example.com', source: 'google', medium: 'cpc', campaign: 's1' },
+        { id: '2', destination: '', source: 'meta', medium: 'social', campaign: 's2' },
+        { id: '3', destination: 'https://example.com', source: 'email', medium: '', campaign: 's3' },
+      ];
+      const results = processBulkRows(rows);
+      const passed =
+        results[0].isValid === true &&
+        results[0].generatedUrl.length > 0 &&
+        results[1].isValid === false &&
+        results[1].generatedUrl === '' &&
+        results[2].isValid === false;
+      return { passed, actual: results.map((r) => r.isValid), expected: [true, false, false] };
+    },
+  },
+  {
+    id: 68,
+    name: 'Bulk 18: CSV export serialization',
+    description: 'Exports generated results to RFC 4180 CSV with correct headers and quotes.',
+    run: () => {
+      const results = processBulkRows(EXAMPLE_BULK_ROWS);
+      const csvOut = exportBulkCsv(results);
+      const lines = csvOut.split('\n');
+      const passed =
+        lines.length === 4 &&
+        lines[0].startsWith('destination_url,utm_source') &&
+        lines[1].includes('https://example.com/summer-sale?utm_source=google');
+      return { passed, actual: lines[0], expected: 'Headers matching destination_url,utm_source...' };
+    },
+  },
+  {
+    id: 69,
+    name: 'Bulk 19: URL special character encoding in bulk row',
+    description: 'Ensures spaces are encoded as %20 (never +) and special characters are safely escaped.',
+    run: () => {
+      const row = {
+        id: 'r19',
+        destination: 'https://example.com',
+        source: 'google ads',
+        medium: 'cpc',
+        campaign: 'summer & winter',
+        content: '50% off',
+      };
+      const url = generateBulkRowUrl(row);
+      const passed =
+        url.includes('utm_source=google%20ads') &&
+        url.includes('utm_campaign=summer%20%26%20winter') &&
+        url.includes('utm_content=50%25%20off') &&
+        !url.includes('+');
+      return { passed, actual: url, expected: '%20 for spaces and %26 for &' };
+    },
+  },
+  {
+    id: 70,
+    name: 'Bulk 20: Presets data integrity',
+    description: 'Verifies bulk presets are populated with valid source and medium pairs.',
+    run: () => {
+      const passed =
+        BULK_PRESETS.length === 5 &&
+        BULK_PRESETS.some((p) => p.id === 'google_ads' && p.source === 'google' && p.medium === 'cpc') &&
+        BULK_PRESETS.some((p) => p.id === 'meta_ads' && p.source === 'meta' && p.medium === 'paid_social');
+      return { passed, actual: BULK_PRESETS.length, expected: 5 };
+    },
+  },
+];
+
 export function runTests(): { total: number; passed: number; failed: number } {
-  console.log('--- Running UTM Suite Deterministic Tests (Checker, Builder, Parser, Naming) ---');
+  console.log('--- Running UTM Suite Deterministic Tests (Checker, Builder, Parser, Naming, Bulk) ---');
   let passed = 0;
   let failed = 0;
 
@@ -745,11 +1093,26 @@ export function runTests(): { total: number; passed: number; failed: number } {
     }
   }
 
+  console.log('\n[Part 5: Bulk UTM Builder Cases 51-70]');
+  for (const tc of bulkTestCases) {
+    const res = tc.run();
+    if (res.passed) {
+      console.log(`✓ Case ${tc.id}: ${tc.name}`);
+      passed++;
+    } else {
+      console.error(`✗ Case ${tc.id}: ${tc.name} FAILED!`);
+      console.error(`  Expected: ${JSON.stringify(res.expected)}`);
+      console.error(`  Actual:   ${JSON.stringify(res.actual)}`);
+      failed++;
+    }
+  }
+
   const total =
     validationTestCases.length +
     builderTestCases.length +
     parserTestCases.length +
-    namingTestCases.length;
+    namingTestCases.length +
+    bulkTestCases.length;
   console.log(`\nSummary: ${passed}/${total} passed (${failed} failed).`);
   return { total, passed, failed };
 }
