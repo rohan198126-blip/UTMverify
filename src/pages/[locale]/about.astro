@@ -20,7 +20,7 @@ const canonicalPath = `/${locale}/about`;
   canonicalPath={canonicalPath}
   locale={locale}
 >
-  <div class="max-w-3xl mx-auto space-y-6 text-[var(--text-primary)]">
+  <div class="max-w-3xl mx-auto space-y-8 text-[var(--text-primary)]">
     <div class="space-y-1.5 text-center sm:text-left">
       <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
         {t('about.title')}
@@ -30,13 +30,90 @@ const canonicalPath = `/${locale}/about`;
       </p>
     </div>
 
-    <div class="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 sm:p-6 space-y-3.5 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed shadow-[var(--card-shadow)]">
+    <!-- Core Mission & Privacy Architecture -->
+    <div class="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 sm:p-6 space-y-4 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed shadow-[var(--card-shadow)]">
+      <h2 class="text-sm sm:text-base font-semibold text-[var(--text-primary)]">
+        Mission & Philosophy
+      </h2>
       <p>
         <strong class="text-[var(--text-primary)] font-semibold">UTMVerify</strong> {t('about.p1').replace('UTMVerify ', '')}
       </p>
       <p>
         {t('about.p2')}
       </p>
+    </div>
+
+    <!-- Architecture & Principles -->
+    <div class="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 sm:p-6 space-y-4 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed shadow-[var(--card-shadow)]">
+      <h2 class="text-sm sm:text-base font-semibold text-[var(--text-primary)]">
+        Architecture & Standards Compliance
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+        <div class="p-3.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-subtle)]/40 space-y-1.5">
+          <div class="font-semibold text-[var(--text-primary)] flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-[var(--color-success)]"></span>
+            100% Client-Side Engine
+          </div>
+          <p class="text-xs text-[var(--text-muted)]">
+            URL parsing, syntax validation, and parameter extraction execute strictly inside your local browser runtime. No destination URLs or query parameters are ever logged or uploaded to a database.
+          </p>
+        </div>
+
+        <div class="p-3.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-subtle)]/40 space-y-1.5">
+          <div class="font-semibold text-[var(--text-primary)] flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-[var(--accent)]"></span>
+            RFC 3986 URL Compliance
+          </div>
+          <p class="text-xs text-[var(--text-muted)]">
+            All tools rigorously follow Internet Standard RFC 3986 for URI generic syntax, guaranteeing correct delimiter handling (<code class="text-[11px] font-mono">?</code>, <code class="text-[11px] font-mono">&amp;</code>, <code class="text-[11px] font-mono">#</code>) and safe percent-encoding.
+          </p>
+        </div>
+
+        <div class="p-3.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-subtle)]/40 space-y-1.5">
+          <div class="font-semibold text-[var(--text-primary)] flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-[var(--accent)]"></span>
+            Google Analytics Conventions
+          </div>
+          <p class="text-xs text-[var(--text-muted)]">
+            Standard parameter keys (<code class="text-[11px] font-mono">utm_source</code>, <code class="text-[11px] font-mono">utm_medium</code>, <code class="text-[11px] font-mono">utm_campaign</code>, <code class="text-[11px] font-mono">utm_term</code>, <code class="text-[11px] font-mono">utm_content</code>) align directly with GA4 campaign measurement specifications.
+          </p>
+        </div>
+
+        <div class="p-3.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-subtle)]/40 space-y-1.5">
+          <div class="font-semibold text-[var(--text-primary)] flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-[var(--color-success)]"></span>
+            No Forced Registration
+          </div>
+          <p class="text-xs text-[var(--text-muted)]">
+            No accounts, sign-ups, or credit cards required. UTMVerify is maintained as an open marketing utility accessible to all teams, agencies, and analysts.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- The Tool Suite -->
+    <div class="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 sm:p-6 space-y-4 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed shadow-[var(--card-shadow)]">
+      <h2 class="text-sm sm:text-base font-semibold text-[var(--text-primary)]">
+        The UTMVerify Utility Suite
+      </h2>
+      <ul class="space-y-2.5">
+        <li class="flex items-start gap-2">
+          <strong class="text-[var(--text-primary)] font-medium shrink-0">UTM Checker:</strong>
+          <span>Inspects existing campaign links for syntax errors, missing parameters, duplicate separators, and formatting issues.</span>
+        </li>
+        <li class="flex items-start gap-2">
+          <strong class="text-[var(--text-primary)] font-medium shrink-0">UTM Builder:</strong>
+          <span>Generates clean, fully-encoded tracking URLs with real-time character counting and live syntax checks.</span>
+        </li>
+        <li class="flex items-start gap-2">
+          <strong class="text-[var(--text-primary)] font-medium shrink-0">UTM Parser:</strong>
+          <span>Deconstructs any tracking URL into base destination, standard UTM tags, and other query parameters with copy shortcuts.</span>
+        </li>
+        <li class="flex items-start gap-2">
+          <strong class="text-[var(--text-primary)] font-medium shrink-0">UTM Naming Generator:</strong>
+          <span>Creates standardized, lowercase campaign names adhering to consistent team conventions before generating links.</span>
+        </li>
+      </ul>
     </div>
   </div>
 </RootLayout>

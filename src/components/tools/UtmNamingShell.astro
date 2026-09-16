@@ -1,6 +1,7 @@
 ---
 import { useTranslations } from '../../i18n/utils';
 import type { SupportedLocale } from '../../i18n/ui';
+import { NAMING_PRESETS } from '../../lib/utm/index.ts';
 
 export interface Props {
   locale?: SupportedLocale;
@@ -10,8 +11,9 @@ const { locale = 'en' } = Astro.props;
 const t = useTranslations(locale);
 ---
 
-<div class="w-full max-w-3xl mx-auto space-y-5">
-  <div class="text-center space-y-1.5">
+<div class="w-full max-w-3xl mx-auto space-y-6" id="utm-naming-container">
+  <!-- Minimal Page Heading + Short Explanation -->
+  <div class="text-center space-y-1">
     <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
       {t('naming.heading')}
     </h1>
@@ -20,38 +22,631 @@ const t = useTranslations(locale);
     </p>
   </div>
 
-  <div class="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4 sm:p-5 shadow-[var(--card-shadow)] space-y-4">
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+  <!-- Main Naming Workspace -->
+  <div class="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 sm:p-6 shadow-[var(--card-shadow)] space-y-5">
+    
+    <!-- Workspace Top Bar: Preset Selector + Actions -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[var(--border-subtle)]">
       <div class="space-y-1">
-        <label class="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
-          {t('naming.platform')}
+        <label for="naming-preset-select" class="block text-xs font-semibold text-[var(--text-primary)] tracking-tight">
+          {t('naming.presetLabel')}
         </label>
-        <div class="rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] px-3 py-2 text-xs text-[var(--text-muted)]">
-          e.g. google, meta
+        <div class="flex items-center gap-2">
+          <select
+            id="naming-preset-select"
+            class="h-9 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] px-3 text-xs font-medium text-[var(--text-primary)] focus:border-[var(--border-focus)] focus:ring-1 focus:ring-[var(--border-focus)] focus:outline-none transition-colors cursor-pointer"
+          >
+            {NAMING_PRESETS.map((preset) => (
+              <option value={preset.id} selected={preset.id === 'full'}>
+                {t(preset.nameKey as any)} ({preset.pattern})
+              </option>
+            ))}
+          </select>
         </div>
       </div>
-      <div class="space-y-1">
-        <label class="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
-          {t('naming.tactic')}
-        </label>
-        <div class="rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] px-3 py-2 text-xs text-[var(--text-muted)]">
-          e.g. cpc, story
-        </div>
+
+      <div class="flex items-center gap-3 self-end sm:self-auto">
+        <button
+          type="button"
+          id="naming-example-btn"
+          class="text-[11px] font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:underline focus-ring rounded cursor-pointer transition-colors"
+        >
+          {t('naming.useExample')}
+        </button>
+        <span class="text-[var(--border-strong)] text-[10px]">·</span>
+        <button
+          type="button"
+          id="naming-clear-btn"
+          class="text-[11px] font-medium text-[var(--text-muted)] hover:text-[var(--text-primary)] focus-ring rounded cursor-pointer transition-colors"
+        >
+          {t('naming.clear')}
+        </button>
       </div>
-      <div class="space-y-1">
-        <label class="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
-          {t('naming.separator')}
+    </div>
+
+    <!-- Primary Inputs (4 Core Fields) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+      <!-- 1. Campaign / Offer -->
+      <div class="space-y-1.5">
+        <label for="naming-input-campaign" class="text-xs font-semibold text-[var(--text-primary)]">
+          {t('naming.campaignLabel')} <span class="text-[var(--accent)] font-bold">*</span>
         </label>
-        <div class="rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] px-3 py-2 text-xs text-[var(--text-muted)]">
-          _ or -
+        <input
+          id="naming-input-campaign"
+          type="text"
+          spellcheck="false"
+          autocomplete="off"
+          placeholder={t('naming.campaignPlaceholder')}
+          class="w-full h-10 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] px-3 text-xs sm:text-sm font-mono text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:border-[var(--border-focus)] focus:ring-1 focus:ring-[var(--border-focus)] focus:outline-none transition-colors"
+        />
+      </div>
+
+      <!-- 2. Source -->
+      <div class="space-y-1.5">
+        <label for="naming-input-source" class="text-xs font-semibold text-[var(--text-primary)]">
+          {t('naming.sourceLabel')} <span class="text-[var(--accent)] font-bold">*</span>
+        </label>
+        <input
+          id="naming-input-source"
+          type="text"
+          spellcheck="false"
+          autocomplete="off"
+          placeholder={t('naming.sourcePlaceholder')}
+          class="w-full h-10 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] px-3 text-xs sm:text-sm font-mono text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:border-[var(--border-focus)] focus:ring-1 focus:ring-[var(--border-focus)] focus:outline-none transition-colors"
+        />
+      </div>
+
+      <!-- 3. Medium -->
+      <div class="space-y-1.5">
+        <label for="naming-input-medium" class="text-xs font-semibold text-[var(--text-primary)]">
+          {t('naming.mediumLabel')} <span class="text-[var(--accent)] font-bold">*</span>
+        </label>
+        <input
+          id="naming-input-medium"
+          type="text"
+          spellcheck="false"
+          autocomplete="off"
+          placeholder={t('naming.mediumPlaceholder')}
+          class="w-full h-10 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] px-3 text-xs sm:text-sm font-mono text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:border-[var(--border-focus)] focus:ring-1 focus:ring-[var(--border-focus)] focus:outline-none transition-colors"
+        />
+      </div>
+
+      <!-- 4. Objective -->
+      <div class="space-y-1.5">
+        <label for="naming-input-objective" class="text-xs font-semibold text-[var(--text-primary)]">
+          {t('naming.objectiveLabel')}
+        </label>
+        <input
+          id="naming-input-objective"
+          type="text"
+          spellcheck="false"
+          autocomplete="off"
+          placeholder={t('naming.objectivePlaceholder')}
+          class="w-full h-10 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] px-3 text-xs sm:text-sm font-mono text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:border-[var(--border-focus)] focus:ring-1 focus:ring-[var(--border-focus)] focus:outline-none transition-colors"
+        />
+      </div>
+    </div>
+
+    <!-- Progressive Disclosure: Optional Fields Toggle -->
+    <div class="pt-1">
+      <button
+        type="button"
+        id="naming-toggle-options-btn"
+        class="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] focus-ring rounded py-1 transition-colors cursor-pointer"
+        data-label-more={t('naming.moreOptions')}
+        data-label-less={t('naming.hideOptions')}
+      >
+        <svg id="naming-toggle-icon" class="w-3.5 h-3.5 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+        </svg>
+        <span id="naming-toggle-label">{t('naming.moreOptions')}</span>
+      </button>
+
+      <!-- Optional Fields Container -->
+      <div id="naming-optional-fields" class="hidden grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-3">
+        <!-- 5. Audience -->
+        <div class="space-y-1.5">
+          <label for="naming-input-audience" class="text-xs font-semibold text-[var(--text-secondary)]">
+            {t('naming.audienceLabel')}
+          </label>
+          <input
+            id="naming-input-audience"
+            type="text"
+            spellcheck="false"
+            autocomplete="off"
+            placeholder={t('naming.audiencePlaceholder')}
+            class="w-full h-10 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] px-3 text-xs sm:text-sm font-mono text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:border-[var(--border-focus)] focus:ring-1 focus:ring-[var(--border-focus)] focus:outline-none transition-colors"
+          />
+        </div>
+
+        <!-- 6. Creative / Variant -->
+        <div class="space-y-1.5">
+          <label for="naming-input-creative" class="text-xs font-semibold text-[var(--text-secondary)]">
+            {t('naming.creativeLabel')}
+          </label>
+          <input
+            id="naming-input-creative"
+            type="text"
+            spellcheck="false"
+            autocomplete="off"
+            placeholder={t('naming.creativePlaceholder')}
+            class="w-full h-10 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] px-3 text-xs sm:text-sm font-mono text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:border-[var(--border-focus)] focus:ring-1 focus:ring-[var(--border-focus)] focus:outline-none transition-colors"
+          />
+        </div>
+
+        <!-- 7. Date / Period -->
+        <div class="space-y-1.5">
+          <label for="naming-input-period" class="text-xs font-semibold text-[var(--text-secondary)]">
+            {t('naming.periodLabel')}
+          </label>
+          <input
+            id="naming-input-period"
+            type="text"
+            spellcheck="false"
+            autocomplete="off"
+            placeholder={t('naming.periodPlaceholder')}
+            class="w-full h-10 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] px-3 text-xs sm:text-sm font-mono text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:border-[var(--border-focus)] focus:ring-1 focus:ring-[var(--border-focus)] focus:outline-none transition-colors"
+          />
         </div>
       </div>
     </div>
 
-    <div class="rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-subtle)]/50 p-3.5 text-center">
-      <div class="text-xs font-mono text-[var(--text-muted)]">
-        {t('naming.status')}
+  </div>
+
+  <!-- Initial / Empty State -->
+  <div
+    id="naming-empty-state"
+    class="rounded-xl border border-dashed border-[var(--border-subtle)] bg-[var(--bg-surface)]/40 p-8 text-center space-y-2"
+  >
+    <div class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[var(--bg-subtle)] text-[var(--text-secondary)] mb-1">
+      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+      </svg>
+    </div>
+    <div class="text-sm font-semibold text-[var(--text-primary)]">{t('naming.emptyTitle')}</div>
+    <p class="text-xs text-[var(--text-secondary)] max-w-md mx-auto leading-relaxed">
+      {t('naming.emptyDesc')}
+    </p>
+  </div>
+
+  <!-- Results Section (Populated dynamically) -->
+  <div id="naming-results" class="hidden space-y-4">
+    
+    <!-- 1. Generated Campaign Name Hero Card -->
+    <div class="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 sm:p-6 shadow-[var(--card-shadow)] space-y-3">
+      <div class="flex items-center justify-between">
+        <span class="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
+          {t('naming.generatedTitle')}
+        </span>
+        <button
+          type="button"
+          id="copy-campaign-btn"
+          class="inline-flex items-center gap-1 text-[11px] font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] focus-ring rounded cursor-pointer transition-colors"
+          data-label-default={t('naming.copy')}
+          data-label-copied={t('naming.copied')}
+        >
+          <svg class="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+          </svg>
+          <span id="copy-campaign-label">{t('naming.copy')}</span>
+        </button>
+      </div>
+
+      <div class="p-3.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-subtle)]/60 flex items-center justify-between">
+        <div
+          id="generated-campaign-display"
+          class="text-sm sm:text-base font-mono font-semibold text-[var(--accent)] break-all select-all tracking-wide"
+        >
+          <!-- Injected via script -->
+        </div>
       </div>
     </div>
+
+    <!-- 2. Structure Breakdown Card -->
+    <div class="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 sm:p-6 shadow-[var(--card-shadow)] space-y-3">
+      <span class="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
+        {t('naming.breakdownTitle')}
+      </span>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5" id="breakdown-grid">
+        <!-- Injected via script -->
+      </div>
+    </div>
+
+    <!-- 3. Suggested UTM Values Card -->
+    <div class="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 sm:p-6 shadow-[var(--card-shadow)] space-y-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-[var(--border-subtle)]">
+        <div>
+          <span class="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
+            {t('naming.suggestedUtmTitle')}
+          </span>
+          <p class="text-[11px] text-[var(--text-secondary)]">
+            {t('naming.suggestedUtmSubtitle')}
+          </p>
+        </div>
+
+        <button
+          type="button"
+          id="copy-all-utm-btn"
+          class="inline-flex items-center gap-1 self-start sm:self-auto text-[11px] font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] focus-ring rounded cursor-pointer transition-colors"
+          data-label-default={t('naming.copyAll')}
+          data-label-copied={t('naming.copied')}
+        >
+          <svg class="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+          </svg>
+          <span id="copy-all-utm-label">{t('naming.copyAll')}</span>
+        </button>
+      </div>
+
+      <div class="space-y-2" id="suggested-utm-list">
+        <!-- Injected via script -->
+      </div>
+
+      <!-- Subtle Link to UTM Builder -->
+      <div class="pt-2 flex justify-end">
+        <a
+          href={`/${locale}/utm-builder`}
+          class="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--accent)] hover:underline focus-ring rounded py-1 transition-colors"
+        >
+          <span>{t('naming.buildUrl')}</span>
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Naming Guidance / Best Practices Section -->
+  <div class="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)]/60 p-5 sm:p-6 space-y-3">
+    <div class="flex items-center gap-2">
+      <svg class="w-4 h-4 text-[var(--accent)] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+      </svg>
+      <h2 class="text-xs sm:text-sm font-semibold text-[var(--text-primary)]">
+        {t('naming.rulesTitle')}
+      </h2>
+    </div>
+
+    <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-[var(--text-secondary)] leading-relaxed">
+      <li class="flex items-start gap-2">
+        <span class="text-[var(--text-muted)] select-none">·</span>
+        <span>{t('naming.rule1')}</span>
+      </li>
+      <li class="flex items-start gap-2">
+        <span class="text-[var(--text-muted)] select-none">·</span>
+        <span>{t('naming.rule2')}</span>
+      </li>
+      <li class="flex items-start gap-2">
+        <span class="text-[var(--text-muted)] select-none">·</span>
+        <span>{t('naming.rule3')}</span>
+      </li>
+      <li class="flex items-start gap-2">
+        <span class="text-[var(--text-muted)] select-none">·</span>
+        <span>{t('naming.rule4')}</span>
+      </li>
+      <li class="flex items-start gap-2">
+        <span class="text-[var(--text-muted)] select-none">·</span>
+        <span>{t('naming.rule5')}</span>
+      </li>
+      <li class="flex items-start gap-2">
+        <span class="text-[var(--text-muted)] select-none">·</span>
+        <span>{t('naming.rule6')}</span>
+      </li>
+    </ul>
   </div>
 </div>
+
+<script>
+  import {
+    generateNaming,
+    type NamingInput,
+    type NamingPresetId,
+    type GeneratedNaming,
+  } from '../../lib/utm/index.ts';
+
+  const EXAMPLE_DATA: NamingInput = {
+    campaign: 'Summer Sale',
+    source: 'Google',
+    medium: 'CPC',
+    objective: 'Sale',
+    audience: 'Retargeting',
+    creative: 'Video 01',
+    period: '2026-09',
+  };
+
+  function initNaming() {
+    const presetSelect = document.getElementById('naming-preset-select') as HTMLSelectElement | null;
+    const exampleBtn = document.getElementById('naming-example-btn') as HTMLButtonElement | null;
+    const clearBtn = document.getElementById('naming-clear-btn') as HTMLButtonElement | null;
+
+    const inputCampaign = document.getElementById('naming-input-campaign') as HTMLInputElement | null;
+    const inputSource = document.getElementById('naming-input-source') as HTMLInputElement | null;
+    const inputMedium = document.getElementById('naming-input-medium') as HTMLInputElement | null;
+    const inputObjective = document.getElementById('naming-input-objective') as HTMLInputElement | null;
+    const inputAudience = document.getElementById('naming-input-audience') as HTMLInputElement | null;
+    const inputCreative = document.getElementById('naming-input-creative') as HTMLInputElement | null;
+    const inputPeriod = document.getElementById('naming-input-period') as HTMLInputElement | null;
+
+    const toggleOptionsBtn = document.getElementById('naming-toggle-options-btn') as HTMLButtonElement | null;
+    const toggleOptionsIcon = document.getElementById('naming-toggle-icon') as HTMLElement | null;
+    const toggleOptionsLabel = document.getElementById('naming-toggle-label') as HTMLElement | null;
+    const optionalFieldsWrapper = document.getElementById('naming-optional-fields') as HTMLElement | null;
+
+    const emptyState = document.getElementById('naming-empty-state') as HTMLElement | null;
+    const resultsContainer = document.getElementById('naming-results') as HTMLElement | null;
+
+    const campaignDisplay = document.getElementById('generated-campaign-display') as HTMLElement | null;
+    const copyCampaignBtn = document.getElementById('copy-campaign-btn') as HTMLButtonElement | null;
+    const copyCampaignLabel = document.getElementById('copy-campaign-label') as HTMLElement | null;
+
+    const breakdownGrid = document.getElementById('breakdown-grid') as HTMLElement | null;
+    const suggestedUtmList = document.getElementById('suggested-utm-list') as HTMLElement | null;
+    const copyAllUtmBtn = document.getElementById('copy-all-utm-btn') as HTMLButtonElement | null;
+    const copyAllUtmLabel = document.getElementById('copy-all-utm-label') as HTMLElement | null;
+
+    if (!inputCampaign || !emptyState || !resultsContainer) return;
+
+    let currentResult: GeneratedNaming | null = null;
+    let areOptionsVisible = false;
+
+    function getFormInput(): NamingInput {
+      return {
+        campaign: inputCampaign?.value || '',
+        source: inputSource?.value || '',
+        medium: inputMedium?.value || '',
+        objective: inputObjective?.value || '',
+        audience: inputAudience?.value || '',
+        creative: inputCreative?.value || '',
+        period: inputPeriod?.value || '',
+      };
+    }
+
+    function renderResults(data: GeneratedNaming) {
+      currentResult = data;
+
+      if (!data.hasInput || !data.campaignName) {
+        emptyState?.classList.remove('hidden');
+        resultsContainer?.classList.add('hidden');
+        return;
+      }
+
+      emptyState?.classList.add('hidden');
+      resultsContainer?.classList.remove('hidden');
+
+      // 1. Campaign Name
+      if (campaignDisplay) {
+        campaignDisplay.textContent = data.campaignName;
+      }
+
+      // 2. Breakdown Items (Only non-empty fields)
+      if (breakdownGrid) {
+        breakdownGrid.textContent = '';
+        for (const item of data.breakdown) {
+          const div = document.createElement('div');
+          div.className = 'p-2.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-subtle)]/40 flex flex-col justify-between gap-1';
+
+          const lbl = document.createElement('span');
+          lbl.className = 'text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)]';
+          lbl.textContent = item.key.charAt(0).toUpperCase() + item.key.slice(1);
+
+          const val = document.createElement('span');
+          val.className = 'text-xs font-mono text-[var(--text-primary)] break-all select-all font-semibold';
+          val.textContent = item.normalized;
+
+          div.appendChild(lbl);
+          div.appendChild(val);
+          breakdownGrid.appendChild(div);
+        }
+      }
+
+      // 3. Suggested UTM Values
+      if (suggestedUtmList) {
+        suggestedUtmList.textContent = '';
+
+        const utmItems: Array<{ param: string; value: string }> = [
+          { param: 'utm_source', value: data.suggestedUtm.utm_source },
+          { param: 'utm_medium', value: data.suggestedUtm.utm_medium },
+          { param: 'utm_campaign', value: data.suggestedUtm.utm_campaign },
+        ];
+
+        if (data.suggestedUtm.utm_term) {
+          utmItems.push({ param: 'utm_term', value: data.suggestedUtm.utm_term });
+        }
+        if (data.suggestedUtm.utm_content) {
+          utmItems.push({ param: 'utm_content', value: data.suggestedUtm.utm_content });
+        }
+
+        for (const item of utmItems) {
+          const row = document.createElement('div');
+          row.className = 'flex items-center justify-between p-2.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-subtle)]/30 hover:bg-[var(--bg-subtle)]/50 transition-colors gap-2';
+
+          const left = document.createElement('div');
+          left.className = 'flex items-baseline gap-2 min-w-0 flex-1 font-mono text-xs';
+
+          const paramSpan = document.createElement('span');
+          paramSpan.className = 'text-[var(--accent)] font-semibold shrink-0';
+          paramSpan.textContent = item.param;
+
+          const eqSpan = document.createElement('span');
+          eqSpan.className = 'text-[var(--text-muted)] select-none';
+          eqSpan.textContent = '=';
+
+          const valSpan = document.createElement('span');
+          valSpan.className = 'text-[var(--text-primary)] break-all select-all';
+          valSpan.textContent = item.value || '—';
+          if (!item.value) {
+            valSpan.className += ' text-[var(--text-muted)] italic';
+          }
+
+          left.appendChild(paramSpan);
+          left.appendChild(eqSpan);
+          left.appendChild(valSpan);
+
+          const copyBtn = document.createElement('button');
+          copyBtn.type = 'button';
+          copyBtn.className = 'p-1 rounded text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-subtle)] focus-ring transition-colors cursor-pointer shrink-0';
+          copyBtn.title = `Copy ${item.param}`;
+
+          const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+          svg.setAttribute('class', 'w-3.5 h-3.5');
+          svg.setAttribute('fill', 'none');
+          svg.setAttribute('viewBox', '0 0 24 24');
+          svg.setAttribute('stroke', 'currentColor');
+
+          const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+          path.setAttribute('stroke-linecap', 'round');
+          path.setAttribute('stroke-linejoin', 'round');
+          path.setAttribute('stroke-width', '2');
+          path.setAttribute('d', 'M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z');
+          svg.appendChild(path);
+          copyBtn.appendChild(svg);
+
+          copyBtn.addEventListener('click', () => {
+            if (item.value) {
+              navigator.clipboard.writeText(item.value).catch(() => {});
+              copyBtn.classList.add('text-[var(--accent)]');
+              setTimeout(() => {
+                copyBtn.classList.remove('text-[var(--accent)]');
+              }, 1500);
+            }
+          });
+
+          row.appendChild(left);
+          row.appendChild(copyBtn);
+          suggestedUtmList.appendChild(row);
+        }
+      }
+    }
+
+    function updateNow() {
+      const input = getFormInput();
+      const presetId = (presetSelect?.value || 'full') as NamingPresetId;
+      const result = generateNaming(input, presetId);
+      renderResults(result);
+    }
+
+    // Attach real-time input listeners
+    const allInputs = [
+      inputCampaign,
+      inputSource,
+      inputMedium,
+      inputObjective,
+      inputAudience,
+      inputCreative,
+      inputPeriod,
+    ];
+
+    allInputs.forEach((inputEl) => {
+      inputEl?.addEventListener('input', updateNow);
+    });
+
+    presetSelect?.addEventListener('change', updateNow);
+
+    // Toggle optional fields
+    function setOptionalFieldsVisibility(show: boolean) {
+      areOptionsVisible = show;
+      if (show) {
+        optionalFieldsWrapper?.classList.remove('hidden');
+        toggleOptionsIcon?.classList.add('rotate-180');
+        if (toggleOptionsLabel && toggleOptionsBtn) {
+          toggleOptionsLabel.textContent = toggleOptionsBtn.getAttribute('data-label-less') || 'Fewer options';
+        }
+      } else {
+        optionalFieldsWrapper?.classList.add('hidden');
+        toggleOptionsIcon?.classList.remove('rotate-180');
+        if (toggleOptionsLabel && toggleOptionsBtn) {
+          toggleOptionsLabel.textContent = toggleOptionsBtn.getAttribute('data-label-more') || 'More options';
+        }
+      }
+    }
+
+    toggleOptionsBtn?.addEventListener('click', () => {
+      setOptionalFieldsVisibility(!areOptionsVisible);
+    });
+
+    // Use Example button
+    exampleBtn?.addEventListener('click', () => {
+      if (inputCampaign) inputCampaign.value = EXAMPLE_DATA.campaign || '';
+      if (inputSource) inputSource.value = EXAMPLE_DATA.source || '';
+      if (inputMedium) inputMedium.value = EXAMPLE_DATA.medium || '';
+      if (inputObjective) inputObjective.value = EXAMPLE_DATA.objective || '';
+      if (inputAudience) inputAudience.value = EXAMPLE_DATA.audience || '';
+      if (inputCreative) inputCreative.value = EXAMPLE_DATA.creative || '';
+      if (inputPeriod) inputPeriod.value = EXAMPLE_DATA.period || '';
+
+      if (presetSelect) presetSelect.value = 'full';
+
+      setOptionalFieldsVisibility(true);
+      updateNow();
+      inputCampaign.focus();
+    });
+
+    // Clear button
+    clearBtn?.addEventListener('click', () => {
+      allInputs.forEach((inputEl) => {
+        if (inputEl) inputEl.value = '';
+      });
+
+      setOptionalFieldsVisibility(false);
+      updateNow();
+      inputCampaign.focus();
+    });
+
+    // Clipboard copy helper with feedback
+    async function copyWithFeedback(button: HTMLElement | null, labelEl: HTMLElement | null, text: string) {
+      if (!button || !labelEl || !text) return;
+      const defaultText = button.getAttribute('data-label-default') || labelEl.textContent || 'Copy';
+      const copiedText = button.getAttribute('data-label-copied') || 'Copied!';
+
+      try {
+        await navigator.clipboard.writeText(text);
+        labelEl.textContent = copiedText;
+        setTimeout(() => {
+          labelEl.textContent = defaultText;
+        }, 2000);
+      } catch {
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(text).catch(() => {});
+        }
+      }
+    }
+
+    // Copy Campaign Name
+    copyCampaignBtn?.addEventListener('click', () => {
+      if (currentResult?.campaignName) {
+        copyWithFeedback(copyCampaignBtn, copyCampaignLabel, currentResult.campaignName);
+      }
+    });
+
+    // Copy All UTM Values
+    copyAllUtmBtn?.addEventListener('click', () => {
+      if (!currentResult) return;
+      const lines: string[] = [];
+      if (currentResult.suggestedUtm.utm_source) {
+        lines.push(`utm_source=${currentResult.suggestedUtm.utm_source}`);
+      }
+      if (currentResult.suggestedUtm.utm_medium) {
+        lines.push(`utm_medium=${currentResult.suggestedUtm.utm_medium}`);
+      }
+      if (currentResult.suggestedUtm.utm_campaign) {
+        lines.push(`utm_campaign=${currentResult.suggestedUtm.utm_campaign}`);
+      }
+      if (currentResult.suggestedUtm.utm_term) {
+        lines.push(`utm_term=${currentResult.suggestedUtm.utm_term}`);
+      }
+      if (currentResult.suggestedUtm.utm_content) {
+        lines.push(`utm_content=${currentResult.suggestedUtm.utm_content}`);
+      }
+
+      if (lines.length > 0) {
+        copyWithFeedback(copyAllUtmBtn, copyAllUtmLabel, lines.join('\n'));
+      }
+    });
+
+    // Initial run
+    updateNow();
+  }
+
+  initNaming();
+  document.addEventListener('astro:after-swap', initNaming);
+</script>

@@ -13,6 +13,9 @@ export default defineConfig({
     '/bulk-utm-builder': '/en/bulk-utm-builder',
     '/guides': '/en/guides',
     '/about': '/en/about',
+    '/privacy': '/en/privacy',
+    '/terms': '/en/terms',
+    '/contact': '/en/contact',
   },
   vite: {
     plugins: [tailwindcss()],

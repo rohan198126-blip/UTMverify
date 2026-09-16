@@ -1,6 +1,11 @@
 import { parseUtmUrl, parseCampaignUrl } from './parse.ts';
 import { validateUtmUrl } from './validate.ts';
 import { buildUtmUrl } from './build.ts';
+import {
+  normalizeNamingSegment,
+  generateCampaignName,
+  generateNaming,
+} from './naming.ts';
 
 interface ValidationTestCase {
   id: number;
@@ -487,8 +492,197 @@ const parserTestCases: ParserTestCase[] = [
   },
 ];
 
+interface NamingTestCase {
+  id: number;
+  name: string;
+  description: string;
+  run: () => { passed: boolean; actual?: any; expected?: any; reason?: string };
+}
+
+const namingTestCases: NamingTestCase[] = [
+  {
+    id: 37,
+    name: 'Naming 1: Basic campaign naming',
+    description: 'Constructs standardized campaign name from primary inputs.',
+    run: () => {
+      const actual = generateCampaignName(
+        { campaign: 'Summer Sale', source: 'Google', medium: 'CPC' },
+        'simple'
+      );
+      const expected = 'summer_sale_google_cpc';
+      return { passed: actual === expected, actual, expected };
+    },
+  },
+  {
+    id: 38,
+    name: 'Naming 2: Lowercase normalization',
+    description: 'Converts all uppercase or mixed-case characters into clean lowercase.',
+    run: () => {
+      const actual = normalizeNamingSegment('SUMMER SALE CPC');
+      const expected = 'summer_sale_cpc';
+      return { passed: actual === expected, actual, expected };
+    },
+  },
+  {
+    id: 39,
+    name: 'Naming 3: Space normalization',
+    description: 'Converts spaces, tabs, and multi-spaces into single underscores.',
+    run: () => {
+      const actual = normalizeNamingSegment('  Summer   \t  Sale \n  2026  ');
+      const expected = 'summer_sale_2026';
+      return { passed: actual === expected, actual, expected };
+    },
+  },
+  {
+    id: 40,
+    name: 'Naming 4: Punctuation normalization',
+    description: 'Strips unnecessary punctuation symbols (!, @, #, $, %, etc.) while preserving alphanumeric tokens.',
+    run: () => {
+      const actual = normalizeNamingSegment('Summer & Sale! (50% Off)*');
+      const expected = 'summer_sale_50_off';
+      return { passed: actual === expected, actual, expected };
+    },
+  },
+  {
+    id: 41,
+    name: 'Naming 5: Repeated separator cleanup',
+    description: 'Cleans up repeated underscores, hyphens, and removes leading/trailing separators.',
+    run: () => {
+      const actual = normalizeNamingSegment('__summer___sale--promo__');
+      const expected = 'summer_sale-promo';
+      return { passed: actual === expected, actual, expected };
+    },
+  },
+  {
+    id: 42,
+    name: 'Naming 6: Simple preset',
+    description: 'Applies Simple preset: campaign_source_medium.',
+    run: () => {
+      const actual = generateCampaignName(
+        { campaign: 'Summer Sale', source: 'Google', medium: 'CPC' },
+        'simple'
+      );
+      const expected = 'summer_sale_google_cpc';
+      return { passed: actual === expected, actual, expected };
+    },
+  },
+  {
+    id: 43,
+    name: 'Naming 7: Source First preset',
+    description: 'Applies Source First preset: source_medium_campaign.',
+    run: () => {
+      const actual = generateCampaignName(
+        { campaign: 'Summer Sale', source: 'Google', medium: 'CPC' },
+        'source_first'
+      );
+      const expected = 'google_cpc_summer_sale';
+      return { passed: actual === expected, actual, expected };
+    },
+  },
+  {
+    id: 44,
+    name: 'Naming 8: Campaign First preset',
+    description: 'Applies Campaign First preset: campaign_objective_source_medium.',
+    run: () => {
+      const actual = generateCampaignName(
+        { campaign: 'Summer Sale', objective: 'Sale', source: 'Google', medium: 'CPC' },
+        'campaign_first'
+      );
+      const expected = 'summer_sale_sale_google_cpc';
+      return { passed: actual === expected, actual, expected };
+    },
+  },
+  {
+    id: 45,
+    name: 'Naming 9: Full Campaign preset',
+    description: 'Applies Full Campaign preset with all components.',
+    run: () => {
+      const actual = generateCampaignName(
+        {
+          campaign: 'Summer Sale',
+          source: 'Google',
+          medium: 'CPC',
+          objective: 'Sale',
+          audience: 'Retargeting',
+          creative: 'Video 01',
+          period: '2026-09',
+        },
+        'full'
+      );
+      const expected = 'summer_sale_google_cpc_sale_retargeting_video_01_2026-09';
+      return { passed: actual === expected, actual, expected };
+    },
+  },
+  {
+    id: 46,
+    name: 'Naming 10: Optional audience',
+    description: 'Incorporates audience into naming and maps to suggested utm_term.',
+    run: () => {
+      const res = generateNaming(
+        { campaign: 'Launch', audience: 'Existing Customers' },
+        'full'
+      );
+      const passed =
+        res.campaignName === 'launch_existing_customers' &&
+        res.suggestedUtm.utm_term === 'existing_customers';
+      return { passed, actual: res, expected: 'launch_existing_customers with utm_term=existing_customers' };
+    },
+  },
+  {
+    id: 47,
+    name: 'Naming 11: Optional creative',
+    description: 'Incorporates creative into naming and maps to suggested utm_content.',
+    run: () => {
+      const res = generateNaming(
+        { campaign: 'Launch', creative: 'Banner Ad 300x250' },
+        'full'
+      );
+      const passed =
+        res.campaignName === 'launch_banner_ad_300x250' &&
+        res.suggestedUtm.utm_content === 'banner_ad_300x250';
+      return { passed, actual: res, expected: 'launch_banner_ad_300x250 with utm_content=banner_ad_300x250' };
+    },
+  },
+  {
+    id: 48,
+    name: 'Naming 12: Optional period',
+    description: 'Preserves date/period formatting without producing accidental separators.',
+    run: () => {
+      const actual = generateCampaignName(
+        { campaign: 'Winter Promo', period: '2026-Q4' },
+        'full'
+      );
+      const expected = 'winter_promo_2026-q4';
+      return { passed: actual === expected, actual, expected };
+    },
+  },
+  {
+    id: 49,
+    name: 'Naming 13: Missing optional values & no stray separators',
+    description: 'Skips empty optional inputs without leaving double underscores or trailing delimiters.',
+    run: () => {
+      const actual = generateCampaignName(
+        { campaign: 'Flash Sale', source: 'Email', medium: '', audience: '', creative: 'Gif 02' },
+        'full'
+      );
+      const expected = 'flash_sale_email_gif_02';
+      return { passed: actual === expected, actual, expected };
+    },
+  },
+  {
+    id: 50,
+    name: 'Naming 14: Empty inputs handling',
+    description: 'Returns empty string and hasInput=false when inputs are empty.',
+    run: () => {
+      const res = generateNaming({});
+      const passed = res.campaignName === '' && res.hasInput === false;
+      return { passed, actual: res, expected: 'empty campaignName and hasInput=false' };
+    },
+  },
+];
+
 export function runTests(): { total: number; passed: number; failed: number } {
-  console.log('--- Running UTM Suite Deterministic Tests (Checker, Builder, Parser) ---');
+  console.log('--- Running UTM Suite Deterministic Tests (Checker, Builder, Parser, Naming) ---');
   let passed = 0;
   let failed = 0;
 
@@ -537,7 +731,25 @@ export function runTests(): { total: number; passed: number; failed: number } {
     }
   }
 
-  const total = validationTestCases.length + builderTestCases.length + parserTestCases.length;
+  console.log('\n[Part 4: UTM Naming Generator Cases 37-50]');
+  for (const tc of namingTestCases) {
+    const res = tc.run();
+    if (res.passed) {
+      console.log(`✓ Case ${tc.id}: ${tc.name}`);
+      passed++;
+    } else {
+      console.error(`✗ Case ${tc.id}: ${tc.name} FAILED!`);
+      console.error(`  Expected: ${JSON.stringify(res.expected)}`);
+      console.error(`  Actual:   ${JSON.stringify(res.actual)}`);
+      failed++;
+    }
+  }
+
+  const total =
+    validationTestCases.length +
+    builderTestCases.length +
+    parserTestCases.length +
+    namingTestCases.length;
   console.log(`\nSummary: ${passed}/${total} passed (${failed} failed).`);
   return { total, passed, failed };
 }

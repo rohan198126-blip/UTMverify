@@ -20,7 +20,7 @@ const canonicalPath = `/${locale}/guides`;
   canonicalPath={canonicalPath}
   locale={locale}
 >
-  <div class="max-w-3xl mx-auto space-y-6 text-[var(--text-primary)]">
+  <div class="max-w-3xl mx-auto space-y-8 text-[var(--text-primary)]">
     <div class="space-y-1.5 text-center sm:text-left">
       <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
         {t('guides.title')}
@@ -30,26 +30,103 @@ const canonicalPath = `/${locale}/guides`;
       </p>
     </div>
 
+    <!-- The 5 Core Parameters -->
     <div class="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 sm:p-6 space-y-4 text-xs sm:text-sm leading-relaxed shadow-[var(--card-shadow)]">
       <h2 class="text-sm sm:text-base font-semibold text-[var(--text-primary)]">
         {t('guides.coreTitle')}
       </h2>
-      <div class="space-y-3 text-[var(--text-secondary)]">
-        <div>
-          <span class="font-mono text-[var(--accent)] font-semibold">utm_source</span>: Identifies which platform or site sent the traffic (e.g. <code class="px-1.5 py-0.5 rounded bg-[var(--bg-subtle)] border border-[var(--border-subtle)] font-mono text-xs">google</code>, <code class="px-1.5 py-0.5 rounded bg-[var(--bg-subtle)] border border-[var(--border-subtle)] font-mono text-xs">newsletter</code>).
+      <div class="space-y-3.5 text-[var(--text-secondary)]">
+        <div class="p-3 rounded-lg bg-[var(--bg-subtle)]/50 border border-[var(--border-subtle)]">
+          <div class="font-mono text-[var(--accent)] font-semibold text-xs sm:text-sm">utm_source (Required)</div>
+          <p class="text-xs mt-1">Identifies the specific platform, vendor, or publication sending the traffic. Examples: <code class="px-1.5 py-0.5 rounded bg-[var(--bg-surface)] border border-[var(--border-subtle)] font-mono text-[11px]">google</code>, <code class="px-1.5 py-0.5 rounded bg-[var(--bg-surface)] border border-[var(--border-subtle)] font-mono text-[11px]">newsletter</code>, <code class="px-1.5 py-0.5 rounded bg-[var(--bg-surface)] border border-[var(--border-subtle)] font-mono text-[11px]">linkedin</code>.</p>
         </div>
-        <div>
-          <span class="font-mono text-[var(--accent)] font-semibold">utm_medium</span>: Identifies marketing channel type (e.g. <code class="px-1.5 py-0.5 rounded bg-[var(--bg-subtle)] border border-[var(--border-subtle)] font-mono text-xs">cpc</code>, <code class="px-1.5 py-0.5 rounded bg-[var(--bg-subtle)] border border-[var(--border-subtle)] font-mono text-xs">email</code>, <code class="px-1.5 py-0.5 rounded bg-[var(--bg-subtle)] border border-[var(--border-subtle)] font-mono text-xs">social</code>).
+        <div class="p-3 rounded-lg bg-[var(--bg-subtle)]/50 border border-[var(--border-subtle)]">
+          <div class="font-mono text-[var(--accent)] font-semibold text-xs sm:text-sm">utm_medium (Required)</div>
+          <p class="text-xs mt-1">Identifies the marketing channel or delivery medium. Examples: <code class="px-1.5 py-0.5 rounded bg-[var(--bg-surface)] border border-[var(--border-subtle)] font-mono text-[11px]">cpc</code>, <code class="px-1.5 py-0.5 rounded bg-[var(--bg-surface)] border border-[var(--border-subtle)] font-mono text-[11px]">email</code>, <code class="px-1.5 py-0.5 rounded bg-[var(--bg-surface)] border border-[var(--border-subtle)] font-mono text-[11px]">organic_social</code>, <code class="px-1.5 py-0.5 rounded bg-[var(--bg-surface)] border border-[var(--border-subtle)] font-mono text-[11px]">referral</code>.</p>
         </div>
-        <div>
-          <span class="font-mono text-[var(--accent)] font-semibold">utm_campaign</span>: Identifies campaign name (e.g. <code class="px-1.5 py-0.5 rounded bg-[var(--bg-subtle)] border border-[var(--border-subtle)] font-mono text-xs">spring_launch</code>).
+        <div class="p-3 rounded-lg bg-[var(--bg-subtle)]/50 border border-[var(--border-subtle)]">
+          <div class="font-mono text-[var(--accent)] font-semibold text-xs sm:text-sm">utm_campaign (Required)</div>
+          <p class="text-xs mt-1">Identifies the individual marketing campaign, seasonal offer, or product launch. Examples: <code class="px-1.5 py-0.5 rounded bg-[var(--bg-surface)] border border-[var(--border-subtle)] font-mono text-[11px]">spring_sale</code>, <code class="px-1.5 py-0.5 rounded bg-[var(--bg-surface)] border border-[var(--border-subtle)] font-mono text-[11px]">brand_awareness</code>, <code class="px-1.5 py-0.5 rounded bg-[var(--bg-surface)] border border-[var(--border-subtle)] font-mono text-[11px]">webinar_q3</code>.</p>
         </div>
-        <div>
-          <span class="font-mono text-[var(--accent)] font-semibold">utm_term</span>: (Optional) Identifies paid search keywords.
+        <div class="p-3 rounded-lg bg-[var(--bg-subtle)]/50 border border-[var(--border-subtle)]">
+          <div class="font-mono text-[var(--text-muted)] font-semibold text-xs sm:text-sm">utm_term (Optional)</div>
+          <p class="text-xs mt-1">Primarily used in paid search campaigns to record target keywords or audience targeting tokens. Examples: <code class="px-1.5 py-0.5 rounded bg-[var(--bg-surface)] border border-[var(--border-subtle)] font-mono text-[11px]">running_shoes</code>, <code class="px-1.5 py-0.5 rounded bg-[var(--bg-surface)] border border-[var(--border-subtle)] font-mono text-[11px]">crm_software</code>.</p>
         </div>
-        <div>
-          <span class="font-mono text-[var(--accent)] font-semibold">utm_content</span>: (Optional) Differentiates creative variants or ad links.
+        <div class="p-3 rounded-lg bg-[var(--bg-subtle)]/50 border border-[var(--border-subtle)]">
+          <div class="font-mono text-[var(--text-muted)] font-semibold text-xs sm:text-sm">utm_content (Optional)</div>
+          <p class="text-xs mt-1">Used to differentiate creative variants, ad sizes, or link placements within the same campaign. Examples: <code class="px-1.5 py-0.5 rounded bg-[var(--bg-surface)] border border-[var(--border-subtle)] font-mono text-[11px]">hero_banner</code>, <code class="px-1.5 py-0.5 rounded bg-[var(--bg-surface)] border border-[var(--border-subtle)] font-mono text-[11px]">text_cta_button</code>.</p>
         </div>
+      </div>
+    </div>
+
+    <!-- Critical Best Practices & Pitfalls -->
+    <div class="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 sm:p-6 space-y-4 text-xs sm:text-sm leading-relaxed shadow-[var(--card-shadow)]">
+      <h2 class="text-sm sm:text-base font-semibold text-[var(--text-primary)]">
+        5 Costly UTM Mistakes to Avoid
+      </h2>
+      <div class="space-y-3.5 text-[var(--text-secondary)]">
+        <div class="space-y-1">
+          <h3 class="font-medium text-[var(--text-primary)]">1. Inconsistent Casing (Case Sensitivity)</h3>
+          <p class="text-xs text-[var(--text-muted)]">
+            Analytics platforms treat <code class="font-mono text-[11px]">utm_source=facebook</code>, <code class="font-mono text-[11px]">Facebook</code>, and <code class="font-mono text-[11px]">FACEBOOK</code> as three separate sources. Always enforce lowercase conventions across your marketing team.
+          </p>
+        </div>
+
+        <div class="space-y-1">
+          <h3 class="font-medium text-[var(--text-primary)]">2. Multiple Question Marks (<code class="font-mono text-[11px]">?</code>)</h3>
+          <p class="text-xs text-[var(--text-muted)]">
+            A URL can only contain one <code class="font-mono text-[11px]">?</code> delimiter to begin the query string. Subsequent parameters must always be joined with an ampersand (<code class="font-mono text-[11px]">&amp;</code>).
+          </p>
+        </div>
+
+        <div class="space-y-1">
+          <h3 class="font-medium text-[var(--text-primary)]">3. Incorrect Fragment Placement (<code class="font-mono text-[11px]">#</code>)</h3>
+          <p class="text-xs text-[var(--text-muted)]">
+            URL fragments (e.g. <code class="font-mono text-[11px]">#pricing</code>) must always be placed at the very end of the URL. If you place query parameters after the fragment hash, web servers and analytics scripts will not receive them.
+          </p>
+        </div>
+
+        <div class="space-y-1">
+          <h3 class="font-medium text-[var(--text-primary)]">4. Unencoded Spaces &amp; Special Characters</h3>
+          <p class="text-xs text-[var(--text-muted)]">
+            Spaces in URLs can cause links to break when shared across email clients or chat apps. Use underscores (<code class="font-mono text-[11px]">_</code>) or hyphens (<code class="font-mono text-[11px]">-</code>) as separators, or verify that spaces are properly encoded as <code class="font-mono text-[11px]">%20</code>.
+          </p>
+        </div>
+
+        <div class="space-y-1">
+          <h3 class="font-medium text-[var(--text-primary)]">5. Tagging Internal Links</h3>
+          <p class="text-xs text-[var(--text-muted)]">
+            Never use UTM parameters on links between pages on your own website. Doing so overwrites the visitor's original acquisition source and inflates your session and attribution metrics.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Tools CTA -->
+    <div class="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-subtle)]/40 p-5 sm:p-6 space-y-3 text-xs sm:text-sm">
+      <h2 class="text-sm sm:text-base font-semibold text-[var(--text-primary)]">
+        Put These Guidelines into Practice
+      </h2>
+      <p class="text-xs text-[var(--text-secondary)]">
+        Use UTMVerify's free client-side tools to test and build verified campaign URLs:
+      </p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+        <a href={`/${locale}/utm-checker`} class="p-3 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] hover:border-[var(--accent)] transition-colors flex items-center justify-between group">
+          <span class="font-medium text-xs text-[var(--text-primary)] group-hover:text-[var(--accent)]">Validate Link with UTM Checker</span>
+          <span class="text-xs text-[var(--text-muted)]">→</span>
+        </a>
+        <a href={`/${locale}/utm-builder`} class="p-3 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] hover:border-[var(--accent)] transition-colors flex items-center justify-between group">
+          <span class="font-medium text-xs text-[var(--text-primary)] group-hover:text-[var(--accent)]">Create Link with UTM Builder</span>
+          <span class="text-xs text-[var(--text-muted)]">→</span>
+        </a>
+        <a href={`/${locale}/utm-parser`} class="p-3 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] hover:border-[var(--accent)] transition-colors flex items-center justify-between group">
+          <span class="font-medium text-xs text-[var(--text-primary)] group-hover:text-[var(--accent)]">Deconstruct Link with UTM Parser</span>
+          <span class="text-xs text-[var(--text-muted)]">→</span>
+        </a>
+        <a href={`/${locale}/utm-naming-generator`} class="p-3 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] hover:border-[var(--accent)] transition-colors flex items-center justify-between group">
+          <span class="font-medium text-xs text-[var(--text-primary)] group-hover:text-[var(--accent)]">Generate Clean Names</span>
+          <span class="text-xs text-[var(--text-muted)]">→</span>
+        </a>
       </div>
     </div>
   </div>

@@ -1,0 +1,63 @@
+---
+import RootLayout from '../layouts/RootLayout.astro';
+import { useTranslations } from '../i18n/utils';
+
+const locale = 'en';
+const t = useTranslations(locale);
+
+const tools = [
+  { name: t('tools.checker.name'), path: '/en/utm-checker' },
+  { name: t('tools.builder.name'), path: '/en/utm-builder' },
+  { name: t('tools.parser.name'), path: '/en/utm-parser' },
+  { name: t('tools.naming.name'), path: '/en/utm-naming-generator' },
+];
+---
+
+<RootLayout
+  title={t('404.title')}
+  description={t('404.message')}
+  canonicalPath="/404"
+  locale={locale}
+>
+  <div class="max-w-2xl mx-auto text-center py-12 sm:py-16 space-y-6">
+    <div class="space-y-2">
+      <div class="text-6xl sm:text-7xl font-extrabold font-mono text-[var(--accent)] tracking-tight">
+        {t('404.heading')}
+      </div>
+      <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
+        {t('404.subheading')}
+      </h1>
+      <p class="text-xs sm:text-sm text-[var(--text-secondary)] max-w-md mx-auto leading-relaxed">
+        {t('404.message')}
+      </p>
+    </div>
+
+    <div class="pt-2">
+      <a
+        href="/en/"
+        class="inline-flex items-center gap-2 h-10 px-5 rounded-lg bg-[var(--text-primary)] text-[var(--bg-app)] text-xs sm:text-sm font-semibold hover:opacity-90 transition-opacity focus-ring"
+      >
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+        </svg>
+        <span>{t('404.homeBtn')}</span>
+      </a>
+    </div>
+
+    <div class="pt-8 border-t border-[var(--border-subtle)] space-y-3">
+      <div class="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
+        {t('404.toolsTitle')}
+      </div>
+      <div class="flex flex-wrap justify-center gap-2">
+        {tools.map((tool) => (
+          <a
+            href={tool.path}
+            class="px-3 py-1.5 rounded-md border border-[var(--border-subtle)] bg-[var(--bg-surface)] text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--border-strong)] transition-colors focus-ring"
+          >
+            {tool.name}
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</RootLayout>

@@ -30,18 +30,35 @@ const tools = [
         </p>
       </div>
 
-      <div class="flex flex-wrap items-center gap-x-5 gap-y-2 text-[var(--text-secondary)]">
-        {tools.map((tool) => (
-          <a href={tool.path} class="hover:text-[var(--text-primary)] transition-colors">
-            {tool.name}
+      <div class="flex flex-col sm:items-end gap-3 text-[var(--text-secondary)]">
+        <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5">
+          {tools.map((tool) => (
+            <a href={tool.path} class="hover:text-[var(--text-primary)] transition-colors">
+              {tool.name}
+            </a>
+          ))}
+        </div>
+        <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[11px] text-[var(--text-muted)]">
+          <a href={`/${locale}/guides`} class="hover:text-[var(--text-primary)] transition-colors">
+            {t('nav.guides')}
           </a>
-        ))}
-        <a href={`/${locale}/guides`} class="hover:text-[var(--text-primary)] transition-colors">
-          {t('nav.guides')}
-        </a>
-        <a href={`/${locale}/about`} class="hover:text-[var(--text-primary)] transition-colors">
-          {t('nav.about')}
-        </a>
+          <span>·</span>
+          <a href={`/${locale}/about`} class="hover:text-[var(--text-primary)] transition-colors">
+            {t('nav.about')}
+          </a>
+          <span>·</span>
+          <a href={`/${locale}/contact`} class="hover:text-[var(--text-primary)] transition-colors">
+            {t('nav.contact')}
+          </a>
+          <span>·</span>
+          <a href={`/${locale}/privacy`} class="hover:text-[var(--text-primary)] transition-colors">
+            {t('nav.privacy')}
+          </a>
+          <span>·</span>
+          <a href={`/${locale}/terms`} class="hover:text-[var(--text-primary)] transition-colors">
+            {t('nav.terms')}
+          </a>
+        </div>
       </div>
     </div>
 

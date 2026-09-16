@@ -141,3 +141,49 @@ export interface ParsedCampaignUrl {
   hasDuplicates: boolean;
 }
 
+/**
+ * Models for Tool 4: UTM Naming Generator
+ */
+export type NamingPresetId = 'simple' | 'source_first' | 'campaign_first' | 'full';
+
+export interface NamingInput {
+  campaign?: string;
+  source?: string;
+  medium?: string;
+  objective?: string;
+  audience?: string;
+  creative?: string;
+  period?: string;
+}
+
+export interface NamingPresetDefinition {
+  id: NamingPresetId;
+  nameKey: string;
+  descriptionKey: string;
+  pattern: string;
+  fields: Array<keyof NamingInput>;
+}
+
+export interface NamingBreakdownItem {
+  key: keyof NamingInput;
+  labelKey: string;
+  raw: string;
+  normalized: string;
+}
+
+export interface SuggestedUtmValues {
+  utm_source: string;
+  utm_medium: string;
+  utm_campaign: string;
+  utm_term?: string;
+  utm_content?: string;
+}
+
+export interface GeneratedNaming {
+  campaignName: string;
+  preset: NamingPresetId;
+  breakdown: NamingBreakdownItem[];
+  suggestedUtm: SuggestedUtmValues;
+  hasInput: boolean;
+}
+

@@ -57,6 +57,22 @@ const hreflangs = getHreflangList(canonicalPath, siteConfig.url);
 <meta name="theme-color" content="#090a0d" media="(prefers-color-scheme: dark)" />
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
 
+<!-- Structured Data (JSON-LD) -->
+<script type="application/ld+json" is:inline set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "UTMVerify",
+  "url": siteConfig.url,
+  "description": description,
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "All",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+})} />
+
 <!-- Anti-FOUC Theme Script (Immediate execution before render) -->
 <script is:inline>
   (function () {

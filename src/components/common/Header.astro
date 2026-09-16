@@ -23,6 +23,7 @@ const tools = [
 
 const guidesPath = `/${locale}/guides`;
 const aboutPath = `/${locale}/about`;
+const contactPath = `/${locale}/contact`;
 ---
 
 <header class="sticky top-0 z-40 w-full border-b border-[var(--border-subtle)] bg-[var(--bg-app)]/70 backdrop-blur-md transition-colors duration-150">
@@ -84,6 +85,13 @@ const aboutPath = `/${locale}/about`;
       >
         {t('nav.about')}
       </a>
+
+      <a
+        href={contactPath}
+        class={`py-1 transition-colors hover:text-[var(--text-primary)] ${currentPath === contactPath ? 'text-[var(--text-primary)] font-semibold' : ''}`}
+      >
+        {t('nav.contact')}
+      </a>
     </nav>
 
     <!-- Right Actions: Language Selector, Theme Toggle, Mobile Menu Button -->
@@ -140,6 +148,12 @@ const aboutPath = `/${locale}/about`;
         class="px-3 py-2 text-sm text-[var(--text-secondary)] hover:bg-[var(--bg-surface)] hover:text-[var(--text-primary)] rounded-md transition-colors"
       >
         {t('nav.about')}
+      </a>
+      <a
+        href={contactPath}
+        class="px-3 py-2 text-sm text-[var(--text-secondary)] hover:bg-[var(--bg-surface)] hover:text-[var(--text-primary)] rounded-md transition-colors"
+      >
+        {t('nav.contact')}
       </a>
     </div>
   </div>
