@@ -1,4 +1,11 @@
-import { STANDARD_UTM_KEYS, type ParsedUrlResult, type UtmParamKey } from './types.ts';
+import {
+  STANDARD_UTM_KEYS,
+  type ParsedUrlResult,
+  type UtmParamKey,
+  type ParsedCampaignUrl,
+  type ParsedParamItem,
+  type ParsedDuplicateItem,
+} from './types.ts';
 
 /**
  * Validates whether a protocol-less string looks like a legitimate domain/hostname.
@@ -236,3 +243,168 @@ export function parseUtmUrl(inputUrl: string): ParsedUrlResult {
     hasMalformedEncoding,
   };
 }
+
+/**
+ * Deconstructs any campaign URL into structured components, parameters, and metadata
+ * for Tool 3: UTM Parser.
+ */
+export function parseCampaignUrl(inputUrl: string): ParsedCampaignUrl {
+  const trimmed = inputUrl.trim();
+
+  const emptyResult: ParsedCampaignUrl = {
+    originalUrl: trimmed,
+    normalizedUrl: '',
+    baseUrl: '',
+    hasMissingProtocol: false,
+    isValid: false,
+    utm: {},
+    standardParams: [],
+    customParams: [],
+    allParams: [],
+    duplicates: [],
+    totalParameters: 0,
+    hasUtm: false,
+    hasCustom: false,
+    hasDuplicates: false,
+  };
+
+  if (!trimmed) {
+    return emptyResult;
+  }
+
+  // 1. Separate fragment first so it never interferes with query string
+  let baseWithoutFragment = trimmed;
+  let fragment: string | undefined = undefined;
+  const hashIdx = trimmed.indexOf('#');
+  if (hashIdx !== -1) {
+    baseWithoutFragment = trimmed.slice(0, hashIdx);
+    const rawFrag = trimmed.slice(hashIdx + 1);
+    fragment = rawFrag || undefined;
+  }
+
+  // 2. Separate baseUrl and rawQuery
+  let baseUrl = baseWithoutFragment;
+  let rawQuery = '';
+  const qIdx = baseWithoutFragment.indexOf('?');
+  if (qIdx !== -1) {
+    baseUrl = baseWithoutFragment.slice(0, qIdx);
+    rawQuery = baseWithoutFragment.slice(qIdx + 1);
+  }
+
+  // 3. Delegate to parseUtmUrl for robust protocol and domain validation
+  const baseParsed = parseUtmUrl(trimmed);
+
+  const normalizedUrl = baseParsed.hasMissingProtocol ? `https://${trimmed}` : trimmed;
+
+  // 4. Extract parameters sequentially to preserve exact query order
+  const allParams: ParsedParamItem[] = [];
+  const standardParams: ParsedParamItem[] = [];
+  const customParams: ParsedParamItem[] = [];
+  const valueMap = new Map<string, { rawKey: string; values: string[]; isUtm: boolean }>();
+
+  const standardKeySet = new Set<string>(STANDARD_UTM_KEYS.map((k) => k.toLowerCase()));
+
+  if (rawQuery) {
+    const pairs = rawQuery.split('&');
+    for (const pair of pairs) {
+      if (!pair) continue;
+      const eqIdx = pair.indexOf('=');
+      const rawK = eqIdx !== -1 ? pair.slice(0, eqIdx) : pair;
+      const rawV = eqIdx !== -1 ? pair.slice(eqIdx + 1) : '';
+
+      let decodedKey = rawK;
+      let decodedVal = rawV;
+      try {
+        decodedKey = decodeURIComponent(rawK.replace(/\+/g, ' '));
+      } catch {
+        decodedKey = rawK;
+      }
+      try {
+        decodedVal = decodeURIComponent(rawV.replace(/\+/g, ' '));
+      } catch {
+        decodedVal = rawV;
+      }
+
+      const lowerKey = decodedKey.toLowerCase();
+      const isUtm = standardKeySet.has(lowerKey);
+
+      const item: ParsedParamItem = {
+        key: lowerKey,
+        rawKey: rawK,
+        value: decodedVal,
+        isUtm,
+      };
+
+      allParams.push(item);
+      if (isUtm) {
+        standardParams.push(item);
+      } else {
+        customParams.push(item);
+      }
+
+      // Track duplicate groupings
+      if (!valueMap.has(lowerKey)) {
+        valueMap.set(lowerKey, { rawKey: rawK, values: [decodedVal], isUtm });
+      } else {
+        valueMap.get(lowerKey)!.values.push(decodedVal);
+      }
+    }
+  }
+
+  // 5. Build duplicate items list
+  const duplicates: ParsedDuplicateItem[] = [];
+  for (const [lowerKey, entry] of valueMap.entries()) {
+    if (entry.values.length > 1) {
+      duplicates.push({
+        key: lowerKey,
+        rawKey: entry.rawKey,
+        values: entry.values,
+        isUtm: entry.isUtm,
+      });
+    }
+  }
+
+  // 6. Map standard UTM fields into convenience object
+  const utm: ParsedCampaignUrl['utm'] = {};
+  for (const item of standardParams) {
+    switch (item.key) {
+      case 'utm_source':
+        if (!utm.source) utm.source = item.value;
+        break;
+      case 'utm_medium':
+        if (!utm.medium) utm.medium = item.value;
+        break;
+      case 'utm_campaign':
+        if (!utm.campaign) utm.campaign = item.value;
+        break;
+      case 'utm_term':
+        if (!utm.term) utm.term = item.value;
+        break;
+      case 'utm_content':
+        if (!utm.content) utm.content = item.value;
+        break;
+    }
+  }
+
+  return {
+    originalUrl: trimmed,
+    normalizedUrl,
+    baseUrl,
+    protocol: baseParsed.protocol,
+    hostname: baseParsed.hostname,
+    pathname: baseParsed.pathname,
+    fragment: fragment ?? baseParsed.hash,
+    hasMissingProtocol: baseParsed.hasMissingProtocol,
+    isValid: baseParsed.isValidUrl,
+    utm,
+    standardParams,
+    customParams,
+    allParams,
+    duplicates,
+    totalParameters: allParams.length,
+    hasUtm: standardParams.length > 0,
+    hasCustom: customParams.length > 0,
+    hasDuplicates: duplicates.length > 0,
+  };
+}
+

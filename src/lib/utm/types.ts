@@ -96,3 +96,48 @@ export interface UtmBuildOptions {
   preserveExistingParams?: boolean;
   lowercaseParams?: boolean;
 }
+
+/**
+ * Detailed Parser Models for Tool 3: UTM Parser
+ */
+export interface ParsedParamItem {
+  key: string;
+  rawKey: string;
+  value: string;
+  isUtm: boolean;
+}
+
+export interface ParsedDuplicateItem {
+  key: string;
+  rawKey: string;
+  values: string[];
+  isUtm: boolean;
+}
+
+export interface ParsedCampaignUrl {
+  originalUrl: string;
+  normalizedUrl: string;
+  baseUrl: string;
+  protocol?: string;
+  hostname?: string;
+  pathname?: string;
+  fragment?: string;
+  hasMissingProtocol: boolean;
+  isValid: boolean;
+  utm: {
+    source?: string;
+    medium?: string;
+    campaign?: string;
+    term?: string;
+    content?: string;
+  };
+  standardParams: ParsedParamItem[];
+  customParams: ParsedParamItem[];
+  allParams: ParsedParamItem[];
+  duplicates: ParsedDuplicateItem[];
+  totalParameters: number;
+  hasUtm: boolean;
+  hasCustom: boolean;
+  hasDuplicates: boolean;
+}
+

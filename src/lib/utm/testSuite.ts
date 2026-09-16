@@ -1,4 +1,4 @@
-import { parseUtmUrl } from './parse.ts';
+import { parseUtmUrl, parseCampaignUrl } from './parse.ts';
 import { validateUtmUrl } from './validate.ts';
 import { buildUtmUrl } from './build.ts';
 
@@ -14,6 +14,14 @@ interface BuilderTestCase {
   id: number;
   name: string;
   run: () => { passed: boolean; actual: string; expected: string; reason?: string };
+  description: string;
+}
+
+interface ParserTestCase {
+  id: number;
+  name: string;
+  input: string;
+  run: () => { passed: boolean; actual?: any; expected?: any; reason?: string };
   description: string;
 }
 
@@ -283,8 +291,204 @@ const builderTestCases: BuilderTestCase[] = [
   },
 ];
 
+const parserTestCases: ParserTestCase[] = [
+  {
+    id: 25,
+    name: 'Parser 1: Plain URL',
+    description: 'Extracts clean base URL and hostname with 0 parameters and no fragment.',
+    input: 'https://example.com/page',
+    run: () => {
+      const res = parseCampaignUrl('https://example.com/page');
+      const passed =
+        res.baseUrl === 'https://example.com/page' &&
+        res.hostname === 'example.com' &&
+        res.totalParameters === 0 &&
+        !res.hasUtm &&
+        !res.hasCustom &&
+        !res.fragment;
+      return { passed, actual: res, expected: 'baseUrl=https://example.com/page, totalParameters=0' };
+    },
+  },
+  {
+    id: 26,
+    name: 'Parser 2: Single UTM parameter',
+    description: 'Extracts single UTM source parameter correctly.',
+    input: 'https://example.com/page?utm_source=google',
+    run: () => {
+      const res = parseCampaignUrl('https://example.com/page?utm_source=google');
+      const passed =
+        res.utm.source === 'google' &&
+        res.standardParams.length === 1 &&
+        res.totalParameters === 1 &&
+        res.hasUtm &&
+        !res.hasCustom;
+      return { passed, actual: res.utm, expected: '{ source: "google" }' };
+    },
+  },
+  {
+    id: 27,
+    name: 'Parser 3: Complete valid UTM URL',
+    description: 'Extracts all 5 standard UTM parameters and attributes them correctly.',
+    input: 'https://example.com/shop?utm_source=google&utm_medium=cpc&utm_campaign=summer_sale&utm_term=running_shoes&utm_content=logolink',
+    run: () => {
+      const res = parseCampaignUrl('https://example.com/shop?utm_source=google&utm_medium=cpc&utm_campaign=summer_sale&utm_term=running_shoes&utm_content=logolink');
+      const passed =
+        res.utm.source === 'google' &&
+        res.utm.medium === 'cpc' &&
+        res.utm.campaign === 'summer_sale' &&
+        res.utm.term === 'running_shoes' &&
+        res.utm.content === 'logolink' &&
+        res.standardParams.length === 5 &&
+        res.totalParameters === 5 &&
+        !res.hasCustom;
+      return { passed, actual: res.utm, expected: 'All 5 UTM parameters extracted' };
+    },
+  },
+  {
+    id: 28,
+    name: 'Parser 4: Existing non-UTM query parameter',
+    description: 'Separates custom query parameter (ref=homepage) into custom parameters list.',
+    input: 'https://example.com/page?ref=homepage',
+    run: () => {
+      const res = parseCampaignUrl('https://example.com/page?ref=homepage');
+      const passed =
+        res.customParams.length === 1 &&
+        res.customParams[0].key === 'ref' &&
+        res.customParams[0].value === 'homepage' &&
+        !res.hasUtm &&
+        res.hasCustom &&
+        res.totalParameters === 1;
+      return { passed, actual: res.customParams, expected: '[{ key: "ref", value: "homepage" }]' };
+    },
+  },
+  {
+    id: 29,
+    name: 'Parser 5: Query + UTM parameters',
+    description: 'Distinguishes custom query parameters from standard UTM parameters without overlap.',
+    input: 'https://example.com/page?ref=homepage&utm_source=google',
+    run: () => {
+      const res = parseCampaignUrl('https://example.com/page?ref=homepage&utm_source=google');
+      const passed =
+        res.customParams.length === 1 &&
+        res.customParams[0].key === 'ref' &&
+        res.standardParams.length === 1 &&
+        res.utm.source === 'google' &&
+        res.totalParameters === 2 &&
+        res.hasUtm &&
+        res.hasCustom;
+      return { passed, actual: { custom: res.customParams, utm: res.utm }, expected: '1 custom + 1 UTM' };
+    },
+  },
+  {
+    id: 30,
+    name: 'Parser 6: URL with fragment',
+    description: 'Extracts hash fragment cleanly without polluting query parameters.',
+    input: 'https://example.com/page#pricing',
+    run: () => {
+      const res = parseCampaignUrl('https://example.com/page#pricing');
+      const passed =
+        res.baseUrl === 'https://example.com/page' &&
+        res.fragment === 'pricing' &&
+        res.totalParameters === 0;
+      return { passed, actual: { baseUrl: res.baseUrl, fragment: res.fragment }, expected: 'fragment=pricing' };
+    },
+  },
+  {
+    id: 31,
+    name: 'Parser 7: Query + fragment',
+    description: 'Properly isolates base URL, query parameters, and fragment.',
+    input: 'https://example.com/page?utm_source=google#pricing',
+    run: () => {
+      const res = parseCampaignUrl('https://example.com/page?utm_source=google#pricing');
+      const passed =
+        res.baseUrl === 'https://example.com/page' &&
+        res.utm.source === 'google' &&
+        res.fragment === 'pricing' &&
+        res.totalParameters === 1;
+      return { passed, actual: { baseUrl: res.baseUrl, fragment: res.fragment, utm: res.utm }, expected: '1 UTM + fragment=pricing' };
+    },
+  },
+  {
+    id: 32,
+    name: 'Parser 8: Protocol-less URL',
+    description: 'Identifies missing protocol while preserving original base destination.',
+    input: 'example.com/page?utm_source=google',
+    run: () => {
+      const res = parseCampaignUrl('example.com/page?utm_source=google');
+      const passed =
+        res.hasMissingProtocol === true &&
+        res.baseUrl === 'example.com/page' &&
+        res.utm.source === 'google';
+      return { passed, actual: { hasMissingProtocol: res.hasMissingProtocol, baseUrl: res.baseUrl }, expected: 'hasMissingProtocol=true' };
+    },
+  },
+  {
+    id: 33,
+    name: 'Parser 9: Percent-encoded value',
+    description: 'Correctly decodes percent-encoded characters (%20 -> space).',
+    input: 'https://example.com/?utm_campaign=Summer%20Sale',
+    run: () => {
+      const res = parseCampaignUrl('https://example.com/?utm_campaign=Summer%20Sale');
+      const passed =
+        res.utm.campaign === 'Summer Sale' &&
+        res.standardParams[0].value === 'Summer Sale';
+      return { passed, actual: res.utm.campaign, expected: 'Summer Sale' };
+    },
+  },
+  {
+    id: 34,
+    name: 'Parser 10: Duplicate parameter preservation',
+    description: 'Detects duplicate parameters and retains all conflicting values without discarding.',
+    input: 'https://example.com/?utm_source=facebook&utm_source=google',
+    run: () => {
+      const res = parseCampaignUrl('https://example.com/?utm_source=facebook&utm_source=google');
+      const passed =
+        res.hasDuplicates === true &&
+        res.duplicates.length === 1 &&
+        res.duplicates[0].key === 'utm_source' &&
+        res.duplicates[0].values.length === 2 &&
+        res.duplicates[0].values.includes('facebook') &&
+        res.duplicates[0].values.includes('google');
+      return { passed, actual: res.duplicates, expected: 'duplicates with facebook and google' };
+    },
+  },
+  {
+    id: 35,
+    name: 'Parser 11: Multiple custom parameters',
+    description: 'Extracts and lists multiple custom parameters in order.',
+    input: 'https://example.com/page?ref=home&lang=en&aff=123',
+    run: () => {
+      const res = parseCampaignUrl('https://example.com/page?ref=home&lang=en&aff=123');
+      const passed =
+        res.customParams.length === 3 &&
+        res.totalParameters === 3 &&
+        !res.hasUtm &&
+        res.hasCustom &&
+        res.customParams[0].key === 'ref' &&
+        res.customParams[1].key === 'lang' &&
+        res.customParams[2].key === 'aff';
+      return { passed, actual: res.customParams.map((p) => p.key), expected: '["ref", "lang", "aff"]' };
+    },
+  },
+  {
+    id: 36,
+    name: 'Parser 12: Empty parameter value',
+    description: 'Preserves empty parameter values without throwing or crashing.',
+    input: 'https://example.com/?utm_source=&utm_medium=cpc',
+    run: () => {
+      const res = parseCampaignUrl('https://example.com/?utm_source=&utm_medium=cpc');
+      const passed =
+        res.utm.source === '' &&
+        res.utm.medium === 'cpc' &&
+        res.standardParams.length === 2 &&
+        res.totalParameters === 2;
+      return { passed, actual: res.utm, expected: '{ source: "", medium: "cpc" }' };
+    },
+  },
+];
+
 export function runTests(): { total: number; passed: number; failed: number } {
-  console.log('--- Running UTM Validation & Builder Deterministic Test Suite ---');
+  console.log('--- Running UTM Suite Deterministic Tests (Checker, Builder, Parser) ---');
   let passed = 0;
   let failed = 0;
 
@@ -319,10 +523,25 @@ export function runTests(): { total: number; passed: number; failed: number } {
     }
   }
 
-  const total = validationTestCases.length + builderTestCases.length;
+  console.log('\n[Part 3: UTM Parser Cases 25-36]');
+  for (const tc of parserTestCases) {
+    const res = tc.run();
+    if (res.passed) {
+      console.log(`✓ Case ${tc.id}: ${tc.name}`);
+      passed++;
+    } else {
+      console.error(`✗ Case ${tc.id}: ${tc.name} FAILED!`);
+      console.error(`  Expected: ${JSON.stringify(res.expected)}`);
+      console.error(`  Actual:   ${JSON.stringify(res.actual)}`);
+      failed++;
+    }
+  }
+
+  const total = validationTestCases.length + builderTestCases.length + parserTestCases.length;
   console.log(`\nSummary: ${passed}/${total} passed (${failed} failed).`);
   return { total, passed, failed };
 }
 
 // Self-run when executed directly via Node.js
 runTests();
+
