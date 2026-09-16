@@ -1,0 +1,57 @@
+---
+import { useTranslations } from '../../i18n/utils';
+import type { SupportedLocale } from '../../i18n/ui';
+
+export interface Props {
+  locale?: SupportedLocale;
+}
+
+const { locale = 'en' } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<div class="w-full max-w-3xl mx-auto space-y-5">
+  <div class="text-center space-y-1.5">
+    <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
+      {t('naming.heading')}
+    </h1>
+    <p class="text-xs sm:text-sm text-[var(--text-secondary)] max-w-md mx-auto">
+      {t('naming.subheading')}
+    </p>
+  </div>
+
+  <div class="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4 sm:p-5 shadow-[var(--card-shadow)] space-y-4">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      <div class="space-y-1">
+        <label class="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
+          {t('naming.platform')}
+        </label>
+        <div class="rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] px-3 py-2 text-xs text-[var(--text-muted)]">
+          e.g. google, meta
+        </div>
+      </div>
+      <div class="space-y-1">
+        <label class="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
+          {t('naming.tactic')}
+        </label>
+        <div class="rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] px-3 py-2 text-xs text-[var(--text-muted)]">
+          e.g. cpc, story
+        </div>
+      </div>
+      <div class="space-y-1">
+        <label class="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
+          {t('naming.separator')}
+        </label>
+        <div class="rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] px-3 py-2 text-xs text-[var(--text-muted)]">
+          _ or -
+        </div>
+      </div>
+    </div>
+
+    <div class="rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-subtle)]/50 p-3.5 text-center">
+      <div class="text-xs font-mono text-[var(--text-muted)]">
+        {t('naming.status')}
+      </div>
+    </div>
+  </div>
+</div>

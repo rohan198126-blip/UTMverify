@@ -1,0 +1,174 @@
+---
+import BaseHead from '../components/seo/BaseHead.astro';
+import Header from '../components/common/Header.astro';
+import Footer from '../components/common/Footer.astro';
+import type { SupportedLocale } from '../i18n/ui';
+import '../styles/global.css';
+
+export interface Props {
+  title?: string;
+  description?: string;
+  canonicalPath?: string;
+  locale?: SupportedLocale;
+}
+
+const { title, description, canonicalPath, locale = 'en' } = Astro.props;
+---
+
+<!doctype html>
+<html lang={locale} class="dark">
+  <head>
+    <BaseHead
+      title={title}
+      description={description}
+      canonicalPath={canonicalPath}
+      locale={locale}
+    />
+  </head>
+  <body class="bg-[var(--bg-app)] text-[var(--text-primary)] min-h-screen flex flex-col font-sans antialiased relative transition-colors duration-150">
+    <!-- Premium ambient lighting layers (dark mode) -->
+    <div class="ambient-lighting-container" aria-hidden="true">
+      <div class="ambient-light-horizon"></div>
+      <div class="ambient-light-core"></div>
+      <div class="ambient-light-spread"></div>
+      <div class="ambient-light-halo-left"></div>
+      <div class="ambient-light-halo-right"></div>
+    </div>
+
+    <Header locale={locale} currentPath={canonicalPath} />
+
+    <main class="flex-1 w-full max-w-4xl mx-auto px-4 sm:px-6 py-5 sm:py-8 z-10 space-y-8">
+      <slot />
+    </main>
+
+    <Footer locale={locale} />
+  </body>
+</html>
+
+<style is:global>
+  /* Focus Ring */
+  .focus-ring {
+    outline: none;
+  }
+  .focus-ring:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  /* Scrollbar Utility for smooth horizontal swiping */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Ambient Studio Lighting System (Dark Mode) */
+  .ambient-lighting-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 520px;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Concentrated horizon light along the top edge */
+  .ambient-light-horizon {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 620px;
+    max-width: 85vw;
+    height: 2px;
+    background: radial-gradient(
+      ellipse at center,
+      rgba(255, 255, 255, 0.75) 0%,
+      rgba(255, 255, 255, 0.30) 45%,
+      transparent 100%
+    );
+    box-shadow: 0 0 36px 14px rgba(255, 255, 255, 0.28);
+  }
+
+  /* Bright focused center light source directly at the top */
+  .ambient-light-core {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 720px;
+    max-width: 90vw;
+    height: 240px;
+    border-radius: 50%;
+    background: radial-gradient(
+      ellipse 50% 50% at 50% 50%,
+      rgba(255, 255, 255, 0.36) 0%,
+      rgba(255, 255, 255, 0.18) 35%,
+      rgba(255, 255, 255, 0.04) 65%,
+      transparent 85%
+    );
+    filter: blur(32px);
+  }
+
+  /* Wide atmospheric spread illuminating header and tool navigation */
+  .ambient-light-spread {
+    position: absolute;
+    top: -80px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1200px;
+    max-width: 98vw;
+    height: 460px;
+    border-radius: 50%;
+    background: radial-gradient(
+      ellipse 50% 50% at 50% 50%,
+      rgba(255, 255, 255, 0.20) 0%,
+      rgba(255, 255, 255, 0.09) 35%,
+      rgba(255, 255, 255, 0.02) 65%,
+      transparent 85%
+    );
+    filter: blur(52px);
+  }
+
+  /* Secondary lateral ambient lights */
+  .ambient-light-halo-left {
+    position: absolute;
+    top: -60px;
+    left: calc(50% - 420px);
+    width: 500px;
+    height: 280px;
+    border-radius: 50%;
+    background: radial-gradient(
+      ellipse 50% 50% at 50% 50%,
+      rgba(255, 255, 255, 0.08) 0%,
+      rgba(255, 255, 255, 0.02) 50%,
+      transparent 80%
+    );
+    filter: blur(58px);
+  }
+
+  .ambient-light-halo-right {
+    position: absolute;
+    top: -60px;
+    right: calc(50% - 420px);
+    width: 500px;
+    height: 280px;
+    border-radius: 50%;
+    background: radial-gradient(
+      ellipse 50% 50% at 50% 50%,
+      rgba(255, 255, 255, 0.08) 0%,
+      rgba(255, 255, 255, 0.02) 50%,
+      transparent 80%
+    );
+    filter: blur(58px);
+  }
+
+  /* Hide ambient lights in Light Mode */
+  html.light .ambient-lighting-container {
+    display: none !important;
+  }
+</style>

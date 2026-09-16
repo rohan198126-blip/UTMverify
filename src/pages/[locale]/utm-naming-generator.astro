@@ -1,0 +1,32 @@
+---
+import RootLayout from '../../layouts/RootLayout.astro';
+import ToolNav from '../../components/common/ToolNav.astro';
+import UtmNamingShell from '../../components/tools/UtmNamingShell.astro';
+import OtherToolsGrid from '../../components/common/OtherToolsGrid.astro';
+import { SUPPORTED_LOCALES, type SupportedLocale } from '../../i18n/ui';
+import { useTranslations } from '../../i18n/utils';
+
+export function getStaticPaths() {
+  return SUPPORTED_LOCALES.map((locale) => ({
+    params: { locale },
+  }));
+}
+
+const { locale } = Astro.params as { locale: SupportedLocale };
+const t = useTranslations(locale);
+const canonicalPath = `/${locale}/utm-naming-generator`;
+const title = `${t('tools.naming.name')} | UTMVerify`;
+---
+
+<RootLayout
+  title={title}
+  description={t('tools.naming.shortDesc')}
+  canonicalPath={canonicalPath}
+  locale={locale}
+>
+  <div class="space-y-6 sm:space-y-8">
+    <ToolNav locale={locale} activeTool="naming" />
+    <UtmNamingShell locale={locale} />
+    <OtherToolsGrid locale={locale} currentTool="naming" />
+  </div>
+</RootLayout>

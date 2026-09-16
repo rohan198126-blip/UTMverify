@@ -1,0 +1,78 @@
+---
+import { siteConfig } from '../../lib/seo/siteConfig';
+import { getHreflangList } from '../../i18n/utils';
+import type { SupportedLocale } from '../../i18n/ui';
+
+export interface Props {
+  title?: string;
+  description?: string;
+  canonicalPath?: string;
+  locale?: SupportedLocale;
+}
+
+const {
+  title = `${siteConfig.name} — ${siteConfig.tagline}`,
+  description = siteConfig.description,
+  canonicalPath = Astro.url.pathname,
+  locale = 'en',
+} = Astro.props;
+
+// Canonical URL determination: root '/' points canonically to '/en/'
+const resolvedCanonicalPath = canonicalPath === '/' ? '/en/' : canonicalPath;
+const canonicalUrl = new URL(resolvedCanonicalPath, siteConfig.url).toString();
+
+// Generate hreflang list for all 8 supported locales + x-default
+const hreflangs = getHreflangList(canonicalPath, siteConfig.url);
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalUrl} />
+
+<!-- Alternate Hreflang Tags -->
+{hreflangs.map((item) => (
+  <link rel="alternate" hreflang={item.lang} href={item.href} />
+))}
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:site_name" content={siteConfig.name} />
+<meta property="og:locale" content={locale} />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content={canonicalUrl} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+
+<!-- Theme Color -->
+<meta name="theme-color" content="#090a0d" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+
+<!-- Anti-FOUC Theme Script (Immediate execution before render) -->
+<script is:inline>
+  (function () {
+    try {
+      const stored = localStorage.getItem('utmverify_theme');
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      const theme = stored ? stored : (prefersLight ? 'light' : 'dark');
+      if (theme === 'light') {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
+      } else {
+        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
+      }
+    } catch (_) {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+</script>

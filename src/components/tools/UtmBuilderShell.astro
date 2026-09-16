@@ -1,0 +1,555 @@
+---
+import { useTranslations } from '../../i18n/utils';
+import type { SupportedLocale } from '../../i18n/ui';
+
+export interface Props {
+  locale?: SupportedLocale;
+}
+
+const { locale = 'en' } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<div class="w-full max-w-3xl mx-auto space-y-5" id="utm-builder-container">
+  <!-- Minimal Page Heading + Short Explanation -->
+  <div class="text-center space-y-1">
+    <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
+      {t('builder.heading')}
+    </h1>
+    <p class="text-xs sm:text-sm text-[var(--text-secondary)] max-w-md mx-auto">
+      {t('builder.subheading')}
+    </p>
+  </div>
+
+  <!-- Main Builder Workspace: Clean single-surface card -->
+  <div class="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 sm:p-7 shadow-[var(--card-shadow)] space-y-6">
+    
+    <!-- 1. Destination URL (Hero Input) -->
+    <div class="space-y-1.5">
+      <div class="flex items-center justify-between">
+        <label for="builder-dest-input" class="text-xs font-semibold text-[var(--text-primary)] tracking-tight">
+          {t('builder.destinationLabel')} <span class="text-[var(--accent)] font-bold">*</span>
+        </label>
+        <div class="flex items-center gap-3">
+          <button
+            type="button"
+            id="builder-example-btn"
+            class="text-[11px] font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:underline focus-ring rounded cursor-pointer transition-colors"
+          >
+            {t('builder.useExample')}
+          </button>
+          <span class="text-[var(--border-strong)] text-[10px]">·</span>
+          <button
+            type="button"
+            id="builder-clear-btn"
+            class="text-[11px] font-medium text-[var(--text-muted)] hover:text-[var(--text-primary)] focus-ring rounded cursor-pointer transition-colors"
+          >
+            {t('builder.clear')}
+          </button>
+        </div>
+      </div>
+
+      <input
+        id="builder-dest-input"
+        type="text"
+        name="destinationUrl"
+        spellcheck="false"
+        autocomplete="off"
+        placeholder={t('builder.destinationPlaceholder')}
+        class="w-full h-11 sm:h-12 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] px-4 text-xs sm:text-sm font-mono text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:border-[var(--border-focus)] focus:ring-1 focus:ring-[var(--border-focus)] focus:outline-none transition-colors"
+      />
+      
+      <div class="flex items-center justify-between">
+        <span class="text-[11px] text-[var(--text-muted)]">
+          {t('builder.destinationHelper')}
+        </span>
+        <!-- Lightweight Protocol Notice -->
+        <div id="protocol-warning" class="hidden text-[11px] text-amber-500/90 flex items-center gap-1">
+          <svg class="w-3 h-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+          </svg>
+          <span>{t('builder.warningProtocol')}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Quick Presets Control (Understated shortcut) -->
+    <div class="flex items-center justify-between gap-2 pt-1 border-t border-[var(--border-subtle)]/70">
+      <label for="builder-preset-select" class="text-xs font-medium text-[var(--text-secondary)]">
+        {t('builder.presetsLabel')}
+      </label>
+      <div class="relative w-48 sm:w-56">
+        <select
+          id="builder-preset-select"
+          class="w-full h-9 appearance-none rounded-md border border-[var(--border-subtle)] bg-[var(--bg-subtle)] px-3 pr-8 text-xs font-medium text-[var(--text-primary)] focus:border-[var(--border-focus)] focus:ring-1 focus:ring-[var(--border-focus)] focus:outline-none cursor-pointer transition-colors"
+        >
+          <option value="none">{t('builder.presetNone')}</option>
+          <option value="google_ads">{t('builder.presetGoogleAds')}</option>
+          <option value="meta_ads">{t('builder.presetMetaAds')}</option>
+          <option value="fb_ig">{t('builder.presetFbIg')}</option>
+          <option value="email">{t('builder.presetEmail')}</option>
+          <option value="newsletter">{t('builder.presetNewsletter')}</option>
+          <option value="linkedin">{t('builder.presetLinkedIn')}</option>
+          <option value="organic_social">{t('builder.presetOrganicSocial')}</option>
+        </select>
+        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-[var(--text-muted)]">
+          <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Campaign Parameters Section -->
+    <div class="space-y-3 pt-1 border-t border-[var(--border-subtle)]/70">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <!-- Source -->
+        <div class="space-y-1">
+          <div class="flex items-baseline justify-between">
+            <label for="builder-source" class="text-xs font-medium text-[var(--text-primary)]">
+              {t('builder.sourceLabel')}
+            </label>
+            <span class="text-[10px] font-mono text-[var(--text-muted)]">utm_source</span>
+          </div>
+          <input
+            id="builder-source"
+            type="text"
+            spellcheck="false"
+            autocomplete="off"
+            placeholder={t('builder.sourcePlaceholder')}
+            class="w-full h-10 rounded-md border border-[var(--border-subtle)] bg-[var(--bg-input)] px-3 text-xs font-mono text-[var(--text-primary)] placeholder:text-[var(--text-muted)]/70 focus:border-[var(--border-focus)] focus:ring-1 focus:ring-[var(--border-focus)] focus:outline-none transition-colors"
+          />
+        </div>
+
+        <!-- Medium -->
+        <div class="space-y-1">
+          <div class="flex items-baseline justify-between">
+            <label for="builder-medium" class="text-xs font-medium text-[var(--text-primary)]">
+              {t('builder.mediumLabel')}
+            </label>
+            <span class="text-[10px] font-mono text-[var(--text-muted)]">utm_medium</span>
+          </div>
+          <input
+            id="builder-medium"
+            type="text"
+            spellcheck="false"
+            autocomplete="off"
+            placeholder={t('builder.mediumPlaceholder')}
+            class="w-full h-10 rounded-md border border-[var(--border-subtle)] bg-[var(--bg-input)] px-3 text-xs font-mono text-[var(--text-primary)] placeholder:text-[var(--text-muted)]/70 focus:border-[var(--border-focus)] focus:ring-1 focus:ring-[var(--border-focus)] focus:outline-none transition-colors"
+          />
+        </div>
+
+        <!-- Campaign -->
+        <div class="space-y-1">
+          <div class="flex items-baseline justify-between">
+            <label for="builder-campaign" class="text-xs font-medium text-[var(--text-primary)]">
+              {t('builder.campaignLabel')}
+            </label>
+            <span class="text-[10px] font-mono text-[var(--text-muted)]">utm_campaign</span>
+          </div>
+          <input
+            id="builder-campaign"
+            type="text"
+            spellcheck="false"
+            autocomplete="off"
+            placeholder={t('builder.campaignPlaceholder')}
+            class="w-full h-10 rounded-md border border-[var(--border-subtle)] bg-[var(--bg-input)] px-3 text-xs font-mono text-[var(--text-primary)] placeholder:text-[var(--text-muted)]/70 focus:border-[var(--border-focus)] focus:ring-1 focus:ring-[var(--border-focus)] focus:outline-none transition-colors"
+          />
+        </div>
+      </div>
+
+      <!-- 4. Progressive Disclosure: Optional Term & Content -->
+      <div class="pt-0.5">
+        <!-- Understated secondary triggers -->
+        <div class="flex items-center gap-3 text-xs" id="optional-triggers">
+          <button
+            type="button"
+            id="add-term-btn"
+            class="text-[11px] text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:underline focus-ring rounded cursor-pointer transition-colors"
+          >
+            {t('builder.addTerm')}
+          </button>
+          <span class="text-[var(--border-strong)] text-[10px]">·</span>
+          <button
+            type="button"
+            id="add-content-btn"
+            class="text-[11px] text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:underline focus-ring rounded cursor-pointer transition-colors"
+          >
+            {t('builder.addContent')}
+          </button>
+        </div>
+
+        <!-- Optional fields container -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2.5">
+          <!-- Term Field -->
+          <div id="term-field-wrapper" class="hidden space-y-1">
+            <div class="flex items-baseline justify-between">
+              <label for="builder-term" class="text-xs font-medium text-[var(--text-secondary)]">
+                {t('builder.termLabel')}
+              </label>
+              <span class="text-[10px] font-mono text-[var(--text-muted)]">utm_term</span>
+            </div>
+            <input
+              id="builder-term"
+              type="text"
+              spellcheck="false"
+              autocomplete="off"
+              placeholder={t('builder.termPlaceholder')}
+              class="w-full h-10 rounded-md border border-[var(--border-subtle)] bg-[var(--bg-input)] px-3 text-xs font-mono text-[var(--text-primary)] placeholder:text-[var(--text-muted)]/70 focus:border-[var(--border-focus)] focus:ring-1 focus:ring-[var(--border-focus)] focus:outline-none transition-colors"
+            />
+          </div>
+
+          <!-- Content Field -->
+          <div id="content-field-wrapper" class="hidden space-y-1">
+            <div class="flex items-baseline justify-between">
+              <label for="builder-content" class="text-xs font-medium text-[var(--text-secondary)]">
+                {t('builder.contentLabel')}
+              </label>
+              <span class="text-[10px] font-mono text-[var(--text-muted)]">utm_content</span>
+            </div>
+            <input
+              id="builder-content"
+              type="text"
+              spellcheck="false"
+              autocomplete="off"
+              placeholder={t('builder.contentPlaceholder')}
+              class="w-full h-10 rounded-md border border-[var(--border-subtle)] bg-[var(--bg-input)] px-3 text-xs font-mono text-[var(--text-primary)] placeholder:text-[var(--text-muted)]/70 focus:border-[var(--border-focus)] focus:ring-1 focus:ring-[var(--border-focus)] focus:outline-none transition-colors"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Generated URL Section (The Output) -->
+    <div class="pt-4 border-t border-[var(--border-subtle)]/70 space-y-3">
+      <div class="flex items-center justify-between">
+        <span class="text-xs font-medium text-[var(--text-secondary)]">
+          {t('builder.generatedHeading')}
+        </span>
+        <span
+          id="char-counter"
+          class="text-[10px] font-mono text-[var(--text-muted)] hidden"
+          data-pattern={t('builder.characterCount')}
+        >
+          0
+        </span>
+      </div>
+
+      <!-- Monospace Result Container with subtle contrast -->
+      <div
+        id="generated-url-box"
+        class="rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-subtle)]/60 p-3.5 min-h-[52px] flex items-center transition-colors"
+      >
+        <span id="generated-url-empty" class="text-xs text-[var(--text-muted)]">
+          {t('builder.emptyState')}
+        </span>
+        <span
+          id="generated-url-text"
+          class="hidden text-xs sm:text-sm font-mono text-[var(--text-primary)] break-all select-all leading-relaxed"
+        ></span>
+      </div>
+
+      <!-- Action Buttons: Solid restrained primary button & subtle secondary button -->
+      <div class="flex flex-wrap items-center gap-2.5 pt-0.5">
+        <button
+          type="button"
+          id="copy-url-btn"
+          disabled
+          class="inline-flex items-center justify-center gap-1.5 h-9 px-4 rounded-md bg-[var(--text-primary)] text-[var(--bg-app)] text-xs font-medium hover:opacity-90 focus-ring transition-opacity disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+        >
+          <svg class="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+          </svg>
+          <span
+            id="copy-btn-label"
+            data-label-default={t('builder.copyUrl')}
+            data-label-copied={t('builder.copied')}
+          >{t('builder.copyUrl')}</span>
+        </button>
+
+        <a
+          id="open-url-btn"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hidden inline-flex items-center justify-center gap-1.5 h-9 px-3.5 rounded-md border border-[var(--border-subtle)] bg-[var(--bg-surface)] text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--border-strong)] focus-ring transition-colors"
+        >
+          <span>{t('builder.openUrl')}</span>
+          <svg class="w-3 h-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Compact Naming Guidance (Understated helper section) -->
+  <div class="px-3 sm:px-4 py-3 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)]/60 text-xs text-[var(--text-secondary)] space-y-2">
+    <span class="text-[11px] font-medium uppercase tracking-wider text-[var(--text-muted)]">
+      {t('builder.tipsTitle')}
+    </span>
+    <ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1.5 text-[11px] text-[var(--text-secondary)]">
+      <li class="flex items-start gap-1.5">
+        <span class="text-[var(--text-muted)] shrink-0">·</span>
+        <span>{t('builder.tip1')}</span>
+      </li>
+      <li class="flex items-start gap-1.5">
+        <span class="text-[var(--text-muted)] shrink-0">·</span>
+        <span>{t('builder.tip2')}</span>
+      </li>
+      <li class="flex items-start gap-1.5">
+        <span class="text-[var(--text-muted)] shrink-0">·</span>
+        <span>{t('builder.tip3')}</span>
+      </li>
+      <li class="flex items-start gap-1.5">
+        <span class="text-[var(--text-muted)] shrink-0">·</span>
+        <span>{t('builder.tip4')}</span>
+      </li>
+      <li class="flex items-start gap-1.5 sm:col-span-2">
+        <span class="text-[var(--text-muted)] shrink-0">·</span>
+        <span>{t('builder.tip5')}</span>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<script>
+  import { buildUtmUrl } from '../../lib/utm/index.ts';
+
+  const PRESETS: Record<string, { source: string; medium: string }> = {
+    google_ads: { source: 'google', medium: 'cpc' },
+    meta_ads: { source: 'facebook', medium: 'paid_social' },
+    fb_ig: { source: 'meta', medium: 'paid_social' },
+    email: { source: 'email', medium: 'email' },
+    newsletter: { source: 'newsletter', medium: 'email' },
+    linkedin: { source: 'linkedin', medium: 'paid_social' },
+    organic_social: { source: 'social', medium: 'organic_social' },
+  };
+
+  const EXAMPLE = {
+    destination: 'https://example.com/summer-sale',
+    source: 'google',
+    medium: 'cpc',
+    campaign: 'summer-sale',
+    term: 'running_shoes',
+    content: 'hero_banner',
+  };
+
+  function initBuilder() {
+    const destInput = document.getElementById('builder-dest-input') as HTMLInputElement | null;
+    const protocolWarning = document.getElementById('protocol-warning') as HTMLElement | null;
+    const presetSelect = document.getElementById('builder-preset-select') as HTMLSelectElement | null;
+    const sourceInput = document.getElementById('builder-source') as HTMLInputElement | null;
+    const mediumInput = document.getElementById('builder-medium') as HTMLInputElement | null;
+    const campaignInput = document.getElementById('builder-campaign') as HTMLInputElement | null;
+    const termInput = document.getElementById('builder-term') as HTMLInputElement | null;
+    const contentInput = document.getElementById('builder-content') as HTMLInputElement | null;
+
+    const addTermBtn = document.getElementById('add-term-btn') as HTMLButtonElement | null;
+    const addContentBtn = document.getElementById('add-content-btn') as HTMLButtonElement | null;
+    const termFieldWrapper = document.getElementById('term-field-wrapper') as HTMLElement | null;
+    const contentFieldWrapper = document.getElementById('content-field-wrapper') as HTMLElement | null;
+
+    const generatedEmpty = document.getElementById('generated-url-empty') as HTMLElement | null;
+    const generatedText = document.getElementById('generated-url-text') as HTMLElement | null;
+    const charCounter = document.getElementById('char-counter') as HTMLElement | null;
+    const copyBtn = document.getElementById('copy-url-btn') as HTMLButtonElement | null;
+    const copyLabel = document.getElementById('copy-btn-label') as HTMLElement | null;
+    const openBtn = document.getElementById('open-url-btn') as HTMLAnchorElement | null;
+    const exampleBtn = document.getElementById('builder-example-btn') as HTMLButtonElement | null;
+    const clearBtn = document.getElementById('builder-clear-btn') as HTMLButtonElement | null;
+
+    if (!destInput || !presetSelect || !sourceInput || !mediumInput || !campaignInput) return;
+    if (!termInput || !contentInput || !generatedEmpty || !generatedText || !copyBtn) return;
+
+    // TypeScript narrowed aliases
+    const elDestInput = destInput;
+    const elProtocolWarning = protocolWarning;
+    const elPresetSelect = presetSelect;
+    const elSourceInput = sourceInput;
+    const elMediumInput = mediumInput;
+    const elCampaignInput = campaignInput;
+    const elTermInput = termInput;
+    const elContentInput = contentInput;
+    const elTermFieldWrapper = termFieldWrapper;
+    const elContentFieldWrapper = contentFieldWrapper;
+    const elAddTermBtn = addTermBtn;
+    const elAddContentBtn = addContentBtn;
+    const elGeneratedEmpty = generatedEmpty;
+    const elGeneratedText = generatedText;
+    const elCharCounter = charCounter;
+    const elCopyBtn = copyBtn;
+    const elCopyLabel = copyLabel;
+    const elOpenBtn = openBtn;
+
+    function updateUrl() {
+      const dest = elDestInput.value.trim();
+
+      // Check missing protocol warning
+      if (dest) {
+        const hasProtocol = /^https?:\/\//i.test(dest);
+        if (!hasProtocol) {
+          elProtocolWarning?.classList.remove('hidden');
+        } else {
+          elProtocolWarning?.classList.add('hidden');
+        }
+      } else {
+        elProtocolWarning?.classList.add('hidden');
+      }
+
+      if (!dest) {
+        elGeneratedEmpty.classList.remove('hidden');
+        elGeneratedText.classList.add('hidden');
+        elGeneratedText.textContent = '';
+        elCopyBtn.disabled = true;
+        if (elOpenBtn) elOpenBtn.classList.add('hidden');
+        if (elCharCounter) elCharCounter.classList.add('hidden');
+        return;
+      }
+
+      const generated = buildUtmUrl({
+        baseUrl: dest,
+        params: {
+          utm_source: elSourceInput.value,
+          utm_medium: elMediumInput.value,
+          utm_campaign: elCampaignInput.value,
+          utm_term: elTermInput.value,
+          utm_content: elContentInput.value,
+        },
+      });
+
+      if (generated) {
+        elGeneratedEmpty.classList.add('hidden');
+        elGeneratedText.classList.remove('hidden');
+        elGeneratedText.textContent = generated;
+        elCopyBtn.disabled = false;
+
+        // Character count display
+        if (elCharCounter) {
+          elCharCounter.classList.remove('hidden');
+          const pattern = elCharCounter.getAttribute('data-pattern') || '{count} chars';
+          elCharCounter.textContent = pattern.replace('{count}', String(generated.length));
+        }
+
+        // Open URL button: only for valid absolute URLs
+        if (elOpenBtn) {
+          if (/^https?:\/\//i.test(generated)) {
+            elOpenBtn.href = generated;
+            elOpenBtn.classList.remove('hidden');
+          } else {
+            elOpenBtn.classList.add('hidden');
+          }
+        }
+      } else {
+        elGeneratedEmpty.classList.remove('hidden');
+        elGeneratedText.classList.add('hidden');
+        elGeneratedText.textContent = '';
+        elCopyBtn.disabled = true;
+        if (elOpenBtn) elOpenBtn.classList.add('hidden');
+        if (elCharCounter) elCharCounter.classList.add('hidden');
+      }
+    }
+
+    // Input event listeners for real-time live generation
+    const inputs = [elDestInput, elSourceInput, elMediumInput, elCampaignInput, elTermInput, elContentInput];
+    for (const inp of inputs) {
+      inp.addEventListener('input', updateUrl);
+    }
+
+    // Preset selection change
+    elPresetSelect.addEventListener('change', () => {
+      const val = elPresetSelect.value;
+      if (val in PRESETS) {
+        elSourceInput.value = PRESETS[val].source;
+        elMediumInput.value = PRESETS[val].medium;
+      }
+      updateUrl();
+    });
+
+    // Progressive disclosure toggles
+    elAddTermBtn?.addEventListener('click', () => {
+      elTermFieldWrapper?.classList.remove('hidden');
+      elAddTermBtn.classList.add('hidden');
+      elTermInput.focus();
+    });
+
+    elAddContentBtn?.addEventListener('click', () => {
+      elContentFieldWrapper?.classList.remove('hidden');
+      elAddContentBtn.classList.add('hidden');
+      elContentInput.focus();
+    });
+
+    // Copy URL handler with Clipboard API
+    elCopyBtn.addEventListener('click', async () => {
+      const textToCopy = elGeneratedText.textContent?.trim();
+      if (!textToCopy) return;
+
+      try {
+        await navigator.clipboard.writeText(textToCopy);
+        if (elCopyLabel) {
+          const copiedText = elCopyLabel.getAttribute('data-label-copied') || 'Copied!';
+          const defaultText = elCopyLabel.getAttribute('data-label-default') || 'Copy URL';
+          elCopyLabel.textContent = copiedText;
+          setTimeout(() => {
+            if (elCopyLabel) elCopyLabel.textContent = defaultText;
+          }, 2000);
+        }
+      } catch {
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(textToCopy).catch(() => {});
+        }
+      }
+    });
+
+    // Use Example button
+    exampleBtn?.addEventListener('click', () => {
+      elDestInput.value = EXAMPLE.destination;
+      elSourceInput.value = EXAMPLE.source;
+      elMediumInput.value = EXAMPLE.medium;
+      elCampaignInput.value = EXAMPLE.campaign;
+      elTermInput.value = EXAMPLE.term;
+      elContentInput.value = EXAMPLE.content;
+      elPresetSelect.value = 'google_ads';
+
+      // Reveal optional fields if example populates them
+      elTermFieldWrapper?.classList.remove('hidden');
+      elAddTermBtn?.classList.add('hidden');
+      elContentFieldWrapper?.classList.remove('hidden');
+      elAddContentBtn?.classList.add('hidden');
+
+      updateUrl();
+      elDestInput.focus();
+    });
+
+    // Clear button (resets to initial blank state)
+    clearBtn?.addEventListener('click', () => {
+      elDestInput.value = '';
+      elSourceInput.value = '';
+      elMediumInput.value = '';
+      elCampaignInput.value = '';
+      elTermInput.value = '';
+      elContentInput.value = '';
+      elPresetSelect.value = 'none';
+
+      if (elCopyLabel) {
+        const defaultText = elCopyLabel.getAttribute('data-label-default') || 'Copy URL';
+        elCopyLabel.textContent = defaultText;
+      }
+
+      // Hide optional fields
+      elTermFieldWrapper?.classList.add('hidden');
+      elAddTermBtn?.classList.remove('hidden');
+      elContentFieldWrapper?.classList.add('hidden');
+      elAddContentBtn?.classList.remove('hidden');
+
+      updateUrl();
+      elDestInput.focus();
+    });
+
+    // Initial run
+    updateUrl();
+  }
+
+  initBuilder();
+  document.addEventListener('astro:after-swap', initBuilder);
+</script>

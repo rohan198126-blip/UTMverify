@@ -1,0 +1,46 @@
+---
+import { useTranslations } from '../../i18n/utils';
+import type { SupportedLocale } from '../../i18n/ui';
+
+export interface Props {
+  locale?: SupportedLocale;
+  activeTool?: 'checker' | 'builder' | 'parser' | 'naming' | 'bulk';
+}
+
+const { locale = 'en', activeTool = 'checker' } = Astro.props;
+const t = useTranslations(locale);
+
+const tools = [
+  { key: 'checker', name: t('tools.checker.name'), path: `/${locale}/utm-checker` },
+  { key: 'builder', name: t('tools.builder.name'), path: `/${locale}/utm-builder` },
+  { key: 'parser', name: t('tools.parser.name'), path: `/${locale}/utm-parser` },
+  { key: 'naming', name: t('tools.naming.name'), path: `/${locale}/utm-naming-generator` },
+  { key: 'bulk', name: t('tools.bulk.name'), path: `/${locale}/bulk-utm-builder` },
+];
+---
+
+<nav
+  aria-label="Tool selection"
+  class="w-full max-w-3xl mx-auto mb-6 px-1 sm:px-0"
+>
+  <div class="relative p-0.5 rounded-lg bg-[var(--bg-surface)]/60 border border-[var(--border-subtle)]">
+    <div class="flex items-center gap-0.5 overflow-x-auto no-scrollbar scroll-smooth">
+      {tools.map((tool) => {
+        const isActive = activeTool === tool.key;
+        return (
+          <a
+            href={tool.path}
+            class={`flex-1 min-w-max text-center px-3 py-1.5 rounded-md text-xs font-medium transition-colors duration-150 focus-ring whitespace-nowrap ${
+              isActive
+                ? 'bg-[var(--bg-subtle)] text-[var(--accent)] font-semibold border border-[var(--border-subtle)]'
+                : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-subtle)]/50 border border-transparent'
+            }`}
+            aria-current={isActive ? 'page' : undefined}
+          >
+            {tool.name}
+          </a>
+        );
+      })}
+    </div>
+  </div>
+</nav>

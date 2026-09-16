@@ -1,0 +1,56 @@
+---
+import RootLayout from '../../layouts/RootLayout.astro';
+import { SUPPORTED_LOCALES, type SupportedLocale } from '../../i18n/ui';
+import { useTranslations } from '../../i18n/utils';
+
+export function getStaticPaths() {
+  return SUPPORTED_LOCALES.map((locale) => ({
+    params: { locale },
+  }));
+}
+
+const { locale } = Astro.params as { locale: SupportedLocale };
+const t = useTranslations(locale);
+const canonicalPath = `/${locale}/guides`;
+---
+
+<RootLayout
+  title={`${t('guides.title')} — UTMVerify`}
+  description={t('guides.subtitle')}
+  canonicalPath={canonicalPath}
+  locale={locale}
+>
+  <div class="max-w-3xl mx-auto space-y-6 text-[var(--text-primary)]">
+    <div class="space-y-1.5 text-center sm:text-left">
+      <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
+        {t('guides.title')}
+      </h1>
+      <p class="text-xs sm:text-sm text-[var(--text-secondary)]">
+        {t('guides.subtitle')}
+      </p>
+    </div>
+
+    <div class="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 sm:p-6 space-y-4 text-xs sm:text-sm leading-relaxed shadow-[var(--card-shadow)]">
+      <h2 class="text-sm sm:text-base font-semibold text-[var(--text-primary)]">
+        {t('guides.coreTitle')}
+      </h2>
+      <div class="space-y-3 text-[var(--text-secondary)]">
+        <div>
+          <span class="font-mono text-[var(--accent)] font-semibold">utm_source</span>: Identifies which platform or site sent the traffic (e.g. <code class="px-1.5 py-0.5 rounded bg-[var(--bg-subtle)] border border-[var(--border-subtle)] font-mono text-xs">google</code>, <code class="px-1.5 py-0.5 rounded bg-[var(--bg-subtle)] border border-[var(--border-subtle)] font-mono text-xs">newsletter</code>).
+        </div>
+        <div>
+          <span class="font-mono text-[var(--accent)] font-semibold">utm_medium</span>: Identifies marketing channel type (e.g. <code class="px-1.5 py-0.5 rounded bg-[var(--bg-subtle)] border border-[var(--border-subtle)] font-mono text-xs">cpc</code>, <code class="px-1.5 py-0.5 rounded bg-[var(--bg-subtle)] border border-[var(--border-subtle)] font-mono text-xs">email</code>, <code class="px-1.5 py-0.5 rounded bg-[var(--bg-subtle)] border border-[var(--border-subtle)] font-mono text-xs">social</code>).
+        </div>
+        <div>
+          <span class="font-mono text-[var(--accent)] font-semibold">utm_campaign</span>: Identifies campaign name (e.g. <code class="px-1.5 py-0.5 rounded bg-[var(--bg-subtle)] border border-[var(--border-subtle)] font-mono text-xs">spring_launch</code>).
+        </div>
+        <div>
+          <span class="font-mono text-[var(--accent)] font-semibold">utm_term</span>: (Optional) Identifies paid search keywords.
+        </div>
+        <div>
+          <span class="font-mono text-[var(--accent)] font-semibold">utm_content</span>: (Optional) Differentiates creative variants or ad links.
+        </div>
+      </div>
+    </div>
+  </div>
+</RootLayout>

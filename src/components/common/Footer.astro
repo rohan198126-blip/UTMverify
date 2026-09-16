@@ -1,0 +1,53 @@
+---
+import { useTranslations } from '../../i18n/utils';
+import type { SupportedLocale } from '../../i18n/ui';
+
+export interface Props {
+  locale?: SupportedLocale;
+}
+
+const { locale = 'en' } = Astro.props;
+const t = useTranslations(locale);
+
+const tools = [
+  { name: t('tools.checker.name'), path: `/${locale}/utm-checker` },
+  { name: t('tools.builder.name'), path: `/${locale}/utm-builder` },
+  { name: t('tools.parser.name'), path: `/${locale}/utm-parser` },
+  { name: t('tools.naming.name'), path: `/${locale}/utm-naming-generator` },
+  { name: t('tools.bulk.name'), path: `/${locale}/bulk-utm-builder` },
+];
+---
+
+<footer class="mt-auto border-t border-[var(--border-subtle)] bg-[var(--bg-app)] text-xs text-[var(--text-muted)] transition-colors duration-150">
+  <div class="mx-auto max-w-5xl px-4 py-8 sm:px-6">
+    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+      <div class="space-y-1 max-w-sm">
+        <div class="text-sm font-semibold tracking-tight text-[var(--text-primary)]">
+          UTM<span class="text-[var(--text-secondary)] font-normal">Verify</span>
+        </div>
+        <p class="text-[var(--text-secondary)] leading-relaxed">
+          {t('footer.description')}
+        </p>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-x-5 gap-y-2 text-[var(--text-secondary)]">
+        {tools.map((tool) => (
+          <a href={tool.path} class="hover:text-[var(--text-primary)] transition-colors">
+            {tool.name}
+          </a>
+        ))}
+        <a href={`/${locale}/guides`} class="hover:text-[var(--text-primary)] transition-colors">
+          {t('nav.guides')}
+        </a>
+        <a href={`/${locale}/about`} class="hover:text-[var(--text-primary)] transition-colors">
+          {t('nav.about')}
+        </a>
+      </div>
+    </div>
+
+    <div class="mt-6 pt-6 border-t border-[var(--border-subtle)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-[var(--text-muted)]">
+      <p>© {new Date().getFullYear()} UTMVerify. {t('footer.copyright')}</p>
+      <p>{t('footer.zeroTracking')}</p>
+    </div>
+  </div>
+</footer>

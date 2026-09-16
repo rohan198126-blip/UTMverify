@@ -1,0 +1,92 @@
+---
+import { useTranslations } from '../../i18n/utils';
+import type { SupportedLocale } from '../../i18n/ui';
+
+export interface Props {
+  locale?: SupportedLocale;
+}
+
+const { locale = 'en' } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<button
+  id="theme-toggle-btn"
+  type="button"
+  aria-label={t('nav.themeLight')}
+  title={t('nav.themeLight')}
+  class="relative inline-flex items-center justify-center w-9 h-9 rounded-md border border-[var(--border-subtle)] bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--border-strong)] transition-colors focus-ring cursor-pointer"
+>
+  <!-- Sun Icon (shown in dark mode, click to switch to light mode) -->
+  <svg
+    id="theme-sun-icon"
+    class="w-4 h-4 hidden dark:block"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.75"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <circle cx="12" cy="12" r="4"></circle>
+    <path d="M12 2v2"></path>
+    <path d="M12 20v2"></path>
+    <path d="m4.93 4.93 1.41 1.41"></path>
+    <path d="m17.66 17.66 1.41 1.41"></path>
+    <path d="M2 12h2"></path>
+    <path d="M20 12h2"></path>
+    <path d="m6.34 17.66-1.41 1.41"></path>
+    <path d="m19.07 4.93-1.41 1.41"></path>
+  </svg>
+
+  <!-- Moon Icon (shown in light mode, click to switch to dark mode) -->
+  <svg
+    id="theme-moon-icon"
+    class="w-4 h-4 block dark:hidden"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.75"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+  </svg>
+</button>
+
+<script>
+  function updateThemeButtonAria() {
+    const btn = document.getElementById('theme-toggle-btn');
+    if (!btn) return;
+    const isLight = document.documentElement.classList.contains('light');
+    const label = isLight ? 'Switch to dark mode' : 'Switch to light mode';
+    btn.setAttribute('aria-label', label);
+    btn.setAttribute('title', label);
+  }
+
+  function initThemeToggle() {
+    const btn = document.getElementById('theme-toggle-btn');
+    if (!btn) return;
+
+    updateThemeButtonAria();
+
+    btn.addEventListener('click', () => {
+      const isCurrentlyLight = document.documentElement.classList.contains('light');
+      if (isCurrentlyLight) {
+        document.documentElement.classList.remove('light');
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('utmverify_theme', 'dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
+        localStorage.setItem('utmverify_theme', 'light');
+      }
+      updateThemeButtonAria();
+    });
+  }
+
+  initThemeToggle();
+  document.addEventListener('astro:after-swap', initThemeToggle);
+</script>

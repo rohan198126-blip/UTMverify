@@ -1,0 +1,495 @@
+---
+import { useTranslations } from '../../i18n/utils';
+import type { SupportedLocale } from '../../i18n/ui';
+
+export interface Props {
+  locale?: SupportedLocale;
+  isHomepage?: boolean;
+}
+
+const { locale = 'en', isHomepage: _isHomepage = false } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<div class="w-full max-w-3xl mx-auto space-y-6" id="utm-checker-container">
+  <!-- Minimal Page Heading + Short Explanation -->
+  <div class="text-center space-y-1.5">
+    <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
+      {t('checker.heading')}
+    </h1>
+    <p class="text-xs sm:text-sm text-[var(--text-secondary)] max-w-md mx-auto">
+      {t('checker.subheading')}
+    </p>
+  </div>
+
+  <!-- Primary URL Input & Form Box -->
+  <div class="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-3.5 sm:p-5 shadow-[var(--card-shadow)] space-y-3.5">
+    <form id="checker-form" class="space-y-3" novalidate>
+      <div class="flex items-center justify-between">
+        <label for="checker-url-input" class="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
+          {t('checker.inputLabel')}
+        </label>
+        <div class="flex items-center gap-2">
+          <button
+            type="button"
+            id="use-example-btn"
+            class="text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:underline focus-ring rounded px-1 cursor-pointer transition-colors"
+          >
+            {t('checker.useExample')}
+          </button>
+          <button
+            type="button"
+            id="clear-btn"
+            class="hidden text-xs text-[var(--text-muted)] hover:text-[var(--text-primary)] focus-ring rounded px-1 cursor-pointer transition-colors"
+          >
+            {t('checker.clear')}
+          </button>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-2">
+        <div class="relative flex-1">
+          <input
+            id="checker-url-input"
+            type="url"
+            name="url"
+            spellcheck="false"
+            autocomplete="off"
+            placeholder={t('checker.inputPlaceholder')}
+            class="w-full rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] px-3.5 py-2.5 text-xs sm:text-sm font-mono text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:border-[var(--border-focus)] focus:ring-1 focus:ring-[var(--border-focus)] focus:outline-none transition-colors"
+          />
+        </div>
+        <button
+          type="submit"
+          id="check-url-button"
+          class="inline-flex items-center justify-center rounded-lg bg-[var(--text-primary)] text-[var(--bg-app)] px-5 py-2.5 text-xs sm:text-sm font-medium hover:opacity-90 transition-opacity focus-ring shrink-0 cursor-pointer shadow-xs"
+        >
+          {t('checker.button')}
+        </button>
+      </div>
+    </form>
+
+    <!-- Parameter Check Tags Indicator -->
+    <div class="pt-2 border-t border-[var(--border-subtle)] flex flex-wrap items-center gap-1.5 text-xs text-[var(--text-muted)]">
+      <span class="text-[var(--text-secondary)] font-medium text-xs mr-1">{t('checker.verifiesLabel')}</span>
+      <span class="px-2 py-0.5 rounded bg-[var(--bg-subtle)] border border-[var(--border-subtle)] text-[var(--text-secondary)] font-mono text-xs">utm_source</span>
+      <span class="px-2 py-0.5 rounded bg-[var(--bg-subtle)] border border-[var(--border-subtle)] text-[var(--text-secondary)] font-mono text-xs">utm_medium</span>
+      <span class="px-2 py-0.5 rounded bg-[var(--bg-subtle)] border border-[var(--border-subtle)] text-[var(--text-secondary)] font-mono text-xs">utm_campaign</span>
+      <span class="px-2 py-0.5 rounded bg-[var(--bg-subtle)] border border-[var(--border-subtle)] text-[var(--text-secondary)] font-mono text-xs">utm_term</span>
+      <span class="px-2 py-0.5 rounded bg-[var(--bg-subtle)] border border-[var(--border-subtle)] text-[var(--text-secondary)] font-mono text-xs">utm_content</span>
+    </div>
+  </div>
+
+  <!-- Initial Empty State Placeholder -->
+  <div id="empty-state-card" class="rounded-xl border border-dashed border-[var(--border-subtle)] bg-[var(--bg-surface)]/60 p-6 sm:p-8 text-center space-y-2">
+    <div class="w-9 h-9 mx-auto rounded-full bg-[var(--bg-subtle)] border border-[var(--border-subtle)] flex items-center justify-center text-[var(--text-secondary)]">
+      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    </div>
+    <div class="text-xs sm:text-sm font-medium text-[var(--text-primary)]">{t('checker.emptyTitle')}</div>
+    <p class="text-xs text-[var(--text-muted)] max-w-sm mx-auto leading-relaxed">
+      {t('checker.emptyDesc')}
+    </p>
+  </div>
+
+  <!-- Dynamic Results Container (Client-Side Rendered via JS) -->
+  <div id="results-container" class="hidden space-y-5" aria-live="polite">
+    <!-- 1. Overall Status Card -->
+    <div id="status-card" class="rounded-xl border p-4 sm:p-5 flex items-start justify-between gap-4 transition-colors">
+      <div class="flex items-start gap-3">
+        <div id="status-icon" class="w-7 h-7 rounded-full flex items-center justify-center shrink-0 mt-0.5">
+          <!-- Icon injected dynamically -->
+        </div>
+        <div class="space-y-0.5">
+          <div id="status-headline" class="text-sm sm:text-base font-semibold text-[var(--text-primary)]"></div>
+          <div id="status-subtext" class="text-xs text-[var(--text-secondary)]"></div>
+        </div>
+      </div>
+      <div id="status-badge" class="px-2.5 py-1 rounded-full text-xs font-semibold shrink-0"></div>
+    </div>
+
+    <!-- 2. Detected UTM Parameters Breakdown -->
+    <div id="params-card" class="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] overflow-hidden shadow-[var(--card-shadow)]">
+      <div class="px-4 py-3 border-b border-[var(--border-subtle)] bg-[var(--bg-subtle)]/40 flex items-center justify-between">
+        <span class="text-xs font-semibold tracking-tight text-[var(--text-primary)]" id="params-title">
+          {t('checker.paramsDetected')}
+        </span>
+        <span id="params-count-badge" class="text-xs text-[var(--text-muted)] font-mono"></span>
+      </div>
+      <div class="divide-y divide-[var(--border-subtle)]" id="params-list">
+        <!-- Rows injected dynamically -->
+      </div>
+    </div>
+
+    <!-- 3. Checks Summary Grid -->
+    <div class="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4 sm:p-5 shadow-[var(--card-shadow)] space-y-3">
+      <div class="text-xs font-semibold tracking-tight text-[var(--text-muted)] uppercase">
+        {t('checker.checksTitle')}
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5" id="checks-grid">
+        <!-- Injected dynamically -->
+      </div>
+    </div>
+
+    <!-- 4. Issues & Warnings Details (Shown if warnings or errors exist) -->
+    <div id="issues-card" class="hidden rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4 sm:p-5 shadow-[var(--card-shadow)] space-y-3">
+      <div class="text-xs font-semibold tracking-tight text-[var(--text-muted)] uppercase">
+        {t('checker.issuesTitle')}
+      </div>
+      <div class="space-y-2.5" id="issues-list">
+        <!-- Injected dynamically -->
+      </div>
+    </div>
+
+    <!-- 5. Corrected URL Card (Shown only when correctedUrl is generated) -->
+    <div id="corrected-card" class="hidden rounded-xl border border-[var(--accent)]/30 bg-[var(--accent-subtle)] p-4 sm:p-5 space-y-3">
+      <div class="flex items-center justify-between">
+        <span class="text-xs font-semibold uppercase tracking-wider text-[var(--accent)]">
+          {t('checker.correctedUrlTitle')}
+        </span>
+        <button
+          type="button"
+          id="copy-corrected-btn"
+          class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[var(--text-primary)] text-[var(--bg-app)] text-xs font-medium hover:opacity-90 transition-opacity focus-ring cursor-pointer shadow-xs"
+        >
+          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+          </svg>
+          <span id="copy-btn-text">{t('checker.copyCorrected')}</span>
+        </button>
+      </div>
+      <div class="p-3 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] font-mono text-xs sm:text-sm text-[var(--text-primary)] break-all select-all" id="corrected-url-text">
+        <!-- Injected dynamically -->
+      </div>
+      <div id="correction-reasons" class="text-xs text-[var(--text-muted)] space-y-1">
+        <!-- Reasons injected dynamically -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { parseUtmUrl, validateUtmUrl } from '../../lib/utm/index.ts';
+  import type { UtmParameters } from '../../lib/utm/types.ts';
+
+  const SAMPLE_CAMPAIGN_URL = 'https://example.com/store?utm_source=google&utm_medium=cpc&utm_campaign=summer_sale&utm_content=hero_banner';
+
+  function escapeHtml(str: string): string {
+    if (!str) return '';
+    return str
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  function initChecker() {
+    const form = document.getElementById('checker-form') as HTMLFormElement | null;
+    const input = document.getElementById('checker-url-input') as HTMLInputElement | null;
+    const useExampleBtn = document.getElementById('use-example-btn') as HTMLButtonElement | null;
+    const clearBtn = document.getElementById('clear-btn') as HTMLButtonElement | null;
+    const emptyCard = document.getElementById('empty-state-card') as HTMLElement | null;
+    const resultsContainer = document.getElementById('results-container') as HTMLElement | null;
+
+    const statusCard = document.getElementById('status-card') as HTMLElement | null;
+    const statusIcon = document.getElementById('status-icon') as HTMLElement | null;
+    const statusHeadline = document.getElementById('status-headline') as HTMLElement | null;
+    const statusSubtext = document.getElementById('status-subtext') as HTMLElement | null;
+    const statusBadge = document.getElementById('status-badge') as HTMLElement | null;
+
+    const paramsCountBadge = document.getElementById('params-count-badge') as HTMLElement | null;
+    const paramsList = document.getElementById('params-list') as HTMLElement | null;
+    const checksGrid = document.getElementById('checks-grid') as HTMLElement | null;
+
+    const issuesCard = document.getElementById('issues-card') as HTMLElement | null;
+    const issuesList = document.getElementById('issues-list') as HTMLElement | null;
+
+    const correctedCard = document.getElementById('corrected-card') as HTMLElement | null;
+    const correctedUrlText = document.getElementById('corrected-url-text') as HTMLElement | null;
+    const copyCorrectedBtn = document.getElementById('copy-corrected-btn') as HTMLButtonElement | null;
+    const copyBtnText = document.getElementById('copy-btn-text') as HTMLElement | null;
+    const correctionReasons = document.getElementById('correction-reasons') as HTMLElement | null;
+
+    if (!form || !input || !resultsContainer || !emptyCard || !clearBtn) return;
+    if (!statusCard || !statusIcon || !statusHeadline || !statusSubtext || !statusBadge) return;
+    if (!paramsCountBadge || !paramsList || !checksGrid || !issuesCard || !issuesList) return;
+    if (!correctedCard || !correctedUrlText || !correctionReasons) return;
+
+    // TypeScript narrowed aliases
+    const elStatusCard = statusCard;
+    const elStatusIcon = statusIcon;
+    const elStatusHeadline = statusHeadline;
+    const elStatusSubtext = statusSubtext;
+    const elStatusBadge = statusBadge;
+    const elParamsCountBadge = paramsCountBadge;
+    const elParamsList = paramsList;
+    const elChecksGrid = checksGrid;
+    const elIssuesCard = issuesCard;
+    const elIssuesList = issuesList;
+    const elCorrectedCard = correctedCard;
+    const elCorrectedUrlText = correctedUrlText;
+    const elCorrectionReasons = correctionReasons;
+    const elEmptyCard = emptyCard;
+    const elResultsContainer = resultsContainer;
+    const elClearBtn = clearBtn;
+
+    function renderResults(rawUrl: string) {
+      const trimmed = rawUrl.trim();
+      if (!trimmed) {
+        elEmptyCard.classList.remove('hidden');
+        elResultsContainer.classList.add('hidden');
+        elClearBtn.classList.add('hidden');
+        return;
+      }
+
+      elClearBtn.classList.remove('hidden');
+      elEmptyCard.classList.add('hidden');
+      elResultsContainer.classList.remove('hidden');
+
+      const parsed = parseUtmUrl(trimmed);
+      const validation = validateUtmUrl(parsed);
+
+      // 1. Overall Status Card Rendering
+      elStatusCard.className = 'rounded-xl border p-4 sm:p-5 flex items-start justify-between gap-4 transition-colors';
+      if (validation.overallStatus === 'valid') {
+        elStatusCard.classList.add('border-[var(--accent)]/40', 'bg-[var(--accent-subtle)]');
+        elStatusIcon.className = 'w-7 h-7 rounded-full flex items-center justify-center shrink-0 mt-0.5 bg-[var(--accent)] text-white';
+        elStatusIcon.innerHTML = `<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>`;
+        elStatusHeadline.textContent = validation.statusMessage;
+        elStatusHeadline.className = 'text-sm sm:text-base font-semibold text-[var(--accent)]';
+        elStatusSubtext.textContent = 'No structural errors or parameter collisions detected.';
+        elStatusBadge.className = 'px-2.5 py-1 rounded-full text-xs font-semibold shrink-0 bg-[var(--accent)] text-white';
+        elStatusBadge.textContent = 'PASS';
+      } else if (validation.overallStatus === 'warning') {
+        elStatusCard.classList.add('border-amber-500/40', 'bg-amber-500/10');
+        elStatusIcon.className = 'w-7 h-7 rounded-full flex items-center justify-center shrink-0 mt-0.5 bg-amber-500 text-white';
+        elStatusIcon.innerHTML = `<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>`;
+        elStatusHeadline.textContent = validation.statusMessage;
+        elStatusHeadline.className = 'text-sm sm:text-base font-semibold text-amber-500';
+        elStatusSubtext.textContent = 'The link is usable, but please review the naming/tracking suggestions below.';
+        elStatusBadge.className = 'px-2.5 py-1 rounded-full text-xs font-semibold shrink-0 bg-amber-500 text-white';
+        elStatusBadge.textContent = 'WARNING';
+      } else {
+        elStatusCard.classList.add('border-rose-500/40', 'bg-rose-500/10');
+        elStatusIcon.className = 'w-7 h-7 rounded-full flex items-center justify-center shrink-0 mt-0.5 bg-rose-500 text-white';
+        elStatusIcon.innerHTML = `<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>`;
+        elStatusHeadline.textContent = validation.statusMessage;
+        elStatusHeadline.className = 'text-sm sm:text-base font-semibold text-rose-500';
+        elStatusSubtext.textContent = 'The URL cannot be parsed reliably or contains malformed syntax.';
+        elStatusBadge.className = 'px-2.5 py-1 rounded-full text-xs font-semibold shrink-0 bg-rose-500 text-white';
+        elStatusBadge.textContent = 'ERROR';
+      }
+
+      // 2. Detected Parameters List
+      const standardKeys: Array<keyof UtmParameters> = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
+      const presentParams: Array<{
+        key: string;
+        value?: string;
+        duplicates?: string[];
+        isStandard: boolean;
+      }> = [];
+
+      for (const key of standardKeys) {
+        if (parsed.utmParams[key] !== undefined) {
+          presentParams.push({
+            key,
+            value: parsed.utmParams[key],
+            duplicates: parsed.duplicateParams[key],
+            isStandard: true,
+          });
+        }
+      }
+
+      // Also list non-UTM query parameters for transparency
+      for (const [key, vals] of Object.entries(parsed.customParams)) {
+        presentParams.push({
+          key,
+          value: vals.join(', '),
+          duplicates: vals.length > 1 ? vals : undefined,
+          isStandard: false,
+        });
+      }
+
+      elParamsCountBadge.textContent = `${presentParams.length} parameter${presentParams.length === 1 ? '' : 's'}`;
+      elParamsList.innerHTML = '';
+
+      if (presentParams.length === 0) {
+        const emptyRow = document.createElement('div');
+        emptyRow.className = 'p-4 text-xs text-[var(--text-muted)] text-center';
+        emptyRow.textContent = 'No query parameters detected in this URL.';
+        elParamsList.appendChild(emptyRow);
+      } else {
+        for (const item of presentParams) {
+          const row = document.createElement('div');
+          row.className = 'px-4 py-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs hover:bg-[var(--bg-subtle)]/50 transition-colors';
+
+          const left = document.createElement('div');
+          left.className = 'flex items-center gap-2';
+
+          const keySpan = document.createElement('span');
+          keySpan.className = item.isStandard
+            ? 'font-mono text-[var(--accent)] font-semibold'
+            : 'font-mono text-[var(--text-muted)]';
+          keySpan.textContent = item.key;
+          left.appendChild(keySpan);
+
+          if (!item.isStandard) {
+            const customTag = document.createElement('span');
+            customTag.className = 'text-[10px] px-1.5 py-0.2 rounded bg-[var(--bg-subtle)] text-[var(--text-muted)] border border-[var(--border-subtle)]';
+            customTag.textContent = 'custom';
+            left.appendChild(customTag);
+          }
+
+          if (item.duplicates && item.duplicates.length > 1) {
+            const dupTag = document.createElement('span');
+            dupTag.className = 'text-[10px] px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-400 border border-amber-500/30';
+            dupTag.textContent = `duplicate (${item.duplicates.length}x)`;
+            left.appendChild(dupTag);
+          }
+
+          const right = document.createElement('div');
+          right.className = 'font-mono text-[var(--text-primary)] break-all sm:text-right max-w-sm';
+
+          if (item.duplicates && item.duplicates.length > 1) {
+            right.textContent = item.duplicates.map(d => `"${d}"`).join(' vs ');
+          } else {
+            right.textContent = item.value || '(empty)';
+            if (!item.value) {
+              right.className += ' text-amber-400 italic';
+            }
+          }
+
+          row.appendChild(left);
+          row.appendChild(right);
+          elParamsList.appendChild(row);
+        }
+      }
+
+      // 3. Checks Summary Grid Rendering
+      elChecksGrid.innerHTML = '';
+      for (const check of validation.checks) {
+        const checkCard = document.createElement('div');
+        checkCard.className = 'p-3 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-subtle)]/40 space-y-1';
+
+        const titleDiv = document.createElement('div');
+        titleDiv.className = 'text-xs text-[var(--text-muted)] truncate';
+        titleDiv.textContent = check.title;
+
+        const valDiv = document.createElement('div');
+        valDiv.className = 'flex items-center gap-1.5 text-xs font-semibold';
+
+        if (check.status === 'pass') {
+          valDiv.className += ' text-[var(--accent)]';
+          valDiv.innerHTML = `<svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span>Pass</span>`;
+        } else if (check.status === 'warning') {
+          valDiv.className += ' text-amber-500';
+          valDiv.innerHTML = `<svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg><span>Review</span>`;
+        } else if (check.status === 'error') {
+          valDiv.className += ' text-rose-500';
+          valDiv.innerHTML = `<svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg><span>Error</span>`;
+        } else {
+          valDiv.className += ' text-[var(--text-secondary)]';
+          valDiv.innerHTML = `<span>Info</span>`;
+        }
+
+        checkCard.appendChild(titleDiv);
+        checkCard.appendChild(valDiv);
+        elChecksGrid.appendChild(checkCard);
+      }
+
+      // 4. Issues & Warnings Rendering
+      const meaningfulIssues = validation.issues.filter(i => i.severity === 'warning' || i.severity === 'error');
+      if (meaningfulIssues.length === 0) {
+        elIssuesCard.classList.add('hidden');
+      } else {
+        elIssuesCard.classList.remove('hidden');
+        elIssuesList.innerHTML = '';
+        for (const issue of meaningfulIssues) {
+          const item = document.createElement('div');
+          item.className = 'p-3 rounded-lg border text-xs space-y-1';
+
+          if (issue.severity === 'error') {
+            item.className += ' border-rose-500/30 bg-rose-500/5 text-rose-400';
+          } else {
+            item.className += ' border-amber-500/30 bg-amber-500/5 text-amber-400';
+          }
+
+          const msg = document.createElement('div');
+          msg.className = 'font-medium text-[var(--text-primary)] flex items-start gap-1.5';
+          msg.innerHTML = `<span class="shrink-0 font-bold">${issue.severity === 'error' ? '✕' : '⚠'}</span><span>${escapeHtml(issue.message)}</span>`;
+          item.appendChild(msg);
+
+          if (issue.suggestion) {
+            const sug = document.createElement('div');
+            sug.className = 'text-[var(--text-secondary)] pl-4 text-xs';
+            sug.textContent = `Recommendation: ${issue.suggestion}`;
+            item.appendChild(sug);
+          }
+
+          elIssuesList.appendChild(item);
+        }
+      }
+
+      // 5. Corrected URL Card Rendering
+      if (validation.correctedUrl && validation.correctedUrl !== trimmed) {
+        elCorrectedCard.classList.remove('hidden');
+        elCorrectedUrlText.textContent = validation.correctedUrl;
+        elCorrectionReasons.innerHTML = '';
+        for (const reason of validation.correctionReasons) {
+          const r = document.createElement('div');
+          r.className = 'flex items-center gap-1.5 text-xs text-[var(--text-secondary)]';
+          r.innerHTML = `<span class="text-[var(--accent)] font-bold">✓</span><span>${escapeHtml(reason)}</span>`;
+          elCorrectionReasons.appendChild(r);
+        }
+      } else {
+        elCorrectedCard.classList.add('hidden');
+      }
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      renderResults(input.value);
+    });
+
+    useExampleBtn?.addEventListener('click', () => {
+      if (input) {
+        input.value = SAMPLE_CAMPAIGN_URL;
+        renderResults(SAMPLE_CAMPAIGN_URL);
+        input.focus();
+      }
+    });
+
+    clearBtn?.addEventListener('click', () => {
+      if (input) {
+        input.value = '';
+        emptyCard.classList.remove('hidden');
+        resultsContainer.classList.add('hidden');
+        clearBtn.classList.add('hidden');
+        input.focus();
+      }
+    });
+
+    copyCorrectedBtn?.addEventListener('click', async () => {
+      const textToCopy = correctedUrlText?.textContent?.trim();
+      if (!textToCopy) return;
+
+      try {
+        await navigator.clipboard.writeText(textToCopy);
+        if (copyBtnText) copyBtnText.textContent = 'Copied!';
+        setTimeout(() => {
+          if (copyBtnText) copyBtnText.textContent = 'Copy corrected URL';
+        }, 2000);
+      } catch {
+        // Simple fallback
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(textToCopy).catch(() => {});
+        }
+      }
+    });
+  }
+
+  initChecker();
+  document.addEventListener('astro:after-swap', initChecker);
+</script>

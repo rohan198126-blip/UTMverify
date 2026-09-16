@@ -1,0 +1,42 @@
+---
+import RootLayout from '../../layouts/RootLayout.astro';
+import { SUPPORTED_LOCALES, type SupportedLocale } from '../../i18n/ui';
+import { useTranslations } from '../../i18n/utils';
+
+export function getStaticPaths() {
+  return SUPPORTED_LOCALES.map((locale) => ({
+    params: { locale },
+  }));
+}
+
+const { locale } = Astro.params as { locale: SupportedLocale };
+const t = useTranslations(locale);
+const canonicalPath = `/${locale}/about`;
+---
+
+<RootLayout
+  title={`${t('about.title')} — UTMVerify`}
+  description={t('about.p1')}
+  canonicalPath={canonicalPath}
+  locale={locale}
+>
+  <div class="max-w-3xl mx-auto space-y-6 text-[var(--text-primary)]">
+    <div class="space-y-1.5 text-center sm:text-left">
+      <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
+        {t('about.title')}
+      </h1>
+      <p class="text-xs sm:text-sm text-[var(--text-secondary)]">
+        {t('site.tagline')}
+      </p>
+    </div>
+
+    <div class="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 sm:p-6 space-y-3.5 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed shadow-[var(--card-shadow)]">
+      <p>
+        <strong class="text-[var(--text-primary)] font-semibold">UTMVerify</strong> {t('about.p1').replace('UTMVerify ', '')}
+      </p>
+      <p>
+        {t('about.p2')}
+      </p>
+    </div>
+  </div>
+</RootLayout>

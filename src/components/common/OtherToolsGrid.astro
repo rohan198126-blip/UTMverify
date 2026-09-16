@@ -1,0 +1,54 @@
+---
+import { useTranslations } from '../../i18n/utils';
+import type { SupportedLocale } from '../../i18n/ui';
+
+export interface Props {
+  locale?: SupportedLocale;
+  currentTool?: 'checker' | 'builder' | 'parser' | 'naming' | 'bulk';
+}
+
+const { locale = 'en', currentTool = 'checker' } = Astro.props;
+const t = useTranslations(locale);
+
+const allTools = [
+  { key: 'checker', name: t('tools.checker.name'), desc: t('tools.checker.shortDesc'), path: `/${locale}/utm-checker` },
+  { key: 'builder', name: t('tools.builder.name'), desc: t('tools.builder.shortDesc'), path: `/${locale}/utm-builder` },
+  { key: 'parser', name: t('tools.parser.name'), desc: t('tools.parser.shortDesc'), path: `/${locale}/utm-parser` },
+  { key: 'naming', name: t('tools.naming.name'), desc: t('tools.naming.shortDesc'), path: `/${locale}/utm-naming-generator` },
+  { key: 'bulk', name: t('tools.bulk.name'), desc: t('tools.bulk.shortDesc'), path: `/${locale}/bulk-utm-builder` },
+];
+
+const filteredTools = allTools.filter((tool) => tool.key !== currentTool);
+---
+
+<section class="w-full max-w-3xl mx-auto pt-8 border-t border-[var(--border-subtle)] space-y-4">
+  <div class="space-y-1">
+    <h2 class="text-sm font-semibold tracking-tight text-[var(--text-primary)]">
+      {t('otherTools.title')}
+    </h2>
+    <p class="text-xs text-[var(--text-muted)]">
+      {t('otherTools.subtitle')}
+    </p>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+    {filteredTools.map((tool) => (
+      <a
+        href={tool.path}
+        class="group p-3 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] hover:border-[var(--border-strong)] hover:bg-[var(--bg-subtle)] transition-colors focus-ring"
+      >
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-semibold text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors">
+            {tool.name}
+          </span>
+          <svg class="w-3.5 h-3.5 text-[var(--text-muted)] group-hover:text-[var(--accent)] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </div>
+        <p class="mt-1 text-xs text-[var(--text-secondary)] line-clamp-1">
+          {tool.desc}
+        </p>
+      </a>
+    ))}
+  </div>
+</section>

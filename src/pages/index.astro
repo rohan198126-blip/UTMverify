@@ -1,0 +1,38 @@
+---
+import RootLayout from '../layouts/RootLayout.astro';
+import ToolNav from '../components/common/ToolNav.astro';
+import UtmCheckerShell from '../components/tools/UtmCheckerShell.astro';
+import OtherToolsGrid from '../components/common/OtherToolsGrid.astro';
+import { useTranslations } from '../i18n/utils';
+
+const locale = 'en';
+const t = useTranslations(locale);
+---
+
+<RootLayout
+  title={t('site.title')}
+  description={t('site.description')}
+  canonicalPath="/"
+  locale={locale}
+>
+  <div class="space-y-6 sm:space-y-8">
+    <!-- Clean, compact header text -->
+    <div class="text-center pt-1 sm:pt-3 space-y-1">
+      <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-[var(--text-primary)]">
+        UTM<span class="text-[var(--accent)] font-semibold">Verify</span>
+      </h1>
+      <p class="text-xs sm:text-sm text-[var(--text-secondary)]">
+        {t('site.tagline')}
+      </p>
+    </div>
+
+    <!-- Shared Tool Navigation -->
+    <ToolNav locale={locale} activeTool="checker" />
+
+    <!-- Primary Tool: UTM Checker above the fold -->
+    <UtmCheckerShell locale={locale} isHomepage={true} />
+
+    <!-- Supporting Content: Explore Other Tools -->
+    <OtherToolsGrid locale={locale} currentTool="checker" />
+  </div>
+</RootLayout>
