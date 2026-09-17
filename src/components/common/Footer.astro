@@ -62,9 +62,12 @@ const tools = [
       </div>
     </div>
 
-    <div class="mt-6 pt-6 border-t border-[var(--border-subtle)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-[var(--text-muted)]">
-      <p>© {new Date().getFullYear()} UTMVerify. {t('footer.copyright')}</p>
-      <p>{t('footer.zeroTracking')}</p>
+    <div class="mt-6 pt-6 border-t border-[var(--border-subtle)] space-y-2 text-[var(--text-muted)]">
+      <p class="text-[11px] leading-relaxed max-w-2xl">{t('footer.disclaimer')}</p>
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 pt-1">
+        <p>© {new Date().getFullYear()} UTMVerify. {t('footer.copyright')}</p>
+        <p>{t('footer.zeroTracking')}</p>
+      </div>
     </div>
   </div>
 </footer>
