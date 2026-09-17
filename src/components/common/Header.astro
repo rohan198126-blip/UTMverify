@@ -28,12 +28,20 @@ const contactPath = `/${locale}/contact`;
 
 <header class="sticky top-0 z-40 w-full border-b border-[var(--border-subtle)] bg-[var(--bg-app)]/65 backdrop-blur-md transition-colors duration-150">
   <div class="mx-auto flex h-[52px] max-w-5xl items-center justify-between px-4 sm:px-6">
-    <!-- Brand Wordmark -->
+    <!-- Brand Wordmark & Logo -->
     <a
       href={homePath}
-      class="inline-flex items-center font-semibold tracking-tight text-[var(--text-primary)] hover:opacity-85 transition-opacity focus-ring rounded"
+      class="inline-flex items-center gap-2 font-semibold tracking-tight text-[var(--text-primary)] hover:opacity-85 transition-opacity focus-ring rounded"
       aria-label="UTMVerify home"
     >
+      <img
+        src="/utmverify-mark.svg"
+        alt=""
+        aria-hidden="true"
+        width="22"
+        height="22"
+        class="w-[22px] h-[22px] shrink-0"
+      />
       <span class="tracking-tight font-semibold text-[var(--text-primary)]">
         UTM<span class="text-[var(--accent)]">Verify</span>
       </span>
