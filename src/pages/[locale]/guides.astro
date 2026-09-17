@@ -20,39 +20,39 @@ const canonicalPath = `/${locale}/guides`;
   canonicalPath={canonicalPath}
   locale={locale}
 >
-  <div class="max-w-3xl mx-auto space-y-8 text-[var(--text-primary)]">
+  <div class="max-w-3xl mx-auto space-y-6 text-[var(--text-primary)]">
     <div class="space-y-1.5 text-center sm:text-left">
-      <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
+      <h1 class="text-[22px] sm:text-[24px] font-semibold tracking-tight text-[var(--text-primary)]">
         {t('guides.title')}
       </h1>
-      <p class="text-xs sm:text-sm text-[var(--text-secondary)]">
+      <p class="text-[13px] sm:text-[14px] text-[var(--text-secondary)]">
         {t('guides.subtitle')}
       </p>
     </div>
 
     <!-- The 5 Core Parameters -->
-    <div class="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 sm:p-6 space-y-4 text-xs sm:text-sm leading-relaxed shadow-[var(--card-shadow)]">
+    <div class="rounded-[var(--radius-lg)] border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4 sm:p-5 space-y-4 text-xs sm:text-sm leading-relaxed shadow-[var(--card-shadow)]">
       <h2 class="text-sm sm:text-base font-semibold text-[var(--text-primary)]">
         {t('guides.coreTitle')}
       </h2>
-      <div class="space-y-3.5 text-[var(--text-secondary)]">
-        <div class="p-3 rounded-lg bg-[var(--bg-subtle)]/50 border border-[var(--border-subtle)]">
+      <div class="space-y-3 text-[var(--text-secondary)]">
+        <div class="p-3 rounded-[var(--radius-md)] bg-[var(--bg-subtle)]/50 border border-[var(--border-subtle)]">
           <div class="font-mono text-[var(--accent)] font-semibold text-xs sm:text-sm">utm_source (Required)</div>
           <p class="text-xs mt-1">Identifies the specific platform, vendor, or publication sending the traffic. Examples: <code class="px-1.5 py-0.5 rounded bg-[var(--bg-surface)] border border-[var(--border-subtle)] font-mono text-[11px]">google</code>, <code class="px-1.5 py-0.5 rounded bg-[var(--bg-surface)] border border-[var(--border-subtle)] font-mono text-[11px]">newsletter</code>, <code class="px-1.5 py-0.5 rounded bg-[var(--bg-surface)] border border-[var(--border-subtle)] font-mono text-[11px]">linkedin</code>.</p>
         </div>
-        <div class="p-3 rounded-lg bg-[var(--bg-subtle)]/50 border border-[var(--border-subtle)]">
+        <div class="p-3 rounded-[var(--radius-md)] bg-[var(--bg-subtle)]/50 border border-[var(--border-subtle)]">
           <div class="font-mono text-[var(--accent)] font-semibold text-xs sm:text-sm">utm_medium (Required)</div>
           <p class="text-xs mt-1">Identifies the marketing channel or delivery medium. Examples: <code class="px-1.5 py-0.5 rounded bg-[var(--bg-surface)] border border-[var(--border-subtle)] font-mono text-[11px]">cpc</code>, <code class="px-1.5 py-0.5 rounded bg-[var(--bg-surface)] border border-[var(--border-subtle)] font-mono text-[11px]">email</code>, <code class="px-1.5 py-0.5 rounded bg-[var(--bg-surface)] border border-[var(--border-subtle)] font-mono text-[11px]">organic_social</code>, <code class="px-1.5 py-0.5 rounded bg-[var(--bg-surface)] border border-[var(--border-subtle)] font-mono text-[11px]">referral</code>.</p>
         </div>
-        <div class="p-3 rounded-lg bg-[var(--bg-subtle)]/50 border border-[var(--border-subtle)]">
+        <div class="p-3 rounded-[var(--radius-md)] bg-[var(--bg-subtle)]/50 border border-[var(--border-subtle)]">
           <div class="font-mono text-[var(--accent)] font-semibold text-xs sm:text-sm">utm_campaign (Required)</div>
           <p class="text-xs mt-1">Identifies the individual marketing campaign, seasonal offer, or product launch. Examples: <code class="px-1.5 py-0.5 rounded bg-[var(--bg-surface)] border border-[var(--border-subtle)] font-mono text-[11px]">spring_sale</code>, <code class="px-1.5 py-0.5 rounded bg-[var(--bg-surface)] border border-[var(--border-subtle)] font-mono text-[11px]">brand_awareness</code>, <code class="px-1.5 py-0.5 rounded bg-[var(--bg-surface)] border border-[var(--border-subtle)] font-mono text-[11px]">webinar_q3</code>.</p>
         </div>
-        <div class="p-3 rounded-lg bg-[var(--bg-subtle)]/50 border border-[var(--border-subtle)]">
+        <div class="p-3 rounded-[var(--radius-md)] bg-[var(--bg-subtle)]/50 border border-[var(--border-subtle)]">
           <div class="font-mono text-[var(--text-muted)] font-semibold text-xs sm:text-sm">utm_term (Optional)</div>
           <p class="text-xs mt-1">Primarily used in paid search campaigns to record target keywords or audience targeting tokens. Examples: <code class="px-1.5 py-0.5 rounded bg-[var(--bg-surface)] border border-[var(--border-subtle)] font-mono text-[11px]">running_shoes</code>, <code class="px-1.5 py-0.5 rounded bg-[var(--bg-surface)] border border-[var(--border-subtle)] font-mono text-[11px]">crm_software</code>.</p>
         </div>
-        <div class="p-3 rounded-lg bg-[var(--bg-subtle)]/50 border border-[var(--border-subtle)]">
+        <div class="p-3 rounded-[var(--radius-md)] bg-[var(--bg-subtle)]/50 border border-[var(--border-subtle)]">
           <div class="font-mono text-[var(--text-muted)] font-semibold text-xs sm:text-sm">utm_content (Optional)</div>
           <p class="text-xs mt-1">Used to differentiate creative variants, ad sizes, or link placements within the same campaign. Examples: <code class="px-1.5 py-0.5 rounded bg-[var(--bg-surface)] border border-[var(--border-subtle)] font-mono text-[11px]">hero_banner</code>, <code class="px-1.5 py-0.5 rounded bg-[var(--bg-surface)] border border-[var(--border-subtle)] font-mono text-[11px]">text_cta_button</code>.</p>
         </div>
@@ -60,7 +60,7 @@ const canonicalPath = `/${locale}/guides`;
     </div>
 
     <!-- Critical Best Practices & Pitfalls -->
-    <div class="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 sm:p-6 space-y-4 text-xs sm:text-sm leading-relaxed shadow-[var(--card-shadow)]">
+    <div class="rounded-[var(--radius-lg)] border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4 sm:p-5 space-y-4 text-xs sm:text-sm leading-relaxed shadow-[var(--card-shadow)]">
       <h2 class="text-sm sm:text-base font-semibold text-[var(--text-primary)]">
         5 Costly UTM Mistakes to Avoid
       </h2>

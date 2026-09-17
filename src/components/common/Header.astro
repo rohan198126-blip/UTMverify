@@ -26,21 +26,21 @@ const aboutPath = `/${locale}/about`;
 const contactPath = `/${locale}/contact`;
 ---
 
-<header class="sticky top-0 z-40 w-full border-b border-[var(--border-subtle)] bg-[var(--bg-app)]/70 backdrop-blur-md transition-colors duration-150">
-  <div class="mx-auto flex h-14 max-w-5xl items-center justify-between px-4 sm:px-6">
+<header class="sticky top-0 z-40 w-full border-b border-[var(--border-subtle)] bg-[var(--bg-app)]/65 backdrop-blur-md transition-colors duration-150">
+  <div class="mx-auto flex h-[52px] max-w-5xl items-center justify-between px-4 sm:px-6">
     <!-- Brand Wordmark -->
     <a
       href={homePath}
-      class="inline-flex items-center text-sm sm:text-base font-semibold tracking-tight text-[var(--text-primary)] hover:opacity-85 transition-opacity focus-ring rounded"
-      aria-label="UTMVerify"
+      class="inline-flex items-center font-semibold tracking-tight text-[var(--text-primary)] hover:opacity-85 transition-opacity focus-ring rounded"
+      aria-label="UTMVerify home"
     >
-      <span class="tracking-tight font-medium text-[var(--text-primary)]">
-        UTM<span class="text-[var(--text-secondary)] font-normal">Verify</span>
+      <span class="tracking-tight font-semibold text-[var(--text-primary)]">
+        UTM<span class="text-[var(--accent)]">Verify</span>
       </span>
     </a>
 
     <!-- Desktop Navigation -->
-    <nav class="hidden md:flex items-center gap-7 text-xs sm:text-sm font-medium text-[var(--text-secondary)]">
+    <nav class="hidden md:flex items-center gap-6 text-[13px] font-medium text-[var(--text-secondary)]">
       <!-- Tools Dropdown -->
       <div class="relative group" id="tools-dropdown-container">
         <button
@@ -56,11 +56,11 @@ const contactPath = `/${locale}/contact`;
           </svg>
         </button>
 
-        <div class="absolute left-0 top-full mt-1.5 w-52 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-1.5 shadow-lg backdrop-blur-md opacity-0 translate-y-1 invisible group-hover:opacity-100 group-hover:translate-y-0 group-hover:visible transition-all duration-150 z-50">
+        <div class="absolute left-0 top-full mt-1.5 w-52 rounded-[var(--radius-md)] border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-1.5 shadow-lg backdrop-blur-md opacity-0 translate-y-1 invisible group-hover:opacity-100 group-hover:translate-y-0 group-hover:visible transition-all duration-150 z-50">
           {tools.map((tool) => (
             <a
               href={tool.path}
-              class={`block rounded-md px-3 py-2 text-xs font-medium transition-colors ${
+              class={`block rounded-[var(--radius-sm)] px-3 py-2 text-[13px] font-medium transition-colors ${
                 currentPath === tool.path
                   ? 'bg-[var(--accent-subtle)] text-[var(--accent)] font-semibold'
                   : 'text-[var(--text-secondary)] hover:bg-[var(--bg-subtle)] hover:text-[var(--text-primary)]'
@@ -74,21 +74,21 @@ const contactPath = `/${locale}/contact`;
 
       <a
         href={guidesPath}
-        class={`py-1 transition-colors hover:text-[var(--text-primary)] ${currentPath === guidesPath ? 'text-[var(--text-primary)] font-semibold' : ''}`}
+        class={`py-1 transition-colors hover:text-[var(--text-primary)] focus-ring rounded px-1 ${currentPath === guidesPath ? 'text-[var(--text-primary)] font-semibold' : ''}`}
       >
         {t('nav.guides')}
       </a>
 
       <a
         href={aboutPath}
-        class={`py-1 transition-colors hover:text-[var(--text-primary)] ${currentPath === aboutPath ? 'text-[var(--text-primary)] font-semibold' : ''}`}
+        class={`py-1 transition-colors hover:text-[var(--text-primary)] focus-ring rounded px-1 ${currentPath === aboutPath ? 'text-[var(--text-primary)] font-semibold' : ''}`}
       >
         {t('nav.about')}
       </a>
 
       <a
         href={contactPath}
-        class={`py-1 transition-colors hover:text-[var(--text-primary)] ${currentPath === contactPath ? 'text-[var(--text-primary)] font-semibold' : ''}`}
+        class={`py-1 transition-colors hover:text-[var(--text-primary)] focus-ring rounded px-1 ${currentPath === contactPath ? 'text-[var(--text-primary)] font-semibold' : ''}`}
       >
         {t('nav.contact')}
       </a>
@@ -103,7 +103,7 @@ const contactPath = `/${locale}/contact`;
         type="button"
         id="mobile-menu-btn"
         aria-label={t('nav.menu')}
-        class="inline-flex md:hidden items-center justify-center w-9 h-9 rounded-md border border-[var(--border-subtle)] bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--border-strong)] transition-colors focus-ring cursor-pointer"
+        class="inline-flex md:hidden items-center justify-center w-9 h-9 rounded-[var(--radius-md)] border border-[var(--border-subtle)] bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--border-strong)] transition-colors focus-ring cursor-pointer"
       >
         <svg id="hamburger-icon" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -120,14 +120,14 @@ const contactPath = `/${locale}/contact`;
     id="mobile-menu"
     class="hidden md:hidden border-t border-[var(--border-subtle)] bg-[var(--bg-app)] px-4 py-4 transition-all"
   >
-    <div class="flex flex-col space-y-2 text-sm">
-      <div class="pb-1 text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
+    <div class="flex flex-col space-y-1 text-sm">
+      <div class="pb-1.5 text-[11px] font-semibold uppercase tracking-wider text-[var(--text-muted)]">
         {t('nav.tools')}
       </div>
       {tools.map((tool) => (
         <a
           href={tool.path}
-          class={`flex items-center justify-between rounded-md px-3 py-2 text-sm transition-colors ${
+          class={`flex items-center justify-between rounded-[var(--radius-md)] px-3 py-2 text-sm transition-colors ${
             currentPath === tool.path
               ? 'bg-[var(--accent-subtle)] text-[var(--accent)] font-semibold'
               : 'text-[var(--text-secondary)] hover:bg-[var(--bg-surface)] hover:text-[var(--text-primary)]'
@@ -139,19 +139,19 @@ const contactPath = `/${locale}/contact`;
       <div class="my-2 border-t border-[var(--border-subtle)]"></div>
       <a
         href={guidesPath}
-        class="px-3 py-2 text-sm text-[var(--text-secondary)] hover:bg-[var(--bg-surface)] hover:text-[var(--text-primary)] rounded-md transition-colors"
+        class="px-3 py-2 text-sm text-[var(--text-secondary)] hover:bg-[var(--bg-surface)] hover:text-[var(--text-primary)] rounded-[var(--radius-md)] transition-colors"
       >
         {t('nav.guides')}
       </a>
       <a
         href={aboutPath}
-        class="px-3 py-2 text-sm text-[var(--text-secondary)] hover:bg-[var(--bg-surface)] hover:text-[var(--text-primary)] rounded-md transition-colors"
+        class="px-3 py-2 text-sm text-[var(--text-secondary)] hover:bg-[var(--bg-surface)] hover:text-[var(--text-primary)] rounded-[var(--radius-md)] transition-colors"
       >
         {t('nav.about')}
       </a>
       <a
         href={contactPath}
-        class="px-3 py-2 text-sm text-[var(--text-secondary)] hover:bg-[var(--bg-surface)] hover:text-[var(--text-primary)] rounded-md transition-colors"
+        class="px-3 py-2 text-sm text-[var(--text-secondary)] hover:bg-[var(--bg-surface)] hover:text-[var(--text-primary)] rounded-[var(--radius-md)] transition-colors"
       >
         {t('nav.contact')}
       </a>

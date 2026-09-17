@@ -20,20 +20,20 @@ const canonicalPath = `/${locale}/about`;
   canonicalPath={canonicalPath}
   locale={locale}
 >
-  <div class="max-w-3xl mx-auto space-y-8 text-[var(--text-primary)]">
+  <div class="max-w-3xl mx-auto space-y-6 text-[var(--text-primary)]">
     <div class="space-y-1.5 text-center sm:text-left">
-      <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
+      <h1 class="text-[22px] sm:text-[24px] font-semibold tracking-tight text-[var(--text-primary)]">
         {t('about.title')}
       </h1>
-      <p class="text-xs sm:text-sm text-[var(--text-secondary)]">
+      <p class="text-[13px] sm:text-[14px] text-[var(--text-secondary)]">
         {t('site.tagline')}
       </p>
     </div>
 
     <!-- Core Mission & Privacy Architecture -->
-    <div class="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 sm:p-6 space-y-4 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed shadow-[var(--card-shadow)]">
-      <h2 class="text-sm sm:text-base font-semibold text-[var(--text-primary)]">
-        Mission & Philosophy
+    <div class="rounded-[var(--radius-lg)] border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4 sm:p-5 space-y-3 text-[13px] text-[var(--text-secondary)] leading-relaxed shadow-[var(--card-shadow)]">
+      <h2 class="text-[13px] font-semibold text-[var(--text-primary)]">
+        Mission &amp; Philosophy
       </h2>
       <p>
         <strong class="text-[var(--text-primary)] font-semibold">UTMVerify</strong> {t('about.p1').replace('UTMVerify ', '')}
@@ -44,12 +44,12 @@ const canonicalPath = `/${locale}/about`;
     </div>
 
     <!-- Architecture & Principles -->
-    <div class="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 sm:p-6 space-y-4 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed shadow-[var(--card-shadow)]">
-      <h2 class="text-sm sm:text-base font-semibold text-[var(--text-primary)]">
-        Architecture & Standards Compliance
+    <div class="rounded-[var(--radius-lg)] border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4 sm:p-5 space-y-3 text-[13px] text-[var(--text-secondary)] leading-relaxed shadow-[var(--card-shadow)]">
+      <h2 class="text-[13px] font-semibold text-[var(--text-primary)]">
+        Architecture &amp; Standards Compliance
       </h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
-        <div class="p-3.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-subtle)]/40 space-y-1.5">
+        <div class="p-3.5 rounded-[var(--radius-md)] border border-[var(--border-subtle)] bg-[var(--bg-subtle)]/40 space-y-1.5">
           <div class="font-semibold text-[var(--text-primary)] flex items-center gap-1.5">
             <span class="w-2 h-2 rounded-full bg-[var(--color-success)]"></span>
             100% Client-Side Engine
@@ -59,7 +59,7 @@ const canonicalPath = `/${locale}/about`;
           </p>
         </div>
 
-        <div class="p-3.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-subtle)]/40 space-y-1.5">
+        <div class="p-3.5 rounded-[var(--radius-md)] border border-[var(--border-subtle)] bg-[var(--bg-subtle)]/40 space-y-1.5">
           <div class="font-semibold text-[var(--text-primary)] flex items-center gap-1.5">
             <span class="w-2 h-2 rounded-full bg-[var(--accent)]"></span>
             RFC 3986 URL Compliance
@@ -69,7 +69,7 @@ const canonicalPath = `/${locale}/about`;
           </p>
         </div>
 
-        <div class="p-3.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-subtle)]/40 space-y-1.5">
+        <div class="p-3.5 rounded-[var(--radius-md)] border border-[var(--border-subtle)] bg-[var(--bg-subtle)]/40 space-y-1.5">
           <div class="font-semibold text-[var(--text-primary)] flex items-center gap-1.5">
             <span class="w-2 h-2 rounded-full bg-[var(--accent)]"></span>
             Google Analytics Conventions
@@ -79,7 +79,7 @@ const canonicalPath = `/${locale}/about`;
           </p>
         </div>
 
-        <div class="p-3.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-subtle)]/40 space-y-1.5">
+        <div class="p-3.5 rounded-[var(--radius-md)] border border-[var(--border-subtle)] bg-[var(--bg-subtle)]/40 space-y-1.5">
           <div class="font-semibold text-[var(--text-primary)] flex items-center gap-1.5">
             <span class="w-2 h-2 rounded-full bg-[var(--color-success)]"></span>
             No Forced Registration
@@ -92,8 +92,8 @@ const canonicalPath = `/${locale}/about`;
     </div>
 
     <!-- The Tool Suite -->
-    <div class="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 sm:p-6 space-y-4 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed shadow-[var(--card-shadow)]">
-      <h2 class="text-sm sm:text-base font-semibold text-[var(--text-primary)]">
+    <div class="rounded-[var(--radius-lg)] border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4 sm:p-5 space-y-3 text-[13px] text-[var(--text-secondary)] leading-relaxed shadow-[var(--card-shadow)]">
+      <h2 class="text-[13px] font-semibold text-[var(--text-primary)]">
         The UTMVerify Utility Suite
       </h2>
       <ul class="space-y-2.5">
@@ -112,6 +112,10 @@ const canonicalPath = `/${locale}/about`;
         <li class="flex items-start gap-2">
           <strong class="text-[var(--text-primary)] font-medium shrink-0">UTM Naming Generator:</strong>
           <span>Creates standardized, lowercase campaign names adhering to consistent team conventions before generating links.</span>
+        </li>
+        <li class="flex items-start gap-2">
+          <strong class="text-[var(--text-primary)] font-medium shrink-0">Bulk UTM Builder:</strong>
+          <span>Generates tagged URLs for an entire campaign matrix at once — multiple destinations, sources, and creatives — with CSV import and export.</span>
         </li>
       </ul>
     </div>

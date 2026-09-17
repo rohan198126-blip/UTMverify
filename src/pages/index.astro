@@ -15,24 +15,19 @@ const t = useTranslations(locale);
   canonicalPath="/"
   locale={locale}
 >
-  <div class="space-y-6 sm:space-y-8">
-    <!-- Clean, compact header text -->
-    <div class="text-center pt-1 sm:pt-3 space-y-1">
-      <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-[var(--text-primary)]">
-        UTM<span class="text-[var(--accent)] font-semibold">Verify</span>
+  <div class="space-y-5">
+    <!-- Homepage Hero: Focused Utility Suite Identity -->
+    <div class="text-center space-y-1 pb-1">
+      <h1 class="text-[22px] sm:text-[24px] font-semibold tracking-tight text-[var(--text-primary)]">
+        UTM<span class="text-[var(--accent)]">Verify</span>
       </h1>
-      <p class="text-xs sm:text-sm text-[var(--text-secondary)]">
+      <p class="text-[13px] sm:text-[14px] text-[var(--text-secondary)] max-w-md mx-auto leading-relaxed">
         {t('site.tagline')}
       </p>
     </div>
 
-    <!-- Shared Tool Navigation -->
     <ToolNav locale={locale} activeTool="checker" />
-
-    <!-- Primary Tool: UTM Checker above the fold -->
     <UtmCheckerShell locale={locale} isHomepage={true} />
-
-    <!-- Supporting Content: Explore Other Tools -->
     <OtherToolsGrid locale={locale} currentTool="checker" />
   </div>
 </RootLayout>

@@ -11,36 +11,36 @@ const t = useTranslations(locale);
 ---
 
 <div class="w-full max-w-3xl mx-auto space-y-5" id="utm-parser-container">
-  <!-- Minimal Page Heading + Short Explanation -->
-  <div class="text-center space-y-1">
-    <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
+  <!-- Hero: clean floating typography, no card -->
+  <div class="text-center">
+    <h1 class="text-[23px] sm:text-[24px] font-semibold tracking-tight text-[var(--text-primary)]">
       {t('parser.heading')}
     </h1>
-    <p class="text-xs sm:text-sm text-[var(--text-secondary)] max-w-md mx-auto">
+    <p class="text-[13px] sm:text-[14px] text-[var(--text-secondary)] mt-1.5 max-w-sm mx-auto leading-relaxed">
       {t('parser.subheading')}
     </p>
   </div>
 
-  <!-- Main Input Card -->
-  <div class="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 sm:p-6 shadow-[var(--card-shadow)] space-y-4">
+  <!-- Main Input -->
+  <div class="rounded-[var(--radius-lg)] border border-[var(--border-strong)] bg-[var(--bg-surface)] p-4 sm:p-5 shadow-[var(--card-shadow)] space-y-3.5">
     <div class="space-y-1.5">
       <div class="flex items-center justify-between">
-        <label for="parser-input" class="text-xs font-semibold text-[var(--text-primary)] tracking-tight">
+        <label for="parser-input" class="text-[13px] font-medium text-[var(--text-primary)]">
           {t('parser.inputLabel')}
         </label>
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2">
           <button
             type="button"
             id="parser-example-btn"
-            class="text-[11px] font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:underline focus-ring rounded cursor-pointer transition-colors"
+            class="btn-inline focus-ring cursor-pointer"
           >
             {t('parser.useExample')}
           </button>
-          <span class="text-[var(--border-strong)] text-[10px]">·</span>
+          <span class="text-[var(--text-muted)] text-[11px]">·</span>
           <button
             type="button"
             id="parser-clear-btn"
-            class="text-[11px] font-medium text-[var(--text-muted)] hover:text-[var(--text-primary)] focus-ring rounded cursor-pointer transition-colors"
+            class="btn-inline text-[var(--text-muted)] focus-ring cursor-pointer"
           >
             {t('parser.clear')}
           </button>
@@ -55,12 +55,12 @@ const t = useTranslations(locale);
           spellcheck="false"
           autocomplete="off"
           placeholder={t('parser.inputPlaceholder')}
-          class="flex-1 h-11 sm:h-12 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] px-4 text-xs sm:text-sm font-mono text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:border-[var(--border-focus)] focus:ring-1 focus:ring-[var(--border-focus)] focus:outline-none transition-colors"
+          class="input-field flex-1 h-10 sm:h-11 focus-ring"
         />
         <button
           type="button"
           id="parser-submit-btn"
-          class="inline-flex items-center justify-center gap-1.5 h-11 sm:h-12 px-5 rounded-lg bg-[var(--text-primary)] text-[var(--bg-app)] text-xs sm:text-sm font-semibold hover:opacity-90 focus-ring transition-opacity cursor-pointer shrink-0"
+          class="btn-primary h-10 sm:h-11 px-5 text-[13px] focus-ring cursor-pointer shrink-0"
         >
           <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
@@ -71,160 +71,151 @@ const t = useTranslations(locale);
     </div>
   </div>
 
-  <!-- Initial / Empty State -->
+  <!-- Initial / Empty State — compact, no border -->
   <div
     id="parser-empty-state"
-    class="rounded-xl border border-dashed border-[var(--border-subtle)] bg-[var(--bg-surface)]/40 p-8 text-center space-y-2"
+    class="py-6 text-center"
   >
-    <div class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[var(--bg-subtle)] text-[var(--text-secondary)] mb-1">
-      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
-      </svg>
-    </div>
-    <div class="text-sm font-semibold text-[var(--text-primary)]">{t('parser.emptyTitle')}</div>
-    <p class="text-xs text-[var(--text-secondary)] max-w-md mx-auto leading-relaxed">
+    <svg class="w-5 h-5 mx-auto mb-2 text-[var(--text-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+    </svg>
+    <div class="text-xs font-semibold uppercase tracking-wider text-[var(--text-secondary)]">{t('parser.emptyTitle')}</div>
+    <p class="text-xs text-[var(--text-muted)] mt-0.5 max-w-xs mx-auto leading-relaxed">
       {t('parser.emptyDesc')}
     </p>
   </div>
 
-  <!-- Results Section (Populated dynamically) -->
-  <div id="parser-results" class="hidden space-y-4">
-    
-    <!-- 1. URL Overview Card -->
-    <div class="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 sm:p-6 shadow-[var(--card-shadow)] space-y-4">
-      <div class="flex items-center justify-between pb-2 border-b border-[var(--border-subtle)]">
-        <span class="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
-          {t('parser.overview')}
-        </span>
-        <button
-          type="button"
-          id="copy-dest-btn"
-          class="inline-flex items-center gap-1 text-[11px] font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] focus-ring rounded cursor-pointer transition-colors"
-          data-label-default={t('parser.copyDestination')}
-          data-label-copied={t('parser.copied')}
-        >
-          <svg class="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
-          </svg>
-          <span id="copy-dest-label">{t('parser.copyDestination')}</span>
-        </button>
-      </div>
+  <!--
+    Results — unified workspace card.
+    All sections flow top-to-bottom with internal dividers.
+    The eye doesn't have to jump between separate card borders.
+  -->
+  <div id="parser-results" class="hidden">
+    <div class="rounded-[var(--radius-lg)] border border-[var(--border-subtle)] bg-[var(--bg-surface)] shadow-[var(--card-shadow)] overflow-hidden">
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs" id="overview-grid">
-        <!-- Injected via client script -->
-      </div>
-    </div>
-
-    <!-- 2. Duplicate Parameters Warning (if present) -->
-    <div
-      id="duplicates-card"
-      class="hidden rounded-xl border border-amber-500/30 bg-amber-500/5 p-4 space-y-2 text-xs"
-    >
-      <div class="flex items-center gap-2 font-semibold text-amber-500">
-        <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-        </svg>
-        <span>{t('parser.duplicates')}</span>
-      </div>
-      <div id="duplicates-list" class="space-y-1.5 font-mono text-[11px] text-[var(--text-secondary)] pl-6">
-        <!-- Injected via client script -->
-      </div>
-    </div>
-
-    <!-- 3. Standard UTM Parameters Card -->
-    <div
-      id="utm-card"
-      class="hidden rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 sm:p-6 shadow-[var(--card-shadow)] space-y-3"
-    >
-      <div class="flex items-center justify-between pb-2 border-b border-[var(--border-subtle)]">
-        <div class="flex items-center gap-2">
-          <span class="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
-            {t('parser.utmParameters')}
-          </span>
-          <span id="utm-count-badge" class="px-1.5 py-0.5 rounded text-[10px] font-mono bg-[var(--bg-subtle)] text-[var(--accent)] font-semibold">
-            0
-          </span>
+      <!-- 1. URL Overview -->
+      <div class="px-4 sm:px-5 pt-4 sm:pt-5 pb-4">
+        <div class="flex items-center justify-between mb-3">
+          <span class="label-caps">{t('parser.overview')}</span>
+          <button
+            type="button"
+            id="copy-dest-btn"
+            class="btn-ghost h-7 px-2 text-[11px] focus-ring cursor-pointer"
+            data-label-default={t('parser.copyDestination')}
+            data-label-copied={t('parser.copied')}
+          >
+            <svg class="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+            </svg>
+            <span id="copy-dest-label">{t('parser.copyDestination')}</span>
+          </button>
         </div>
-        <button
-          type="button"
-          id="copy-utm-btn"
-          class="inline-flex items-center gap-1 text-[11px] font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] focus-ring rounded cursor-pointer transition-colors"
-          data-label-default={t('parser.copyUtm')}
-          data-label-copied={t('parser.copied')}
-        >
-          <svg class="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
-          </svg>
-          <span id="copy-utm-label">{t('parser.copyUtm')}</span>
-        </button>
-      </div>
-
-      <div class="overflow-x-auto">
-        <table class="w-full text-left text-xs font-mono">
-          <thead>
-            <tr class="border-b border-[var(--border-subtle)] text-[var(--text-muted)] text-[11px]">
-              <th class="py-2 pr-4 font-medium w-1/3">{t('parser.paramCol')}</th>
-              <th class="py-2 font-medium">{t('parser.valueCol')}</th>
-            </tr>
-          </thead>
-          <tbody id="utm-tbody" class="divide-y divide-[var(--border-subtle)]/50">
-            <!-- Injected via client script -->
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- 4. Other Query Parameters Card -->
-    <div
-      id="custom-card"
-      class="hidden rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 sm:p-6 shadow-[var(--card-shadow)] space-y-3"
-    >
-      <div class="flex items-center justify-between pb-2 border-b border-[var(--border-subtle)]">
-        <div class="flex items-center gap-2">
-          <span class="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
-            {t('parser.otherParameters')}
-          </span>
-          <span id="custom-count-badge" class="px-1.5 py-0.5 rounded text-[10px] font-mono bg-[var(--bg-subtle)] text-[var(--text-secondary)] font-semibold">
-            0
-          </span>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-[13px]" id="overview-grid">
+          <!-- Injected via client script -->
         </div>
-        <button
-          type="button"
-          id="copy-all-btn"
-          class="inline-flex items-center gap-1 text-[11px] font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] focus-ring rounded cursor-pointer transition-colors"
-          data-label-default={t('parser.copyAll')}
-          data-label-copied={t('parser.copied')}
-        >
+      </div>
+
+      <!-- Duplicate Parameters Warning (inline, inside card) -->
+      <div
+        id="duplicates-card"
+        class="hidden mx-4 sm:mx-5 mb-4 p-3 rounded-[var(--radius-md)] border border-amber-500/25 bg-amber-500/6 text-[13px]"
+      >
+        <div class="flex items-center gap-2 font-semibold text-amber-500 mb-2">
           <svg class="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
           </svg>
-          <span id="copy-all-label">{t('parser.copyAll')}</span>
-        </button>
+          <span>{t('parser.duplicates')}</span>
+        </div>
+        <div id="duplicates-list" class="space-y-1 font-mono text-[11px] text-[var(--text-secondary)] pl-5">
+          <!-- Injected via client script -->
+        </div>
       </div>
 
-      <div class="overflow-x-auto">
-        <table class="w-full text-left text-xs font-mono">
-          <thead>
-            <tr class="border-b border-[var(--border-subtle)] text-[var(--text-muted)] text-[11px]">
-              <th class="py-2 pr-4 font-medium w-1/3">{t('parser.paramCol')}</th>
-              <th class="py-2 font-medium">{t('parser.valueCol')}</th>
-            </tr>
-          </thead>
-          <tbody id="custom-tbody" class="divide-y divide-[var(--border-subtle)]/50">
-            <!-- Injected via client script -->
-          </tbody>
-        </table>
+      <!-- 2. Standard UTM Parameters — divider separated -->
+      <div id="utm-card" class="hidden border-t border-[var(--border-subtle)]">
+        <div class="px-4 sm:px-5 py-3.5">
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2">
+              <span class="label-caps">{t('parser.utmParameters')}</span>
+              <span id="utm-count-badge" class="px-1.5 py-0.5 rounded-[var(--radius-sm)] text-[10px] font-mono bg-[var(--accent-subtle)] text-[var(--accent)] font-semibold">0</span>
+            </div>
+            <button
+              type="button"
+              id="copy-utm-btn"
+              class="btn-ghost h-7 px-2 text-[11px] focus-ring cursor-pointer"
+              data-label-default={t('parser.copyUtm')}
+              data-label-copied={t('parser.copied')}
+            >
+              <svg class="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+              </svg>
+              <span id="copy-utm-label">{t('parser.copyUtm')}</span>
+            </button>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-[13px] font-mono">
+              <thead>
+                <tr class="border-b border-[var(--border-subtle)] text-[var(--text-muted)] text-[11px]">
+                  <th class="py-2 pr-4 font-medium w-1/3">{t('parser.paramCol')}</th>
+                  <th class="py-2 font-medium">{t('parser.valueCol')}</th>
+                </tr>
+              </thead>
+              <tbody id="utm-tbody" class="divide-y divide-[var(--border-subtle)]/50">
+                <!-- Injected via client script -->
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <!-- 5. No Parameters Fallback -->
-    <div
-      id="no-params-card"
-      class="hidden rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 text-center text-xs text-[var(--text-secondary)]"
-    >
-      {t('parser.noParameters')}
-    </div>
+      <!-- 3. Other Query Parameters — divider separated -->
+      <div id="custom-card" class="hidden border-t border-[var(--border-subtle)]">
+        <div class="px-4 sm:px-5 py-3.5">
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2">
+              <span class="label-caps">{t('parser.otherParameters')}</span>
+              <span id="custom-count-badge" class="px-1.5 py-0.5 rounded-[var(--radius-sm)] text-[10px] font-mono bg-[var(--bg-subtle)] text-[var(--text-secondary)] font-semibold">0</span>
+            </div>
+            <button
+              type="button"
+              id="copy-all-btn"
+              class="btn-ghost h-7 px-2 text-[11px] focus-ring cursor-pointer"
+              data-label-default={t('parser.copyAll')}
+              data-label-copied={t('parser.copied')}
+            >
+              <svg class="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+              </svg>
+              <span id="copy-all-label">{t('parser.copyAll')}</span>
+            </button>
+          </div>
 
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-[13px] font-mono">
+              <thead>
+                <tr class="border-b border-[var(--border-subtle)] text-[var(--text-muted)] text-[11px]">
+                  <th class="py-2 pr-4 font-medium w-1/3">{t('parser.paramCol')}</th>
+                  <th class="py-2 font-medium">{t('parser.valueCol')}</th>
+                </tr>
+              </thead>
+              <tbody id="custom-tbody" class="divide-y divide-[var(--border-subtle)]/50">
+                <!-- Injected via client script -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. No Parameters Fallback -->
+      <div
+        id="no-params-card"
+        class="hidden px-4 sm:px-5 py-5 text-center text-[13px] text-[var(--text-secondary)] border-t border-[var(--border-subtle)]"
+      >
+        {t('parser.noParameters')}
+      </div>
+
+    </div>
   </div>
 </div>
 
@@ -306,7 +297,7 @@ const t = useTranslations(locale);
 
         for (const item of items) {
           const div = document.createElement('div');
-          div.className = `p-3 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-subtle)]/40 flex flex-col justify-between gap-1 ${
+          div.className = `p-3 rounded-[var(--radius-md)] border border-[var(--border-subtle)] bg-[var(--bg-subtle)]/40 flex flex-col justify-between gap-1 ${
             item.fullWidth ? 'sm:col-span-2' : ''
           }`;
 
@@ -315,7 +306,7 @@ const t = useTranslations(locale);
           lbl.textContent = item.label;
 
           const val = document.createElement('span');
-          val.className = `text-xs text-[var(--text-primary)] break-all select-all ${item.isMono ? 'font-mono' : 'font-semibold'}`;
+          val.className = `text-[13px] text-[var(--text-primary)] break-all select-all ${item.isMono ? 'font-mono' : 'font-semibold'}`;
           val.textContent = item.value;
 
           div.appendChild(lbl);
@@ -500,4 +491,3 @@ const t = useTranslations(locale);
   initParser();
   document.addEventListener('astro:after-swap', initParser);
 </script>
-

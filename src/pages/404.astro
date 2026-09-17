@@ -24,10 +24,10 @@ const tools = [
       <div class="text-6xl sm:text-7xl font-extrabold font-mono text-[var(--accent)] tracking-tight">
         {t('404.heading')}
       </div>
-      <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
+      <h1 class="text-[22px] sm:text-[24px] font-semibold tracking-tight text-[var(--text-primary)]">
         {t('404.subheading')}
       </h1>
-      <p class="text-xs sm:text-sm text-[var(--text-secondary)] max-w-md mx-auto leading-relaxed">
+      <p class="text-[13px] sm:text-[14px] text-[var(--text-secondary)] max-w-md mx-auto leading-relaxed">
         {t('404.message')}
       </p>
     </div>
@@ -35,7 +35,7 @@ const tools = [
     <div class="pt-2">
       <a
         href="/en/"
-        class="inline-flex items-center gap-2 h-10 px-5 rounded-lg bg-[var(--text-primary)] text-[var(--bg-app)] text-xs sm:text-sm font-semibold hover:opacity-90 transition-opacity focus-ring"
+        class="btn-primary h-10 px-5 text-[13px] focus-ring cursor-pointer inline-flex items-center gap-2"
       >
         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
@@ -45,14 +45,14 @@ const tools = [
     </div>
 
     <div class="pt-8 border-t border-[var(--border-subtle)] space-y-3">
-      <div class="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
+      <div class="label-caps">
         {t('404.toolsTitle')}
       </div>
       <div class="flex flex-wrap justify-center gap-2">
         {tools.map((tool) => (
           <a
             href={tool.path}
-            class="px-3 py-1.5 rounded-md border border-[var(--border-subtle)] bg-[var(--bg-surface)] text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--border-strong)] transition-colors focus-ring"
+            class="px-3 py-1.5 rounded-[var(--radius-md)] border border-[var(--border-subtle)] bg-[var(--bg-surface)] text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--border-strong)] transition-colors focus-ring"
           >
             {tool.name}
           </a>

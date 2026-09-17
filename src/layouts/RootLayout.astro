@@ -26,18 +26,16 @@ const { title, description, canonicalPath, locale = 'en' } = Astro.props;
     />
   </head>
   <body class="bg-[var(--bg-app)] text-[var(--text-primary)] min-h-screen flex flex-col font-sans antialiased relative transition-colors duration-150">
-    <!-- Premium ambient lighting layers (dark mode) -->
+    <!-- Ambient overhead lighting (dark mode only) -->
     <div class="ambient-lighting-container" aria-hidden="true">
       <div class="ambient-light-horizon"></div>
       <div class="ambient-light-core"></div>
       <div class="ambient-light-spread"></div>
-      <div class="ambient-light-halo-left"></div>
-      <div class="ambient-light-halo-right"></div>
     </div>
 
     <Header locale={locale} currentPath={canonicalPath} />
 
-    <main class="flex-1 w-full max-w-4xl mx-auto px-4 sm:px-6 py-5 sm:py-8 z-10 space-y-8">
+    <main class="flex-1 w-full max-w-4xl mx-auto px-4 sm:px-6 py-5 sm:py-8 z-10">
       <slot />
     </main>
 
@@ -47,124 +45,91 @@ const { title, description, canonicalPath, locale = 'en' } = Astro.props;
 
 <style is:global>
   /* Focus Ring */
-  .focus-ring {
-    outline: none;
-  }
+  .focus-ring { outline: none; }
   .focus-ring:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
   }
 
-  /* Scrollbar Utility for smooth horizontal swiping */
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-  .no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
+  /* No-scrollbar utility */
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-  /* Ambient Studio Lighting System (Dark Mode) */
+  /* ------------------------------------------------------------------ */
+  /* Ambient overhead lighting — dark mode only                          */
+  /* ------------------------------------------------------------------ */
   .ambient-lighting-container {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    height: 520px;
+    height: 350px;
     overflow: hidden;
     pointer-events: none;
     z-index: 0;
   }
 
-  /* Concentrated horizon light along the top edge */
+  /*
+   * Horizon emission line — sharp, bright origin at top center.
+   */
   .ambient-light-horizon {
     position: absolute;
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 620px;
-    max-width: 85vw;
+    width: 560px;
+    max-width: 75vw;
     height: 2px;
     background: radial-gradient(
       ellipse at center,
-      rgba(255, 255, 255, 0.75) 0%,
-      rgba(255, 255, 255, 0.30) 45%,
+      rgba(255, 255, 255, 0.98) 0%,
+      rgba(255, 255, 255, 0.55) 35%,
       transparent 100%
     );
-    box-shadow: 0 0 36px 14px rgba(255, 255, 255, 0.28);
+    box-shadow: 0 0 40px 14px rgba(255, 255, 255, 0.42);
   }
 
-  /* Bright focused center light source directly at the top */
+  /*
+   * Spotlight core — downward cone originating from ceiling center.
+   * Illuminates header & hero region; clearly noticeable on dark monitors.
+   * Steep falloff keeps main workspace deep black.
+   */
   .ambient-light-core {
     position: absolute;
-    top: -40px;
+    top: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 720px;
-    max-width: 90vw;
-    height: 240px;
-    border-radius: 50%;
+    width: 580px;
+    max-width: 80vw;
+    height: 230px;
     background: radial-gradient(
-      ellipse 50% 50% at 50% 50%,
-      rgba(255, 255, 255, 0.36) 0%,
-      rgba(255, 255, 255, 0.18) 35%,
-      rgba(255, 255, 255, 0.04) 65%,
+      ellipse 46% 55% at 50% 0%,
+      rgba(255, 255, 255, 0.28) 0%,
+      rgba(255, 255, 255, 0.14) 35%,
+      rgba(255, 255, 255, 0.04) 60%,
       transparent 85%
     );
-    filter: blur(32px);
+    filter: blur(26px);
   }
 
-  /* Wide atmospheric spread illuminating header and tool navigation */
+  /*
+   * Atmospheric falloff — soft ambient wash fading before main workspace.
+   */
   .ambient-light-spread {
     position: absolute;
-    top: -80px;
+    top: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 1200px;
-    max-width: 98vw;
-    height: 460px;
-    border-radius: 50%;
+    width: 780px;
+    max-width: 90vw;
+    height: 310px;
     background: radial-gradient(
-      ellipse 50% 50% at 50% 50%,
-      rgba(255, 255, 255, 0.20) 0%,
-      rgba(255, 255, 255, 0.09) 35%,
-      rgba(255, 255, 255, 0.02) 65%,
-      transparent 85%
+      ellipse 50% 45% at 50% 0%,
+      rgba(255, 255, 255, 0.13) 0%,
+      rgba(255, 255, 255, 0.04) 40%,
+      transparent 70%
     );
-    filter: blur(52px);
-  }
-
-  /* Secondary lateral ambient lights */
-  .ambient-light-halo-left {
-    position: absolute;
-    top: -60px;
-    left: calc(50% - 420px);
-    width: 500px;
-    height: 280px;
-    border-radius: 50%;
-    background: radial-gradient(
-      ellipse 50% 50% at 50% 50%,
-      rgba(255, 255, 255, 0.08) 0%,
-      rgba(255, 255, 255, 0.02) 50%,
-      transparent 80%
-    );
-    filter: blur(58px);
-  }
-
-  .ambient-light-halo-right {
-    position: absolute;
-    top: -60px;
-    right: calc(50% - 420px);
-    width: 500px;
-    height: 280px;
-    border-radius: 50%;
-    background: radial-gradient(
-      ellipse 50% 50% at 50% 50%,
-      rgba(255, 255, 255, 0.08) 0%,
-      rgba(255, 255, 255, 0.02) 50%,
-      transparent 80%
-    );
-    filter: blur(58px);
+    filter: blur(44px);
   }
 
   /* Hide ambient lights in Light Mode */

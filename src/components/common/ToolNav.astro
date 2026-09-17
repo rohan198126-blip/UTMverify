@@ -19,28 +19,48 @@ const tools = [
 ];
 ---
 
+<!--
+  Tab bar — replaces the old pill/segmented control.
+  Uses a simple bottom-border divider with tab-style active state.
+  Feels closer to VS Code / Linear than a rounded segmented control.
+-->
 <nav
   aria-label="Tool selection"
-  class="w-full max-w-3xl mx-auto mb-6 px-1 sm:px-0"
+  class="w-full max-w-3xl mx-auto mb-5"
 >
-  <div class="relative p-0.5 rounded-lg bg-[var(--bg-surface)]/60 border border-[var(--border-subtle)]">
-    <div class="flex items-center gap-0.5 overflow-x-auto no-scrollbar scroll-smooth">
-      {tools.map((tool) => {
-        const isActive = activeTool === tool.key;
-        return (
-          <a
-            href={tool.path}
-            class={`flex-1 min-w-max text-center px-3 py-1.5 rounded-md text-xs font-medium transition-colors duration-150 focus-ring whitespace-nowrap ${
-              isActive
-                ? 'bg-[var(--bg-subtle)] text-[var(--accent)] font-semibold border border-[var(--border-subtle)]'
-                : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-subtle)]/50 border border-transparent'
-            }`}
-            aria-current={isActive ? 'page' : undefined}
-          >
-            {tool.name}
-          </a>
-        );
-      })}
-    </div>
+  <div class="flex items-end overflow-x-auto no-scrollbar border-b border-[var(--border-subtle)]">
+    {tools.map((tool) => {
+      const isActive = activeTool === tool.key;
+      return (
+        <a
+          href={tool.path}
+          class={`tool-tab flex-shrink-0 px-4 pb-2.5 pt-0.5 text-[13px] font-medium whitespace-nowrap transition-colors duration-150 focus-ring relative ${
+            isActive
+              ? 'text-[var(--text-primary)] tab-active'
+              : 'text-[var(--text-muted)] hover:text-[var(--text-secondary)]'
+          }`}
+          aria-current={isActive ? 'page' : undefined}
+        >
+          {tool.name}
+        </a>
+      );
+    })}
   </div>
 </nav>
+
+<style>
+  /* Active tab: violet bottom border indicator */
+  .tool-tab.tab-active {
+    position: relative;
+  }
+  .tool-tab.tab-active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;   /* sits on top of the parent border-b */
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--accent);
+    border-radius: 2px 2px 0 0;
+  }
+</style>

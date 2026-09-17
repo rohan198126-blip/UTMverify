@@ -3,38 +3,79 @@
 @layer base {
   :root {
     color-scheme: dark;
+
+    /* Typography */
+    --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-mono: ui-monospace, 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', monospace;
+
+    /* Backgrounds */
     --bg-app: #050607;
     --bg-surface: #0e0f14;
     --bg-subtle: #14161d;
     --bg-input: #090a0d;
+
+    /* Borders */
     --border-subtle: rgba(255, 255, 255, 0.07);
     --border-strong: rgba(255, 255, 255, 0.14);
     --border-focus: rgba(167, 139, 250, 0.6);
+
+    /* Text */
     --text-primary: #f3f4f6;
     --text-secondary: #9ca3af;
     --text-muted: #606775;
+
+    /* Accent (violet) */
     --accent: #a78bfa;
     --accent-hover: #c4b5fd;
     --accent-subtle: rgba(167, 139, 250, 0.10);
+
+    /* Semantic colors — status only, never decorative */
+    --color-success: #34d399;  /* emerald-400: readable in dark UI */
+    --color-error: #f87171;    /* rose-400 */
+    --color-warning: #fbbf24;  /* amber-400 */
+
+    /* Shadows */
     --card-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.5);
+
+    /* Spacing */
+    --space-section: 2rem;
+    --space-card: 1.25rem;
+
+    /* Border radius */
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 10px;
+
+    /* Label typography */
+    --text-label: 0.6875rem;    /* 11px */
+    --tracking-label: 0.06em;
   }
 
   html.light {
     color-scheme: light;
+
     --bg-app: #f9fafb;
     --bg-surface: #ffffff;
     --bg-subtle: #f3f4f6;
     --bg-input: #ffffff;
+
     --border-subtle: rgba(0, 0, 0, 0.08);
     --border-strong: rgba(0, 0, 0, 0.16);
     --border-focus: rgba(139, 92, 246, 0.65);
+
     --text-primary: #111827;
     --text-secondary: #4b5563;
     --text-muted: #9ca3af;
+
     --accent: #7c3aed;
     --accent-hover: #6d28d9;
     --accent-subtle: rgba(124, 58, 237, 0.08);
-    --card-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
+
+    --color-success: #059669;
+    --color-error: #ef4444;
+    --color-warning: #d97706;
+
+    --card-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.08), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
   }
 
   * {
@@ -42,6 +83,7 @@
   }
 
   html {
+    font-size: 14px;
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
   }
@@ -49,7 +91,9 @@
   body {
     background-color: var(--bg-app);
     color: var(--text-primary);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: var(--font-sans);
+    font-size: 1rem;         /* 14px */
+    line-height: 1.6;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -61,7 +105,9 @@
   }
 }
 
-/* Typography & Focus Utilities */
+/* ------------------------------------------------------------------ */
+/* Focus Ring                                                           */
+/* ------------------------------------------------------------------ */
 .focus-ring {
   outline: none;
 }
@@ -70,13 +116,175 @@
   outline-offset: 2px;
 }
 
-/* Scrollbar Utility for smooth swiping on mobile */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
+/* ------------------------------------------------------------------ */
+/* Scrollbar utilities                                                  */
+/* ------------------------------------------------------------------ */
+
+/* Hide scrollbar while keeping scroll functionality */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Thin scrollbar for data tables */
+.thin-scrollbar::-webkit-scrollbar { height: 4px; width: 4px; }
+.thin-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.thin-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 2px;
 }
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+.thin-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
 }
 
+/* ------------------------------------------------------------------ */
+/* Reduced motion                                                       */
+/* ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
 
+/* ------------------------------------------------------------------ */
+/* Shared design utilities                                              */
+/* ------------------------------------------------------------------ */
+
+/* Uppercase tracking label — section headings, column headers */
+.label-caps {
+  font-size: var(--text-label);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-label);
+  color: var(--text-muted);
+}
+
+/* Monospace result display — generated URLs, output values */
+.result-mono {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;    /* 11.375px at 14px base */
+  line-height: 1.5;
+  color: var(--text-primary);
+  word-break: break-all;
+}
+
+/* Subtle horizontal divider */
+.divider {
+  border: none;
+  border-top: 1px solid var(--border-subtle);
+  margin: 0;
+}
+
+/* ------------------------------------------------------------------ */
+/* Button system                                                        */
+/* ------------------------------------------------------------------ */
+
+/* Primary — high contrast, dominant action */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  height: 2.25rem;        /* h-9 */
+  padding: 0 1rem;
+  border-radius: var(--radius-md);
+  background: var(--text-primary);
+  color: var(--bg-app);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: opacity 0.15s ease;
+  white-space: nowrap;
+}
+.btn-primary:hover { opacity: 0.88; }
+.btn-primary:disabled { opacity: 0.28; cursor: not-allowed; }
+
+/* Secondary — transparent with border */
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  height: 2.25rem;
+  padding: 0 0.875rem;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid var(--border-subtle);
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+  white-space: nowrap;
+}
+.btn-secondary:hover {
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+}
+
+/* Ghost — text only, no border, no background */
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  height: 2.25rem;
+  padding: 0 0.5rem;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: color 0.15s ease;
+  white-space: nowrap;
+}
+.btn-ghost:hover { color: var(--text-primary); }
+
+/* Inline text action — link-like, for label-row actions */
+.btn-inline {
+  background: transparent;
+  border: none;
+  padding: 0 0.25rem;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: color 0.15s ease;
+  white-space: nowrap;
+}
+.btn-inline:hover {
+  color: var(--text-primary);
+  text-decoration: underline;
+}
+
+/* ------------------------------------------------------------------ */
+/* Input field                                                          */
+/* ------------------------------------------------------------------ */
+.input-field {
+  width: 100%;
+  height: 2.5rem;          /* h-10 */
+  padding: 0 0.875rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-input);
+  color: var(--text-primary);
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.input-field::placeholder {
+  color: var(--text-muted);
+}
+.input-field:focus {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 1px var(--border-focus);
+}
