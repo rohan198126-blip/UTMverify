@@ -59,4 +59,16 @@ const tools = [
     height: 2px;
     background: var(--accent);
   }
+
+  /* Inactive and active tab contrast in Light Mode */
+  html.light .tool-tab {
+    color: #4b5563; /* medium-dark neutral gray instead of pale gray */
+  }
+  html.light .tool-tab:hover {
+    color: #111827; /* strong near-black */
+  }
+  html.light .tool-tab.tab-active {
+    color: #111827; /* strong near-black active */
+    font-weight: 600;
+  }
 </style>

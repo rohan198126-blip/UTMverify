@@ -56,6 +56,21 @@ const t = useTranslations(locale);
   </svg>
 </button>
 
+<style>
+  html.light #theme-toggle-btn {
+    border-color: rgba(0, 0, 0, 0.14);
+    color: #374151;
+    background: #ffffff;
+  }
+  html.light #theme-toggle-btn:hover {
+    border-color: rgba(0, 0, 0, 0.35);
+    color: #111827;
+  }
+  html.light #theme-toggle-btn svg {
+    color: #374151;
+  }
+</style>
+
 <script>
   function updateThemeButtonAria() {
     const btn = document.getElementById('theme-toggle-btn');

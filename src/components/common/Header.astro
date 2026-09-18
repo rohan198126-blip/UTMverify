@@ -53,7 +53,7 @@ const contactPath = `/${locale}/contact`;
       <div class="relative group" id="tools-dropdown-container">
         <button
           type="button"
-          class="inline-flex items-center gap-1.5 py-1.5 text-[var(--text-secondary)] hover:text-[#ffffff] transition-colors focus-ring rounded cursor-pointer"
+          class="nav-link inline-flex items-center gap-1.5 py-1.5 text-[var(--text-secondary)] transition-colors focus-ring rounded cursor-pointer"
           aria-haspopup="true"
           aria-expanded="false"
           id="tools-menu-button"
@@ -82,21 +82,21 @@ const contactPath = `/${locale}/contact`;
 
       <a
         href={guidesPath}
-        class={`py-1.5 transition-colors hover:text-[#ffffff] focus-ring rounded ${currentPath === guidesPath ? 'text-[#ffffff] font-medium' : 'text-[var(--text-secondary)]'}`}
+        class={`nav-link py-1.5 transition-colors focus-ring rounded ${currentPath === guidesPath ? 'active text-[var(--text-primary)] font-medium' : 'text-[var(--text-secondary)]'}`}
       >
         {t('nav.guides')}
       </a>
 
       <a
         href={aboutPath}
-        class={`py-1.5 transition-colors hover:text-[#ffffff] focus-ring rounded ${currentPath === aboutPath ? 'text-[#ffffff] font-medium' : 'text-[var(--text-secondary)]'}`}
+        class={`nav-link py-1.5 transition-colors focus-ring rounded ${currentPath === aboutPath ? 'active text-[var(--text-primary)] font-medium' : 'text-[var(--text-secondary)]'}`}
       >
         {t('nav.about')}
       </a>
 
       <a
         href={contactPath}
-        class={`py-1.5 transition-colors hover:text-[#ffffff] focus-ring rounded ${currentPath === contactPath ? 'text-[#ffffff] font-medium' : 'text-[var(--text-secondary)]'}`}
+        class={`nav-link py-1.5 transition-colors focus-ring rounded ${currentPath === contactPath ? 'active text-[var(--text-primary)] font-medium' : 'text-[var(--text-secondary)]'}`}
       >
         {t('nav.contact')}
       </a>
@@ -193,3 +193,35 @@ const contactPath = `/${locale}/contact`;
   initMobileMenu();
   document.addEventListener('astro:after-swap', initMobileMenu);
 </script>
+
+<style>
+  /* Navigation Link hover & active behavior in Dark Mode */
+  html.dark .nav-link {
+    color: var(--text-secondary);
+  }
+  html.dark .nav-link:hover {
+    color: #ffffff;
+  }
+  html.dark .nav-link.active {
+    color: #ffffff;
+  }
+
+  /* Navigation Link hover & active behavior in Light Mode */
+  html.light .nav-link {
+    color: #374151; /* strong readable gray */
+  }
+  html.light .nav-link:hover {
+    color: #111827; /* near-black on hover */
+  }
+  html.light .nav-link.active {
+    color: #111827; /* near-black active */
+    font-weight: 500;
+  }
+
+  /* Light mode header surface styling: clean, warm, solid optical contrast */
+  html.light .header-root {
+    background: rgba(255, 255, 255, 0.85) !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+  }
+</style>

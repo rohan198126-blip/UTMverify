@@ -246,8 +246,53 @@ const { title, description, canonicalPath, locale = 'en', robots } = Astro.props
     }
   }
 
-  /* Light mode completely suppresses dark studio overhead glow */
+  /* ------------------------------------------------------------------ */
+  /* Light Mode Ambient Treatment — Ultra-soft, delicate warm top sheen */
+  /* Replaces dark studio glow with a faint, clean editorial top fade   */
+  /* ------------------------------------------------------------------ */
   html.light .ambient-lighting-container {
-    display: none !important;
+    height: 480px;
+    mask-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 1) 0%,
+      rgba(0, 0, 0, 0.4) 50%,
+      transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 1) 0%,
+      rgba(0, 0, 0, 0.4) 50%,
+      transparent 100%
+    );
+  }
+
+  html.light .ambient-light-wide-canopy {
+    background: radial-gradient(
+      ellipse 70% 45% at 50% 30%,
+      rgba(0, 0, 0, 0.02) 0%,
+      rgba(0, 0, 0, 0.005) 50%,
+      transparent 85%
+    );
+    filter: blur(80px);
+    opacity: 0.6;
+  }
+
+  html.light .ambient-light-field {
+    display: none;
+  }
+
+  html.light .ambient-light-core {
+    background: radial-gradient(
+      ellipse 50% 50% at 50% 35%,
+      rgba(255, 255, 255, 0.8) 0%,
+      rgba(255, 255, 255, 0.4) 45%,
+      transparent 80%
+    );
+    filter: blur(40px);
+    opacity: 0.7;
+  }
+
+  html.light .ambient-light-spill {
+    display: none;
   }
 </style>

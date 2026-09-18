@@ -68,6 +68,26 @@ const currentLocaleInfo = LOCALES[currentLocale];
   </div>
 </div>
 
+<style>
+  html.light #lang-menu-button {
+    border-color: rgba(0, 0, 0, 0.14);
+    color: #374151;
+    background: #ffffff;
+  }
+  html.light #lang-menu-button:hover {
+    border-color: rgba(0, 0, 0, 0.35);
+    color: #111827;
+  }
+  html.light #lang-menu-button svg {
+    color: #4b5563;
+  }
+  html.light #lang-dropdown-menu {
+    border-color: rgba(0, 0, 0, 0.12);
+    background: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+</style>
+
 <script>
   function initLanguageSelector() {
     const btn = document.getElementById('lang-menu-button');

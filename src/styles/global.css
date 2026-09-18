@@ -45,27 +45,32 @@
   html.light {
     color-scheme: light;
 
-    --bg-app: #fafafa;
+    /* Backgrounds — clean, warm neutral, intentional editorial SaaS feel */
+    --bg-app: #fbfbfb;
     --bg-surface: #ffffff;
-    --bg-subtle: #f4f4f5;
+    --bg-subtle: #f3f4f6;
     --bg-input: #ffffff;
 
-    --border-hairline: rgba(0, 0, 0, 0.06);
-    --border-subtle: rgba(0, 0, 0, 0.09);
-    --border-strong: rgba(0, 0, 0, 0.16);
-    --border-focus: rgba(0, 0, 0, 0.5);
+    /* Hairline borders — crisp, visible, perfectly tailored for light surfaces */
+    --border-hairline: rgba(0, 0, 0, 0.08);
+    --border-subtle: rgba(0, 0, 0, 0.12);
+    --border-strong: rgba(0, 0, 0, 0.22);
+    --border-focus: rgba(0, 0, 0, 0.65);
 
-    --text-primary: #09090b;
-    --text-secondary: #52525b;
-    --text-muted: #a1a1aa;
+    /* Text hierarchy — high contrast, no washed-out grays */
+    --text-primary: #111827;     /* near-black for primary headlines, wordmark, input text */
+    --text-secondary: #374151;   /* dark neutral gray for navigation, labels, subheadings (WCAG AAA) */
+    --text-muted: #6b7280;       /* medium-dark gray, easily readable for secondary info (WCAG AA) */
 
-    --accent: #7c3aed;
-    --accent-hover: #6d28d9;
-    --accent-subtle: rgba(124, 58, 237, 0.06);
+    /* Functional accent — restrained violet, calibrated for high-contrast on light */
+    --accent: #6d28d9;
+    --accent-hover: #5b21b6;
+    --accent-subtle: rgba(109, 40, 217, 0.07);
 
-    --color-success: #059669;
-    --color-error: #dc2626;
-    --color-warning: #d97706;
+    /* Status semantics */
+    --color-success: #047857;
+    --color-error: #b91c1c;
+    --color-warning: #b45309;
   }
 
   * {
@@ -238,6 +243,24 @@
 }
 .input-field:focus {
   border-color: var(--border-focus);
+}
+
+/* Light mode specific input enhancement */
+html.light .input-field {
+  border-color: rgba(0, 0, 0, 0.18);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+html.light .input-field::placeholder {
+  color: #9ca3af;
+}
+html.light .input-field:focus {
+  border-color: #111827;
+  box-shadow: 0 0 0 1px #111827;
+}
+
+/* Light mode card surface depth */
+html.light .rounded-xl.border {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
 }
 
 @media (max-width: 640px) {
