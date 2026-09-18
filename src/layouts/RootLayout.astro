@@ -10,9 +10,10 @@ export interface Props {
   description?: string;
   canonicalPath?: string;
   locale?: SupportedLocale;
+  robots?: string;
 }
 
-const { title, description, canonicalPath, locale = 'en' } = Astro.props;
+const { title, description, canonicalPath, locale = 'en', robots } = Astro.props;
 ---
 
 <!doctype html>
@@ -23,19 +24,21 @@ const { title, description, canonicalPath, locale = 'en' } = Astro.props;
       description={description}
       canonicalPath={canonicalPath}
       locale={locale}
+      robots={robots}
     />
   </head>
   <body class="bg-[var(--bg-app)] text-[var(--text-primary)] min-h-screen flex flex-col font-sans antialiased relative transition-colors duration-150">
-    <!-- Ambient overhead lighting (dark mode only) -->
+    <!-- Overhead Studio Ambient Lighting (broad atmospheric ceiling light spanning across the viewport) -->
     <div class="ambient-lighting-container" aria-hidden="true">
-      <div class="ambient-light-horizon"></div>
+      <div class="ambient-light-wide-canopy"></div>
+      <div class="ambient-light-field"></div>
       <div class="ambient-light-core"></div>
-      <div class="ambient-light-spread"></div>
+      <div class="ambient-light-spill"></div>
     </div>
 
     <Header locale={locale} currentPath={canonicalPath} />
 
-    <main class="flex-1 w-full max-w-4xl mx-auto px-4 sm:px-6 py-5 sm:py-8 z-10">
+    <main class="flex-1 w-full max-w-[980px] mx-auto px-4 sm:px-6 py-8 sm:py-14 z-10">
       <slot />
     </main>
 
@@ -44,95 +47,206 @@ const { title, description, canonicalPath, locale = 'en' } = Astro.props;
 </html>
 
 <style is:global>
-  /* Focus Ring */
-  .focus-ring { outline: none; }
-  .focus-ring:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
-
-  /* No-scrollbar utility */
-  .no-scrollbar::-webkit-scrollbar { display: none; }
-  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
   /* ------------------------------------------------------------------ */
-  /* Ambient overhead lighting — dark mode only                          */
+  /* Overhead Studio Lighting — Wide Viewport Span, Zero Edge Artefact  */
+  /* Simulates a massive ceiling/studio light hanging above the website,*/
+  /* illuminating the entire top region with horizontal & vertical fade.*/
   /* ------------------------------------------------------------------ */
   .ambient-lighting-container {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    height: 350px;
+    height: 700px;
     overflow: hidden;
     pointer-events: none;
-    z-index: 0;
-  }
-
-  /*
-   * Horizon emission line — sharp, bright origin at top center.
-   */
-  .ambient-light-horizon {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 560px;
-    max-width: 75vw;
-    height: 2px;
-    background: radial-gradient(
-      ellipse at center,
-      rgba(255, 255, 255, 0.98) 0%,
-      rgba(255, 255, 255, 0.55) 35%,
+    z-index: 1;
+    /* Soft vertical mask ensuring an imperceptible fade into true black */
+    mask-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 1) 0%,
+      rgba(0, 0, 0, 0.85) 45%,
+      rgba(0, 0, 0, 0.3) 75%,
       transparent 100%
     );
-    box-shadow: 0 0 40px 14px rgba(255, 255, 255, 0.42);
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 1) 0%,
+      rgba(0, 0, 0, 0.85) 45%,
+      rgba(0, 0, 0, 0.3) 75%,
+      transparent 100%
+    );
   }
 
-  /*
-   * Spotlight core — downward cone originating from ceiling center.
-   * Illuminates header & hero region; clearly noticeable on dark monitors.
-   * Steep falloff keeps main workspace deep black.
-   */
+  /* Layer 1: Wide Canopy — Spans 90-100% of the viewport width across the header */
+  .ambient-light-wide-canopy {
+    position: absolute;
+    top: -260px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1700px;
+    max-width: 98vw;
+    height: 480px;
+    background: radial-gradient(
+      ellipse 65% 42% at 50% 45%,
+      rgba(255, 255, 255, 0.13) 0%,
+      rgba(255, 255, 255, 0.07) 35%,
+      rgba(255, 255, 255, 0.02) 65%,
+      transparent 88%
+    );
+    filter: blur(80px);
+    opacity: 0.95;
+  }
+
+  /* Layer 2: Atmospheric Mid-Field — Seamless bridge from center to sides */
+  .ambient-light-field {
+    position: absolute;
+    top: -220px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1350px;
+    max-width: 94vw;
+    height: 520px;
+    background: radial-gradient(
+      ellipse 58% 48% at 50% 42%,
+      rgba(255, 255, 255, 0.16) 0%,
+      rgba(255, 255, 255, 0.08) 35%,
+      rgba(255, 255, 255, 0.02) 68%,
+      transparent 90%
+    );
+    filter: blur(75px);
+    opacity: 0.9;
+  }
+
+  /* Layer 3: Top-Center Luminance Core — Natural brightest overhead focus */
   .ambient-light-core {
     position: absolute;
-    top: 0;
+    top: -180px;
     left: 50%;
     transform: translateX(-50%);
-    width: 580px;
-    max-width: 80vw;
-    height: 230px;
+    width: 900px;
+    max-width: 85vw;
+    height: 380px;
     background: radial-gradient(
-      ellipse 46% 55% at 50% 0%,
-      rgba(255, 255, 255, 0.28) 0%,
-      rgba(255, 255, 255, 0.14) 35%,
-      rgba(255, 255, 255, 0.04) 60%,
+      ellipse 50% 50% at 50% 45%,
+      rgba(255, 255, 255, 0.22) 0%,
+      rgba(255, 255, 255, 0.11) 40%,
+      rgba(255, 255, 255, 0.03) 70%,
       transparent 85%
     );
-    filter: blur(26px);
+    filter: blur(55px);
+    opacity: 0.95;
   }
 
-  /*
-   * Atmospheric falloff — soft ambient wash fading before main workspace.
-   */
-  .ambient-light-spread {
+  /* Layer 4: Subtle Hero Spill — Soft downward dissipation into upper hero */
+  .ambient-light-spill {
     position: absolute;
-    top: 0;
+    top: -100px;
     left: 50%;
     transform: translateX(-50%);
-    width: 780px;
-    max-width: 90vw;
-    height: 310px;
+    width: 1100px;
+    max-width: 92vw;
+    height: 620px;
     background: radial-gradient(
-      ellipse 50% 45% at 50% 0%,
-      rgba(255, 255, 255, 0.13) 0%,
-      rgba(255, 255, 255, 0.04) 40%,
-      transparent 70%
+      ellipse 50% 50% at 50% 32%,
+      rgba(255, 255, 255, 0.06) 0%,
+      rgba(255, 255, 255, 0.02) 45%,
+      transparent 75%
     );
-    filter: blur(44px);
+    filter: blur(105px);
+    opacity: 0.85;
   }
 
-  /* Hide ambient lights in Light Mode */
+  /* Header stays deep dark / near-black while transmitting the broad overhead atmosphere */
+  .header-root {
+    background: rgba(6, 7, 9, 0.70) !important;
+  }
+
+  @media (max-width: 1024px) {
+    .ambient-light-wide-canopy {
+      width: 1200px;
+      height: 420px;
+      top: -220px;
+      filter: blur(65px);
+    }
+    .ambient-light-field {
+      width: 980px;
+      height: 440px;
+      top: -180px;
+      filter: blur(60px);
+    }
+    .ambient-light-core {
+      width: 700px;
+      height: 320px;
+      top: -150px;
+      filter: blur(48px);
+    }
+    .ambient-light-spill {
+      width: 850px;
+      height: 520px;
+      top: -80px;
+      filter: blur(85px);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .ambient-lighting-container {
+      height: 500px;
+    }
+    .ambient-light-wide-canopy {
+      width: 850px;
+      height: 360px;
+      top: -190px;
+      filter: blur(55px);
+    }
+    .ambient-light-field {
+      width: 680px;
+      height: 380px;
+      top: -160px;
+      filter: blur(50px);
+    }
+    .ambient-light-core {
+      width: 520px;
+      height: 280px;
+      top: -130px;
+      filter: blur(40px);
+    }
+    .ambient-light-spill {
+      width: 620px;
+      height: 440px;
+      top: -60px;
+      filter: blur(70px);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .ambient-lighting-container {
+      height: 380px;
+    }
+    .ambient-light-wide-canopy {
+      width: 500px;
+      height: 280px;
+      top: -140px;
+      filter: blur(45px);
+    }
+    .ambient-light-field {
+      width: 420px;
+      height: 280px;
+      top: -120px;
+      filter: blur(40px);
+    }
+    .ambient-light-core {
+      width: 340px;
+      height: 220px;
+      top: -100px;
+      filter: blur(32px);
+    }
+    .ambient-light-spill {
+      display: none;
+    }
+  }
+
+  /* Light mode completely suppresses dark studio overhead glow */
   html.light .ambient-lighting-container {
     display: none !important;
   }

@@ -18,53 +18,53 @@ const tools = [
 ];
 ---
 
-<footer class="mt-auto border-t border-[var(--border-subtle)] bg-[var(--bg-app)] text-xs text-[var(--text-muted)] transition-colors duration-150">
-  <div class="mx-auto max-w-5xl px-4 py-7 sm:px-6">
+<footer class="mt-auto border-t border-[var(--border-hairline)] bg-[var(--bg-app)] text-xs text-[var(--text-muted)] transition-colors duration-150">
+  <div class="mx-auto max-w-[980px] px-4 py-10 sm:px-6 sm:py-12">
     <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-      <div class="space-y-1 max-w-sm">
-        <div class="text-[13px] font-semibold tracking-tight text-[var(--text-primary)]">
+      <div class="space-y-1.5 max-w-sm">
+        <div class="text-sm font-semibold tracking-tight text-[var(--text-primary)]">
           UTM<span class="text-[var(--accent)]">Verify</span>
         </div>
-        <p class="text-[var(--text-secondary)] leading-relaxed">
+        <p class="text-[13px] text-[var(--text-muted)] leading-relaxed">
           {t('footer.description')}
         </p>
       </div>
 
-      <div class="flex flex-col sm:items-end gap-3 text-[var(--text-secondary)]">
-        <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5">
+      <div class="flex flex-col sm:items-end gap-2.5 text-[var(--text-secondary)]">
+        <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[13px] sm:text-sm">
           {tools.map((tool) => (
             <a href={tool.path} class="hover:text-[var(--text-primary)] transition-colors">
               {tool.name}
             </a>
           ))}
         </div>
-        <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[11px] text-[var(--text-muted)]">
-          <a href={`/${locale}/guides`} class="hover:text-[var(--text-primary)] transition-colors">
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-[var(--text-muted)]">
+          <a href={`/${locale}/guides`} class="hover:text-[var(--text-secondary)] transition-colors">
             {t('nav.guides')}
           </a>
           <span>·</span>
-          <a href={`/${locale}/about`} class="hover:text-[var(--text-primary)] transition-colors">
+          <a href={`/${locale}/about`} class="hover:text-[var(--text-secondary)] transition-colors">
             {t('nav.about')}
           </a>
           <span>·</span>
-          <a href={`/${locale}/contact`} class="hover:text-[var(--text-primary)] transition-colors">
+          <a href={`/${locale}/contact`} class="hover:text-[var(--text-secondary)] transition-colors">
             {t('nav.contact')}
           </a>
           <span>·</span>
-          <a href={`/${locale}/privacy`} class="hover:text-[var(--text-primary)] transition-colors">
+          <a href={`/${locale}/privacy`} class="hover:text-[var(--text-secondary)] transition-colors">
             {t('nav.privacy')}
           </a>
           <span>·</span>
-          <a href={`/${locale}/terms`} class="hover:text-[var(--text-primary)] transition-colors">
+          <a href={`/${locale}/terms`} class="hover:text-[var(--text-secondary)] transition-colors">
             {t('nav.terms')}
           </a>
         </div>
       </div>
     </div>
 
-    <div class="mt-6 pt-6 border-t border-[var(--border-subtle)] space-y-2 text-[var(--text-muted)]">
-      <p class="text-[11px] leading-relaxed max-w-2xl">{t('footer.disclaimer')}</p>
-      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 pt-1">
+    <div class="mt-8 pt-6 border-t border-[var(--border-hairline)] space-y-2 text-[var(--text-muted)]">
+      <p class="text-[11px] leading-relaxed max-w-2xl text-[var(--text-muted)]">{t('footer.disclaimer')}</p>
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 pt-1 text-[11px]">
         <p>© {new Date().getFullYear()} UTMVerify. {t('footer.copyright')}</p>
         <p>{t('footer.zeroTracking')}</p>
       </div>

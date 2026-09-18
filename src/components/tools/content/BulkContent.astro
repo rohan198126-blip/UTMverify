@@ -1,0 +1,265 @@
+---
+// Explanatory content, bulk workflow guide, and FAQ for Bulk UTM Builder
+---
+
+<article class="w-full max-w-3xl mx-auto pt-14 sm:pt-16 mt-14 sm:mt-16 border-t border-[var(--border-hairline)] space-y-12 text-[var(--text-primary)]">
+  <!-- Introduction & Overview -->
+  <section class="space-y-4">
+    <h2 class="text-xl sm:text-2xl font-semibold tracking-[-0.02em] text-[var(--text-primary)] leading-snug">
+      What is the Bulk UTM Builder and Why Batch Tagging Matters
+    </h2>
+    <p class="text-sm text-[var(--text-secondary)] leading-relaxed">
+      The Bulk UTM Builder is a high-volume campaign link generation workspace designed for media buyers, growth marketing teams, and digital agencies managing multi-channel initiatives. Generating campaign URLs one at a time works well for occasional one-off links, but modern marketing launches typically span dozens of variations across Google Search, Meta Ads, TikTok, email segment blasts, influencer partnerships, and affiliate networks.
+    </p>
+    <p class="text-sm text-[var(--text-secondary)] leading-relaxed">
+      Historically, marketing teams attempted to manage this with complex Google Sheets or Excel spreadsheets using concatenated formulas like <code class="px-1.5 py-0.5 rounded bg-[var(--bg-subtle)] border border-[var(--border-hairline)] font-mono text-[11px]">=A2&amp;"?utm_source="&amp;B2</code>. These spreadsheets are notorious for breaking: unencoded spaces slip through, double question marks corrupt URLs, and team members accidentally overwrite fragile cell formulas. The Bulk UTM Builder provides an interactive spreadsheet editor with real-time per-row validation, channel presets, CSV import/export, and instant clipboard copying—all executing 100% locally in your web browser.
+    </p>
+  </section>
+
+  <!-- Multi-Channel Matrix Table Example -->
+  <section class="space-y-4">
+    <h2 class="text-lg sm:text-xl font-semibold tracking-[-0.015em] text-[var(--text-primary)]">
+      Example Multi-Channel Campaign Matrix
+    </h2>
+    <p class="text-sm text-[var(--text-secondary)] leading-relaxed">
+      A single product launch requires coordinated parameters across distinct distribution channels:
+    </p>
+    <div class="overflow-x-auto rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/20">
+      <table class="w-full text-left text-xs sm:text-sm border-collapse min-w-[600px]">
+        <thead>
+          <tr class="border-b border-[var(--border-hairline)] text-[var(--text-muted)] text-[11px] uppercase tracking-wider font-mono bg-[var(--bg-subtle)]/40">
+            <th class="py-2.5 px-3">Channel / Tactic</th>
+            <th class="py-2.5 px-3">utm_source</th>
+            <th class="py-2.5 px-3">utm_medium</th>
+            <th class="py-2.5 px-3">utm_campaign</th>
+            <th class="py-2.5 px-3">utm_content</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-[var(--border-hairline)] text-[12px]">
+          <tr>
+            <td class="py-2.5 px-3 font-medium text-[var(--text-primary)]">Google Search (Brand)</td>
+            <td class="py-2.5 px-3 font-mono text-[var(--accent)]">google</td>
+            <td class="py-2.5 px-3 font-mono text-[var(--accent)]">cpc</td>
+            <td class="py-2.5 px-3 font-mono text-[var(--text-secondary)]">launch_2026</td>
+            <td class="py-2.5 px-3 font-mono text-[var(--text-muted)]">brand_exact</td>
+          </tr>
+          <tr>
+            <td class="py-2.5 px-3 font-medium text-[var(--text-primary)]">Meta Reels Video Ad</td>
+            <td class="py-2.5 px-3 font-mono text-[var(--accent)]">facebook</td>
+            <td class="py-2.5 px-3 font-mono text-[var(--accent)]">paid_social</td>
+            <td class="py-2.5 px-3 font-mono text-[var(--text-secondary)]">launch_2026</td>
+            <td class="py-2.5 px-3 font-mono text-[var(--text-muted)]">video_reels_v1</td>
+          </tr>
+          <tr>
+            <td class="py-2.5 px-3 font-medium text-[var(--text-primary)]">VIP Customer Newsletter</td>
+            <td class="py-2.5 px-3 font-mono text-[var(--accent)]">newsletter</td>
+            <td class="py-2.5 px-3 font-mono text-[var(--accent)]">email</td>
+            <td class="py-2.5 px-3 font-mono text-[var(--text-secondary)]">launch_2026</td>
+            <td class="py-2.5 px-3 font-mono text-[var(--text-muted)]">cta_early_access</td>
+          </tr>
+          <tr>
+            <td class="py-2.5 px-3 font-medium text-[var(--text-primary)]">LinkedIn Sponsor Post</td>
+            <td class="py-2.5 px-3 font-mono text-[var(--accent)]">linkedin</td>
+            <td class="py-2.5 px-3 font-mono text-[var(--accent)]">cpc</td>
+            <td class="py-2.5 px-3 font-mono text-[var(--text-secondary)]">launch_2026</td>
+            <td class="py-2.5 px-3 font-mono text-[var(--text-muted)]">carousel_enterprise</td>
+          </tr>
+          <tr>
+            <td class="py-2.5 px-3 font-medium text-[var(--text-primary)]">Affiliate Partner Blast</td>
+            <td class="py-2.5 px-3 font-mono text-[var(--accent)]">affiliate_network</td>
+            <td class="py-2.5 px-3 font-mono text-[var(--accent)]">affiliate</td>
+            <td class="py-2.5 px-3 font-mono text-[var(--text-secondary)]">launch_2026</td>
+            <td class="py-2.5 px-3 font-mono text-[var(--text-muted)]">partner_exclusive</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Step-by-Step Workflow -->
+  <section class="space-y-4">
+    <h2 class="text-lg sm:text-xl font-semibold tracking-[-0.015em] text-[var(--text-primary)]">
+      Step-by-Step Bulk Campaign Workflow
+    </h2>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/30 space-y-2">
+        <span class="w-6 h-6 rounded-full bg-[var(--bg-subtle)] text-[var(--text-primary)] border border-[var(--border-subtle)] font-medium flex items-center justify-center text-xs">1</span>
+        <strong class="text-[var(--text-primary)] font-medium block text-xs sm:text-sm">Import or Add Rows</strong>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+          Paste CSV rows directly from your media plan, or click "Add Row" to construct tracking links interactively in the table.
+        </p>
+      </div>
+
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/30 space-y-2">
+        <span class="w-6 h-6 rounded-full bg-[var(--bg-subtle)] text-[var(--text-primary)] border border-[var(--border-subtle)] font-medium flex items-center justify-center text-xs">2</span>
+        <strong class="text-[var(--text-primary)] font-medium block text-xs sm:text-sm">Live Syntax Verification</strong>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+          The editor validates every row dynamically. Missing parameters, broken destination URLs, or syntax errors trigger real-time indicators.
+        </p>
+      </div>
+
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/30 space-y-2">
+        <span class="w-6 h-6 rounded-full bg-[var(--bg-subtle)] text-[var(--text-primary)] border border-[var(--border-subtle)] font-medium flex items-center justify-center text-xs">3</span>
+        <strong class="text-[var(--text-primary)] font-medium block text-xs sm:text-sm">Export to CSV or Clipboard</strong>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+          Download your verified URLs as a clean CSV spreadsheet or copy all generated links simultaneously to distribute across ad managers.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- High-Volume Tagging Pitfalls -->
+  <section class="space-y-4">
+    <h2 class="text-lg sm:text-xl font-semibold tracking-[-0.015em] text-[var(--text-primary)]">
+      Common Pitfalls in High-Volume Campaign Tagging
+    </h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/30 space-y-1.5">
+        <h3 class="font-medium text-xs sm:text-sm text-[var(--text-primary)]">Spreadsheet Formula Corruption</h3>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+          Excel and Google Sheets often drop URL encoding for special characters (&amp;, ?, #), resulting in truncated parameters when pasted into ad managers.
+        </p>
+      </div>
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/30 space-y-1.5">
+        <h3 class="font-medium text-xs sm:text-sm text-[var(--text-primary)]">Mismatched Channel Mediums</h3>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+          Using <code class="font-mono text-[11px]">utm_medium=facebook</code> instead of <code class="font-mono text-[11px]">paid_social</code> misclassifies traffic into Unassigned channel groupings in GA4 reports.
+        </p>
+      </div>
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/30 space-y-1.5">
+        <h3 class="font-medium text-xs sm:text-sm text-[var(--text-primary)]">Forgetting Creative Identifiers</h3>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+          Omitting <code class="font-mono text-[11px]">utm_content</code> across different ad variations makes it impossible to conduct statistical A/B test analysis in analytics.
+        </p>
+      </div>
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/30 space-y-1.5">
+        <h3 class="font-medium text-xs sm:text-sm text-[var(--text-primary)]">Unpublished Landing Page URLs</h3>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+          Tagging staging domains or mistyped destination slugs before pages go live results in wasted ad spend and high 404 bounce rates.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tool FAQ Section -->
+  <section class="space-y-6" id="faq">
+    <div class="space-y-2">
+      <h2 class="text-lg sm:text-xl font-semibold tracking-[-0.015em] text-[var(--text-primary)]">
+        Frequently Asked Questions About the Bulk UTM Builder
+      </h2>
+      <p class="text-xs sm:text-sm text-[var(--text-muted)]">
+        Common questions on batch generating campaign links, CSV import/export, and matrix tagging.
+      </p>
+    </div>
+
+    <div class="divide-y divide-[var(--border-hairline)] border-y border-[var(--border-hairline)]">
+      <details class="group py-4 transition-colors [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex items-center justify-between cursor-pointer font-medium text-sm text-[var(--text-primary)] select-none">
+          <span>Can I paste data directly from Google Sheets or Excel?</span>
+          <svg class="w-4 h-4 text-[var(--text-muted)] group-open:rotate-180 transition-transform duration-200 shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M19 9l-7 7-7-7" />
+          </svg>
+        </summary>
+        <div class="mt-3 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed pr-6">
+          Yes! Click the "Import CSV / Paste" button and paste tab-delimited or comma-separated rows copied directly from your spreadsheet. The builder automatically parses columns, maps parameters to appropriate fields, and populates the table editor.
+        </div>
+      </details>
+
+      <details class="group py-4 transition-colors [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex items-center justify-between cursor-pointer font-medium text-sm text-[var(--text-primary)] select-none">
+          <span>How many URLs can I generate simultaneously?</span>
+          <svg class="w-4 h-4 text-[var(--text-muted)] group-open:rotate-180 transition-transform duration-200 shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M19 9l-7 7-7-7" />
+          </svg>
+        </summary>
+        <div class="mt-3 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed pr-6">
+          Because the entire engine runs inside your local browser memory, you can comfortably generate and validate dozens or hundreds of campaign links in seconds without waiting for server responses or hitting rate limits.
+        </div>
+      </details>
+
+      <details class="group py-4 transition-colors [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex items-center justify-between cursor-pointer font-medium text-sm text-[var(--text-primary)] select-none">
+          <span>What happens if one row has an invalid destination or missing parameter?</span>
+          <svg class="w-4 h-4 text-[var(--text-muted)] group-open:rotate-180 transition-transform duration-200 shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M19 9l-7 7-7-7" />
+          </svg>
+        </summary>
+        <div class="mt-3 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed pr-6">
+          The Bulk Builder evaluates each row independently. Rows missing required parameters (<code class="font-mono text-[11px]">utm_source</code>, <code class="font-mono text-[11px]">utm_medium</code>, <code class="font-mono text-[11px]">utm_campaign</code>) or with invalid destination URLs display an "Incomplete" badge with specific error feedback, allowing you to fix issues without losing the rest of your matrix.
+        </div>
+      </details>
+
+      <details class="group py-4 transition-colors [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex items-center justify-between cursor-pointer font-medium text-sm text-[var(--text-primary)] select-none">
+          <span>Can I export my generated bulk links directly to CSV?</span>
+          <svg class="w-4 h-4 text-[var(--text-muted)] group-open:rotate-180 transition-transform duration-200 shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M19 9l-7 7-7-7" />
+          </svg>
+        </summary>
+        <div class="mt-3 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed pr-6">
+          Yes. Once your rows are verified, click "Export CSV" to immediately download a clean, spreadsheet-ready CSV file containing your original parameters alongside the final, fully-encoded tracking URLs.
+        </div>
+      </details>
+
+      <details class="group py-4 transition-colors [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex items-center justify-between cursor-pointer font-medium text-sm text-[var(--text-primary)] select-none">
+          <span>Is my marketing data secure and private when building bulk links?</span>
+          <svg class="w-4 h-4 text-[var(--text-muted)] group-open:rotate-180 transition-transform duration-200 shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M19 9l-7 7-7-7" />
+          </svg>
+        </summary>
+        <div class="mt-3 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed pr-6">
+          Completely. All CSV parsing, row validation, parameter formatting, and CSV generation occur strictly in your browser's local memory. No campaign strategies, partner names, or confidential URLs are uploaded or logged.
+        </div>
+      </details>
+    </div>
+  </section>
+</article>
+
+<!-- Structured Data for FAQ -->
+<script type="application/ld+json" is:inline set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Can I paste data directly from Google Sheets or Excel?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Click Import CSV / Paste and paste tab-delimited or comma-separated rows directly from your spreadsheet. The builder automatically parses columns and maps parameters."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How many URLs can I generate simultaneously?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Because the entire engine runs inside your local browser memory, you can comfortably generate and validate dozens or hundreds of campaign links in seconds with zero rate limits."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens if one row has an invalid destination or missing parameter?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The Bulk Builder evaluates each row independently. Rows missing required parameters or with invalid destination URLs display an Incomplete badge with specific error feedback."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I export my generated bulk links directly to CSV?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Once rows are verified, click Export CSV to immediately download a spreadsheet-ready file containing parameters and final fully-encoded URLs."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my marketing data secure and private when building bulk links?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Completely. All CSV parsing, row validation, parameter formatting, and export occur strictly in your browser local memory with no server transmission."
+      }
+    }
+  ]
+})} />

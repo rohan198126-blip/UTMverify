@@ -1,0 +1,261 @@
+---
+// Explanatory content, best practices, and FAQ for UTM Checker
+---
+
+<article class="w-full max-w-3xl mx-auto pt-14 sm:pt-16 mt-14 sm:mt-16 border-t border-[var(--border-hairline)] space-y-12 text-[var(--text-primary)]">
+  <!-- Introduction & Overview -->
+  <section class="space-y-4">
+    <h2 class="text-xl sm:text-2xl font-semibold tracking-[-0.02em] text-[var(--text-primary)] leading-snug">
+      What is the UTM Checker and Why URL Verification Matters
+    </h2>
+    <p class="text-sm text-[var(--text-secondary)] leading-relaxed">
+      A UTM Checker is an analytical validation tool designed to inspect, deconstruct, and verify campaign tracking parameters attached to website URLs. When running digital marketing campaigns across Google Ads, Meta Ads, LinkedIn, email newsletters, or affiliate channels, marketing teams rely on UTM (Urchin Tracking Module) parameters to attribute conversions and traffic sources accurately in analytics tools like Google Analytics 4 (GA4).
+    </p>
+    <p class="text-sm text-[var(--text-secondary)] leading-relaxed">
+      However, tracking links are fragile. A single misplaced question mark (<code class="px-1.5 py-0.5 rounded bg-[var(--bg-subtle)] border border-[var(--border-hairline)] font-mono text-[11px]">?</code>), unencoded whitespace, or duplicate parameter key can completely corrupt your campaign attribution. When an analytics platform cannot parse your tags, the traffic is dumped into the <strong class="text-[var(--text-primary)] font-medium">Direct</strong> or <strong class="text-[var(--text-primary)] font-medium">Unassigned</strong> channel group. This skews your return on ad spend (ROAS), blinds your attribution models, and leads to misallocated marketing budgets. The UTM Checker intercepts these issues before you spend marketing dollars.
+    </p>
+  </section>
+
+  <!-- Core Parameters Breakdown -->
+  <section class="space-y-4">
+    <h2 class="text-lg sm:text-xl font-semibold tracking-[-0.015em] text-[var(--text-primary)]">
+      The 5 Core UTM Parameters Explained
+    </h2>
+    <p class="text-sm text-[var(--text-secondary)] leading-relaxed">
+      Understanding the exact semantic role of each parameter ensures consistent attribution across reporting dashboards:
+    </p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/30 space-y-1.5">
+        <div class="font-mono text-[var(--accent)] font-medium text-xs">utm_source <span class="text-[10px] text-emerald-400 font-sans uppercase font-medium ml-1">Required</span></div>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">Identifies which platform, vendor, or search engine referred the visitor (e.g., <code class="font-mono text-[11px]">google</code>, <code class="font-mono text-[11px]">linkedin</code>, <code class="font-mono text-[11px]">newsletter</code>).</p>
+      </div>
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/30 space-y-1.5">
+        <div class="font-mono text-[var(--accent)] font-medium text-xs">utm_medium <span class="text-[10px] text-emerald-400 font-sans uppercase font-medium ml-1">Required</span></div>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">Specifies the marketing channel or transmission mechanism (e.g., <code class="font-mono text-[11px]">cpc</code>, <code class="font-mono text-[11px]">email</code>, <code class="font-mono text-[11px]">organic_social</code>, <code class="font-mono text-[11px]">banner</code>).</p>
+      </div>
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/30 space-y-1.5">
+        <div class="font-mono text-[var(--accent)] font-medium text-xs">utm_campaign <span class="text-[10px] text-emerald-400 font-sans uppercase font-medium ml-1">Required</span></div>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">Designates the specific marketing initiative, seasonal offer, or product launch (e.g., <code class="font-mono text-[11px]">q4_promo</code>, <code class="font-mono text-[11px]">black_friday</code>, <code class="font-mono text-[11px]">brand_awareness</code>).</p>
+      </div>
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/30 space-y-1.5">
+        <div class="font-mono text-[var(--text-secondary)] font-medium text-xs">utm_term <span class="text-[10px] text-[var(--text-muted)] font-sans uppercase ml-1">Optional</span></div>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">Captures paid search keywords, audience identifiers, or specific targeting segments (e.g., <code class="font-mono text-[11px]">crm_software</code>, <code class="font-mono text-[11px]">retargeting_30d</code>).</p>
+      </div>
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/30 space-y-1.5 sm:col-span-2">
+        <div class="font-mono text-[var(--text-secondary)] font-medium text-xs">utm_content <span class="text-[10px] text-[var(--text-muted)] font-sans uppercase ml-1">Optional</span></div>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">Differentiates creative formats, copy variations, or link positions pointing to the same destination URL (e.g., <code class="font-mono text-[11px]">hero_cta</code>, <code class="font-mono text-[11px]">footer_link</code>, <code class="font-mono text-[11px]">video_ad_blue</code>).</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- How to Use Section -->
+  <section class="space-y-4">
+    <h2 class="text-lg sm:text-xl font-semibold tracking-[-0.015em] text-[var(--text-primary)]">
+      How to Use the UTM Checker
+    </h2>
+    <div class="space-y-3 text-sm text-[var(--text-secondary)]">
+      <div class="flex items-start gap-3.5 py-2">
+        <span class="w-6 h-6 rounded-full bg-[var(--bg-subtle)] text-[var(--text-primary)] border border-[var(--border-subtle)] font-medium flex items-center justify-center shrink-0 text-xs">1</span>
+        <div>
+          <strong class="text-[var(--text-primary)] font-medium">Paste Your Full Campaign Link:</strong>
+          <p class="text-xs text-[var(--text-muted)] mt-0.5 leading-relaxed">Insert your destination URL into the input field above. You can paste URLs with or without protocols (<code class="font-mono text-[11px]">https://</code>).</p>
+        </div>
+      </div>
+      <div class="flex items-start gap-3.5 py-2">
+        <span class="w-6 h-6 rounded-full bg-[var(--bg-subtle)] text-[var(--text-primary)] border border-[var(--border-subtle)] font-medium flex items-center justify-center shrink-0 text-xs">2</span>
+        <div>
+          <strong class="text-[var(--text-primary)] font-medium">Instant Syntax &amp; Structure Analysis:</strong>
+          <p class="text-xs text-[var(--text-muted)] mt-0.5 leading-relaxed">The checker evaluates URL structure, checks for duplicate parameters, validates character encoding, and verifies that required UTM tags exist.</p>
+        </div>
+      </div>
+      <div class="flex items-start gap-3.5 py-2">
+        <span class="w-6 h-6 rounded-full bg-[var(--bg-subtle)] text-[var(--text-primary)] border border-[var(--border-subtle)] font-medium flex items-center justify-center shrink-0 text-xs">3</span>
+        <div>
+          <strong class="text-[var(--text-primary)] font-medium">Review Issues &amp; Copy the Corrected URL:</strong>
+          <p class="text-xs text-[var(--text-muted)] mt-0.5 leading-relaxed">If formatting flaws are found, a recommended clean URL is generated automatically. Review the highlighted corrections and copy the verified link with one click.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 Costly UTM Errors -->
+  <section class="space-y-4">
+    <h2 class="text-lg sm:text-xl font-semibold tracking-[-0.015em] text-[var(--text-primary)]">
+      6 Critical Campaign Tracking Mistakes Detected by This Tool
+    </h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-sm">
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/20 space-y-1.5">
+        <h3 class="font-medium text-xs text-[var(--text-primary)]">1. Multiple Question Mark Delimiters</h3>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+          RFC 3986 specifies that only a single <code class="font-mono text-[11px]">?</code> may initiate a query string. Placing a second <code class="font-mono text-[11px]">?</code> breaks parsing in web servers and GA4 scripts.
+        </p>
+      </div>
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/20 space-y-1.5">
+        <h3 class="font-medium text-xs text-[var(--text-primary)]">2. Placement After URL Fragment (#)</h3>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+          Browsers treat anything after <code class="font-mono text-[11px]">#</code> as an in-page anchor and never transmit it to the server. Query parameters placed after <code class="font-mono text-[11px]">#section</code> will be ignored by analytics.
+        </p>
+      </div>
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/20 space-y-1.5">
+        <h3 class="font-medium text-xs text-[var(--text-primary)]">3. Inconsistent Letter Casing</h3>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+          Analytics engines are case-sensitive. <code class="font-mono text-[11px]">utm_source=Facebook</code> and <code class="font-mono text-[11px]">utm_source=facebook</code> are recorded as two distinct sources, fragmenting your campaign reports.
+        </p>
+      </div>
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/20 space-y-1.5">
+        <h3 class="font-medium text-xs text-[var(--text-primary)]">4. Unencoded Spaces &amp; Special Symbols</h3>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+          Raw spaces in URLs frequently break links when sent through messaging apps or email clients. Spaces must be encoded as <code class="font-mono text-[11px]">%20</code> or replaced with hyphens or underscores.
+        </p>
+      </div>
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/20 space-y-1.5">
+        <h3 class="font-medium text-xs text-[var(--text-primary)]">5. Duplicate Parameter Keys</h3>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+          Defining <code class="font-mono text-[11px]">utm_source</code> multiple times causes race conditions where analytics platforms overwrite values unpredictably depending on browser implementation.
+        </p>
+      </div>
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/20 space-y-1.5">
+        <h3 class="font-medium text-xs text-[var(--text-primary)]">6. Tagging Internal Links</h3>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+          Using UTM tags on internal links (e.g. from your homepage to your pricing page) overwrites the original acquisition source and inflates session counts, destroying attribution data.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Best Practices -->
+  <section class="space-y-4">
+    <h2 class="text-lg sm:text-xl font-semibold tracking-[-0.015em] text-[var(--text-primary)]">
+      Best Practices for Marketing Teams
+    </h2>
+    <ul class="space-y-2.5 list-disc list-inside text-sm text-[var(--text-secondary)] leading-relaxed">
+      <li><strong class="text-[var(--text-primary)] font-medium">Enforce lowercase universally:</strong> Always configure link generators to convert inputs to lowercase automatically.</li>
+      <li><strong class="text-[var(--text-primary)] font-medium">Use hyphens or underscores consistently:</strong> Select one delimiter convention across your team (e.g., <code class="font-mono text-[11px]">utm_campaign=summer-sale</code>) and document it.</li>
+      <li><strong class="text-[var(--text-primary)] font-medium">Preserve existing query parameters:</strong> When tagging URLs that already include parameters (e.g., <code class="font-mono text-[11px]">?product=42</code>), attach UTMs using <code class="font-mono text-[11px]">&amp;</code>, not another <code class="font-mono text-[11px]">?</code>.</li>
+      <li><strong class="text-[var(--text-primary)] font-medium">Keep anchors at the very end:</strong> Always place fragments such as <code class="font-mono text-[11px]">#faq</code> after all query parameters.</li>
+      <li><strong class="text-[var(--text-primary)] font-medium">Never pass personal identifiable information (PII):</strong> Do not include emails, names, or phone numbers in UTM tags, as this violates Google Analytics Terms of Service.</li>
+    </ul>
+  </section>
+
+  <!-- Tool FAQ Section — clean divider-based accordion -->
+  <section class="space-y-6 pt-4" id="faq">
+    <div class="space-y-1">
+      <h2 class="text-lg sm:text-xl font-semibold tracking-[-0.015em] text-[var(--text-primary)]">
+        Frequently Asked Questions About UTM Checking
+      </h2>
+      <p class="text-xs text-[var(--text-muted)]">
+        Answers to common questions regarding campaign URL verification and troubleshooting.
+      </p>
+    </div>
+
+    <div class="divide-y divide-[var(--border-hairline)] border-y border-[var(--border-hairline)]">
+      <details class="group py-4 transition-colors [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex items-center justify-between cursor-pointer font-medium text-sm text-[var(--text-primary)] select-none">
+          <span>Does the UTM Checker test if my destination website is live (HTTP 200)?</span>
+          <svg class="w-4 h-4 text-[var(--text-muted)] group-open:rotate-180 transition-transform duration-200 shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M19 9l-7 7-7-7" />
+          </svg>
+        </summary>
+        <div class="mt-3 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed pr-6">
+          No. Because UTMVerify operates 100% locally in your web browser for complete privacy, it analyzes URL syntax, parameter presence, RFC compliance, and encoding without sending HTTP network requests to external servers. This guarantees your confidential campaign URLs never leak.
+        </div>
+      </details>
+
+      <details class="group py-4 transition-colors [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex items-center justify-between cursor-pointer font-medium text-sm text-[var(--text-primary)] select-none">
+          <span>Why does the checker flag uppercase letters in UTM tags?</span>
+          <svg class="w-4 h-4 text-[var(--text-muted)] group-open:rotate-180 transition-transform duration-200 shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M19 9l-7 7-7-7" />
+          </svg>
+        </summary>
+        <div class="mt-3 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed pr-6">
+          Google Analytics 4 and most data warehouses treat parameter casing strictly. If one team member tags a link with <code class="font-mono text-[11px]">utm_source=Google</code> and another with <code class="font-mono text-[11px]">utm_source=google</code>, they appear as two separate acquisition sources, fracturing your session counts and conversion reports.
+        </div>
+      </details>
+
+      <details class="group py-4 transition-colors [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex items-center justify-between cursor-pointer font-medium text-sm text-[var(--text-primary)] select-none">
+          <span>Can the UTM Checker fix my broken URL automatically?</span>
+          <svg class="w-4 h-4 text-[var(--text-muted)] group-open:rotate-180 transition-transform duration-200 shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M19 9l-7 7-7-7" />
+          </svg>
+        </summary>
+        <div class="mt-3 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed pr-6">
+          Yes! Whenever the checker identifies fixable syntax errors—such as duplicate <code class="font-mono text-[11px]">?</code> delimiters, unencoded spaces, misplaced fragments (<code class="font-mono text-[11px]">#</code>), or uppercase characters—it dynamically builds a sanitized, fully corrected URL ready to be copied with a single click.
+        </div>
+      </details>
+
+      <details class="group py-4 transition-colors [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex items-center justify-between cursor-pointer font-medium text-sm text-[var(--text-primary)] select-none">
+          <span>Is my campaign URL or data sent to any third-party server?</span>
+          <svg class="w-4 h-4 text-[var(--text-muted)] group-open:rotate-180 transition-transform duration-200 shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M19 9l-7 7-7-7" />
+          </svg>
+        </summary>
+        <div class="mt-3 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed pr-6">
+          Never. All parsing, validation, error detection, and URL generation execute strictly inside your local browser memory using JavaScript. No links, query parameters, or campaign information are transmitted, stored, or logged on any server.
+        </div>
+      </details>
+
+      <details class="group py-4 transition-colors [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex items-center justify-between cursor-pointer font-medium text-sm text-[var(--text-primary)] select-none">
+          <span>Why shouldn't I use UTM parameters on internal website links?</span>
+          <svg class="w-4 h-4 text-[var(--text-muted)] group-open:rotate-180 transition-transform duration-200 shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M19 9l-7 7-7-7" />
+          </svg>
+        </summary>
+        <div class="mt-3 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed pr-6">
+          When a user navigates between internal pages that contain UTM parameters, analytics platforms record a new session and overwrite the original marketing channel that brought the visitor to your site. This destroys multi-touch attribution and inflates session counts. Use event tracking instead for internal clicks.
+        </div>
+      </details>
+    </div>
+  </section>
+</article>
+
+<!-- Structured Data for FAQ -->
+<script type="application/ld+json" is:inline set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Does the UTM Checker test if my destination website is live (HTTP 200)?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Because UTMVerify operates 100% locally in your web browser for complete privacy, it analyzes URL syntax, parameter presence, RFC compliance, and encoding without sending HTTP network requests to external servers."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does the checker flag uppercase letters in UTM tags?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Google Analytics 4 and most data warehouses treat parameter casing strictly. If one team member tags a link with utm_source=Google and another with utm_source=google, they appear as two separate acquisition sources."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can the UTM Checker fix my broken URL automatically?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Whenever the checker identifies fixable syntax errors such as duplicate ? delimiters, unencoded spaces, misplaced fragments, or uppercase characters, it dynamically builds a sanitized, fully corrected URL."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my campaign URL or data sent to any third-party server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Never. All parsing, validation, error detection, and URL generation execute strictly inside your local browser memory using JavaScript. No links or parameters are transmitted, stored, or logged."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why shouldn't I use UTM parameters on internal website links?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "When a user navigates between internal pages containing UTM parameters, analytics platforms record a new session and overwrite the original marketing acquisition channel, destroying attribution accuracy."
+      }
+    }
+  ]
+})} />

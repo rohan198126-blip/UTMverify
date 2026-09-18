@@ -11,53 +11,47 @@ const { locale = 'en', isHomepage = false } = Astro.props;
 const t = useTranslations(locale);
 ---
 
-<div class="w-full max-w-3xl mx-auto space-y-5" id="utm-checker-container">
-  {isHomepage ? (
-    <div class="flex items-center justify-between pb-0.5">
-      <span class="label-caps font-semibold text-[var(--text-secondary)]">
-        {t('tools.checker.name')}
-      </span>
-      <span class="text-[11px] text-[var(--text-muted)] font-mono">
-        100% client-side
-      </span>
-    </div>
-  ) : (
-    <div class="text-center">
-      <h1 class="text-[23px] sm:text-[24px] font-semibold tracking-tight text-[var(--text-primary)]">
+<div class="w-full max-w-[980px] mx-auto space-y-6 sm:space-y-7" id="utm-checker-container">
+  {isHomepage ? null : (
+    <div class="text-center pt-4 sm:pt-8 pb-8 sm:pb-10 max-w-2xl mx-auto">
+      <p class="text-[13px] sm:text-sm font-medium tracking-wide text-[var(--text-muted)] mb-3">
+        UTMVerify
+      </p>
+      <h1 class="text-[2.25rem] sm:text-[2.85rem] md:text-[3.25rem] font-semibold tracking-[-0.035em] text-[var(--text-primary)] leading-[1.1]">
         {t('checker.heading')}
       </h1>
-      <p class="text-[13px] sm:text-[14px] text-[var(--text-secondary)] mt-1.5 max-w-sm mx-auto leading-relaxed">
+      <p class="text-[16px] sm:text-[17px] text-[var(--text-secondary)] mt-3.5 max-w-lg mx-auto leading-relaxed font-normal">
         {t('checker.subheading')}
       </p>
     </div>
   )}
 
-  <!-- Primary URL Input & Form -->
-  <div class="rounded-[var(--radius-lg)] border border-[var(--border-strong)] bg-[var(--bg-surface)] p-4 sm:p-5 shadow-[var(--card-shadow)] space-y-3.5">
-    <form id="checker-form" class="space-y-3" novalidate>
+  <!-- Primary URL Input & Form Surface -->
+  <div class="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-6 sm:p-8 space-y-5">
+    <form id="checker-form" class="space-y-3.5" novalidate>
       <div class="flex items-center justify-between">
-        <label for="checker-url-input" class="label-caps">
+        <label for="checker-url-input" class="text-sm font-medium text-[var(--text-secondary)]">
           {t('checker.inputLabel')}
         </label>
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2.5">
           <button
             type="button"
             id="use-example-btn"
-            class="btn-inline focus-ring cursor-pointer"
+            class="btn-inline focus-ring cursor-pointer text-xs sm:text-[13px]"
           >
             {t('checker.useExample')}
           </button>
           <button
             type="button"
             id="clear-btn"
-            class="hidden btn-inline text-[var(--text-muted)] focus-ring cursor-pointer"
+            class="hidden btn-inline text-[var(--text-muted)] focus-ring cursor-pointer text-xs sm:text-[13px]"
           >
             {t('checker.clear')}
           </button>
         </div>
       </div>
 
-      <div class="flex flex-col sm:flex-row gap-2">
+      <div class="flex flex-col sm:flex-row gap-2.5">
         <div class="relative flex-1">
           <input
             id="checker-url-input"
@@ -66,13 +60,13 @@ const t = useTranslations(locale);
             spellcheck="false"
             autocomplete="off"
             placeholder={t('checker.inputPlaceholder')}
-            class="input-field h-10 sm:h-11 focus-ring"
+            class="input-field h-12 text-sm sm:text-base focus-ring"
           />
         </div>
         <button
           type="submit"
           id="check-url-button"
-          class="btn-primary h-10 sm:h-11 px-5 text-[13px] focus-ring cursor-pointer shrink-0"
+          class="btn-primary h-12 px-7 text-sm sm:text-[15px] font-medium tracking-tight focus-ring cursor-pointer shrink-0"
         >
           {t('checker.button')}
         </button>
@@ -80,91 +74,88 @@ const t = useTranslations(locale);
     </form>
 
     <!-- Parameter Tags Row -->
-    <div class="pt-3 border-t border-[var(--border-subtle)] flex flex-wrap items-center gap-1.5">
-      <span class="text-[var(--text-secondary)] text-[11px] font-medium mr-1">{t('checker.verifiesLabel')}</span>
+    <div class="pt-4 border-t border-[var(--border-hairline)] flex flex-wrap items-center gap-2">
+      <span class="text-[var(--text-muted)] text-xs mr-1">{t('checker.verifiesLabel')}</span>
       {['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'].map((p) => (
-        <span class="px-2 py-0.5 rounded-[var(--radius-sm)] bg-[var(--bg-subtle)] border border-[var(--border-subtle)] text-[var(--text-secondary)] font-mono text-[11px]">{p}</span>
+        <span class="px-2.5 py-1 rounded-md bg-[var(--bg-subtle)] border border-[var(--border-hairline)] text-[var(--text-secondary)] font-mono text-xs">{p}</span>
       ))}
     </div>
   </div>
 
   <!-- Initial Empty State -->
-  <div id="empty-state-card" class="py-6 text-center">
-    <svg class="w-5 h-5 mx-auto mb-2 text-[var(--text-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-    </svg>
-    <div class="text-xs font-semibold uppercase tracking-wider text-[var(--text-secondary)]">{t('checker.emptyTitle')}</div>
-    <p class="text-xs text-[var(--text-muted)] mt-0.5 max-w-xs mx-auto">
+  <div id="empty-state-card" class="py-10 text-center border border-dashed border-[var(--border-hairline)] rounded-xl bg-[var(--bg-surface)]/30">
+    <div class="text-sm font-medium text-[var(--text-secondary)]">{t('checker.emptyTitle')}</div>
+    <p class="text-xs sm:text-[13px] text-[var(--text-muted)] mt-1.5 max-w-sm mx-auto">
       {t('checker.emptyDesc')}
     </p>
   </div>
 
   <!-- Dynamic Results Container (Client-Side Rendered via JS) -->
-  <div id="results-container" class="hidden space-y-5" aria-live="polite">
+  <div id="results-container" class="hidden space-y-6" aria-live="polite">
     <!-- 1. Overall Status Card -->
-    <div id="status-card" class="rounded-[var(--radius-lg)] border p-4 sm:p-5 flex items-start justify-between gap-4 transition-colors">
-      <div class="flex items-start gap-3">
-        <div id="status-icon" class="w-7 h-7 rounded-full flex items-center justify-center shrink-0 mt-0.5">
+    <div id="status-card" class="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 sm:p-6 flex items-start justify-between gap-4 transition-colors">
+      <div class="flex items-start gap-3.5">
+        <div id="status-icon" class="w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-0.5">
           <!-- Icon injected dynamically -->
         </div>
-        <div class="space-y-0.5">
-          <div id="status-headline" class="text-sm font-semibold text-[var(--text-primary)]"></div>
-          <div id="status-subtext" class="text-[13px] text-[var(--text-secondary)]"></div>
+        <div class="space-y-1">
+          <div id="status-headline" class="text-base font-semibold text-[var(--text-primary)]"></div>
+          <div id="status-subtext" class="text-sm text-[var(--text-secondary)]"></div>
         </div>
       </div>
-      <div id="status-badge" class="px-2.5 py-1 rounded-full text-[11px] font-semibold shrink-0"></div>
+      <div id="status-badge" class="px-3 py-1 rounded-full text-xs font-semibold shrink-0"></div>
     </div>
 
     <!-- 2. Detected UTM Parameters Breakdown -->
-    <div id="params-card" class="rounded-[var(--radius-lg)] border border-[var(--border-subtle)] bg-[var(--bg-surface)] overflow-hidden shadow-[var(--card-shadow)]">
-      <div class="px-4 py-3 border-b border-[var(--border-subtle)] flex items-center justify-between">
-        <span class="label-caps" id="params-title">
+    <div id="params-card" class="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] overflow-hidden">
+      <div class="px-5 py-3.5 border-b border-[var(--border-hairline)] flex items-center justify-between">
+        <span class="text-sm font-medium text-[var(--text-secondary)]" id="params-title">
           {t('checker.paramsDetected')}
         </span>
-        <span id="params-count-badge" class="text-[11px] text-[var(--text-muted)] font-mono"></span>
+        <span id="params-count-badge" class="text-xs text-[var(--text-muted)] font-mono"></span>
       </div>
-      <div class="divide-y divide-[var(--border-subtle)]" id="params-list">
+      <div class="divide-y divide-[var(--border-hairline)]" id="params-list">
         <!-- Rows injected dynamically -->
       </div>
     </div>
 
-    <!-- 3. Checks Summary — divider section, not a separate heavy card -->
+    <!-- 3. Checks Summary -->
     <div class="pt-2 space-y-3">
-      <div class="label-caps">{t('checker.checksTitle')}</div>
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2" id="checks-grid">
+      <div class="text-sm font-medium text-[var(--text-secondary)]">{t('checker.checksTitle')}</div>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5" id="checks-grid">
         <!-- Injected dynamically -->
       </div>
     </div>
 
-    <!-- 4. Issues & Warnings — divider section -->
+    <!-- 4. Issues & Warnings -->
     <div id="issues-card" class="hidden pt-2 space-y-3">
-      <div class="label-caps">{t('checker.issuesTitle')}</div>
-      <div class="space-y-2" id="issues-list">
+      <div class="text-sm font-medium text-[var(--text-secondary)]">{t('checker.issuesTitle')}</div>
+      <div class="space-y-2.5" id="issues-list">
         <!-- Injected dynamically -->
       </div>
     </div>
 
-    <!-- 5. Corrected URL — accent focal section -->
-    <div id="corrected-card" class="hidden rounded-[var(--radius-lg)] border border-[var(--accent)]/30 bg-[var(--accent-subtle)] p-4 sm:p-5 space-y-3">
+    <!-- 5. Corrected URL -->
+    <div id="corrected-card" class="hidden rounded-xl border border-[var(--accent)]/30 bg-[var(--accent-subtle)] p-5 sm:p-6 space-y-3.5">
       <div class="flex items-center justify-between">
-        <span class="label-caps text-[var(--accent)]" style="color: var(--accent);">
+        <span class="text-sm font-medium text-[var(--accent)]" style="color: var(--accent);">
           {t('checker.correctedUrlTitle')}
         </span>
         <button
           type="button"
           id="copy-corrected-btn"
-          class="btn-primary h-8 px-3 text-[11px] focus-ring cursor-pointer"
+          class="btn-primary h-10 px-4 text-xs sm:text-[13px] focus-ring cursor-pointer"
         >
-          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
           </svg>
           <span id="copy-btn-text">{t('checker.copyCorrected')}</span>
         </button>
       </div>
-      <div class="p-3 rounded-[var(--radius-md)] border border-[var(--border-subtle)] bg-[var(--bg-input)] font-mono text-[13px] text-[var(--text-primary)] break-all select-all" id="corrected-url-text">
+      <div class="p-3.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-input)] font-mono text-sm text-[var(--text-primary)] break-all select-all" id="corrected-url-text">
         <!-- Injected dynamically -->
       </div>
-      <div id="correction-reasons" class="text-[11px] text-[var(--text-muted)] space-y-1">
+      <div id="correction-reasons" class="text-xs text-[var(--text-muted)] space-y-1">
         <!-- Reasons injected dynamically -->
       </div>
     </div>

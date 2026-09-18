@@ -2,9 +2,12 @@
 import RootLayout from '../../layouts/RootLayout.astro';
 import ToolNav from '../../components/common/ToolNav.astro';
 import UtmBuilderShell from '../../components/tools/UtmBuilderShell.astro';
+import BuilderContent from '../../components/tools/content/BuilderContent.astro';
 import OtherToolsGrid from '../../components/common/OtherToolsGrid.astro';
 import { SUPPORTED_LOCALES, type SupportedLocale } from '../../i18n/ui';
 import { useTranslations } from '../../i18n/utils';
+
+import { TOOLS } from '../../lib/seo/siteConfig';
 
 export function getStaticPaths() {
   return SUPPORTED_LOCALES.map((locale) => ({
@@ -15,18 +18,20 @@ export function getStaticPaths() {
 const { locale } = Astro.params as { locale: SupportedLocale };
 const t = useTranslations(locale);
 const canonicalPath = `/${locale}/utm-builder`;
-const title = `${t('tools.builder.name')} | UTMVerify`;
+const title = locale === 'en' ? TOOLS.builder.title : `${t('tools.builder.name')} | UTMVerify`;
+const description = locale === 'en' ? TOOLS.builder.description : t('tools.builder.shortDesc');
 ---
 
 <RootLayout
   title={title}
-  description={t('tools.builder.shortDesc')}
+  description={description}
   canonicalPath={canonicalPath}
   locale={locale}
 >
   <div class="space-y-5">
     <ToolNav locale={locale} activeTool="builder" />
     <UtmBuilderShell locale={locale} />
+    <BuilderContent />
     <OtherToolsGrid locale={locale} currentTool="builder" />
   </div>
 </RootLayout>

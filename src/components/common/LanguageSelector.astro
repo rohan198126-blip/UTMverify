@@ -20,7 +20,7 @@ const currentLocaleInfo = LOCALES[currentLocale];
     aria-haspopup="true"
     aria-label={t('nav.language')}
     title={t('nav.language')}
-    class="inline-flex items-center gap-1.5 h-9 px-2.5 rounded-md border border-[var(--border-subtle)] bg-[var(--bg-surface)] text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--border-strong)] transition-colors focus-ring"
+    class="inline-flex items-center gap-1.5 h-8 px-2.5 rounded-full border border-[var(--border-hairline)] bg-transparent text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--border-strong)] transition-colors focus-ring cursor-pointer"
   >
     <!-- Minimal Globe Icon -->
     <svg class="w-3.5 h-3.5 text-[var(--text-muted)] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -38,7 +38,7 @@ const currentLocaleInfo = LOCALES[currentLocale];
     role="menu"
     aria-orientation="vertical"
     aria-labelledby="lang-menu-button"
-    class="hidden absolute right-0 mt-1.5 w-40 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-1 shadow-lg backdrop-blur-md z-50 transition-all duration-150"
+    class="hidden absolute right-0 mt-1.5 w-40 rounded-xl border border-[var(--border-hairline)] bg-[var(--bg-surface)] p-1 shadow-xl backdrop-blur-md z-50 transition-all duration-150"
   >
     {SUPPORTED_LOCALES.map((localeCode) => {
       const info = LOCALES[localeCode];
@@ -49,7 +49,7 @@ const currentLocaleInfo = LOCALES[currentLocale];
         <a
           href={targetUrl}
           role="menuitem"
-          class={`flex items-center justify-between px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
+          class={`flex items-center justify-between px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
             isSelected
               ? 'bg-[var(--accent-subtle)] text-[var(--accent)] font-semibold'
               : 'text-[var(--text-secondary)] hover:bg-[var(--bg-subtle)] hover:text-[var(--text-primary)]'
@@ -79,10 +79,9 @@ const currentLocaleInfo = LOCALES[currentLocale];
 
     function toggleMenu(open?: boolean) {
       const isExpanded = btn?.getAttribute('aria-expanded') === 'true';
-      const shouldOpen = open !== undefined ? open : !isExpanded;
-
-      btn?.setAttribute('aria-expanded', shouldOpen ? 'true' : 'false');
-      if (shouldOpen) {
+      const targetState = open === undefined ? !isExpanded : open;
+      btn?.setAttribute('aria-expanded', targetState ? 'true' : 'false');
+      if (targetState) {
         menu?.classList.remove('hidden');
         arrow?.classList.add('rotate-180');
       } else {
@@ -103,8 +102,9 @@ const currentLocaleInfo = LOCALES[currentLocale];
     });
 
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
+      if (e.key === 'Escape' && !menu.classList.contains('hidden')) {
         toggleMenu(false);
+        btn.focus();
       }
     });
   }

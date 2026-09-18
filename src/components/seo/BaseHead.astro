@@ -8,6 +8,7 @@ export interface Props {
   description?: string;
   canonicalPath?: string;
   locale?: SupportedLocale;
+  robots?: string;
 }
 
 const {
@@ -15,6 +16,7 @@ const {
   description = siteConfig.description,
   canonicalPath = Astro.url.pathname,
   locale = 'en',
+  robots = 'index, follow',
 } = Astro.props;
 
 // Canonical URL determination: root '/' points canonically to '/en/'
@@ -29,6 +31,7 @@ const hreflangs = getHreflangList(canonicalPath, siteConfig.url);
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>{title}</title>
 <meta name="description" content={description} />
+<meta name="robots" content={robots} />
 <link rel="canonical" href={canonicalUrl} />
 
 <!-- Alternate Hreflang Tags -->
@@ -59,7 +62,7 @@ const hreflangs = getHreflangList(canonicalPath, siteConfig.url);
 <meta name="twitter:image" content="https://utmverify.com/og-image.png" />
 
 <!-- Theme Color -->
-<meta name="theme-color" content="#090a0d" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#060709" media="(prefers-color-scheme: dark)" />
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
 
 <!-- Structured Data (JSON-LD) -->

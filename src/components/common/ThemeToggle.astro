@@ -15,12 +15,12 @@ const t = useTranslations(locale);
   type="button"
   aria-label={t('nav.themeLight')}
   title={t('nav.themeLight')}
-  class="relative inline-flex items-center justify-center w-9 h-9 rounded-md border border-[var(--border-subtle)] bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--border-strong)] transition-colors focus-ring cursor-pointer"
+  class="relative inline-flex items-center justify-center w-8 h-8 rounded-full border border-[var(--border-hairline)] bg-transparent text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:border-[var(--border-strong)] transition-colors focus-ring cursor-pointer"
 >
   <!-- Sun Icon (shown in dark mode, click to switch to light mode) -->
   <svg
     id="theme-sun-icon"
-    class="w-4 h-4 hidden dark:block"
+    class="w-3.5 h-3.5 hidden dark:block"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
     fill="none"
@@ -43,7 +43,7 @@ const t = useTranslations(locale);
   <!-- Moon Icon (shown in light mode, click to switch to dark mode) -->
   <svg
     id="theme-moon-icon"
-    class="w-4 h-4 block dark:hidden"
+    class="w-3.5 h-3.5 block dark:hidden"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
     fill="none"

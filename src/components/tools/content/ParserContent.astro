@@ -1,0 +1,254 @@
+---
+// Explanatory content, link deconstruction guide, and FAQ for UTM Parser
+---
+
+<article class="w-full max-w-3xl mx-auto pt-14 sm:pt-16 mt-14 sm:mt-16 border-t border-[var(--border-hairline)] space-y-12 text-[var(--text-primary)]">
+  <!-- Introduction & Overview -->
+  <section class="space-y-4">
+    <h2 class="text-xl sm:text-2xl font-semibold tracking-[-0.02em] text-[var(--text-primary)] leading-snug">
+      What is the UTM Parser and Why URL Deconstruction Matters
+    </h2>
+    <p class="text-sm text-[var(--text-secondary)] leading-relaxed">
+      A UTM Parser is an analytical inspection utility that breaks down complex, heavily tagged marketing URLs into their foundational components. Tracking URLs used in digital advertising, affiliate networks, and email campaigns often stretch over hundreds of characters, packed with percent-encoded query strings, ad network click IDs, and anchor fragments.
+    </p>
+    <p class="text-sm text-[var(--text-secondary)] leading-relaxed">
+      Auditing these long strings manually is time-consuming and error-prone. The UTM Parser instantly extracts and isolates the base destination, identifies standard UTM parameters (<code class="font-mono text-[11px]">utm_source</code>, <code class="font-mono text-[11px]">utm_medium</code>, <code class="font-mono text-[11px]">utm_campaign</code>, <code class="font-mono text-[11px]">utm_term</code>, <code class="font-mono text-[11px]">utm_content</code>), surfaces custom parameters (such as <code class="font-mono text-[11px]">gclid</code>, <code class="font-mono text-[11px]">fbclid</code>, or affiliate tracking IDs), and provides clean, single-click copy shortcuts for each isolated value.
+    </p>
+  </section>
+
+  <!-- Anatomical Breakdown Guide -->
+  <section class="space-y-4">
+    <h2 class="text-lg sm:text-xl font-semibold tracking-[-0.015em] text-[var(--text-primary)]">
+      The Anatomy of a Modern Campaign URL
+    </h2>
+    <p class="text-sm text-[var(--text-secondary)] leading-relaxed">
+      Under the RFC 3986 Internet standard, a complete marketing tracking URL is composed of several discrete segments:
+    </p>
+    <div class="space-y-3 text-sm">
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/30 space-y-1.5">
+        <div class="flex items-center justify-between">
+          <span class="font-mono text-[var(--accent)] font-medium text-xs">1. Protocol &amp; Domain (Origin)</span>
+          <span class="font-mono text-[11px] text-[var(--text-muted)]">https://example.com</span>
+        </div>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">Specifies the communication scheme (HTTPS) and target host server.</p>
+      </div>
+
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/30 space-y-1.5">
+        <div class="flex items-center justify-between">
+          <span class="font-mono text-[var(--accent)] font-medium text-xs">2. Path</span>
+          <span class="font-mono text-[11px] text-[var(--text-muted)]">/products/shoes</span>
+        </div>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">The hierarchical location of the specific resource or page on the website.</p>
+      </div>
+
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/30 space-y-1.5">
+        <div class="flex items-center justify-between">
+          <span class="font-mono text-[var(--accent)] font-medium text-xs">3. Query Delimiter &amp; UTM Parameters</span>
+          <span class="font-mono text-[11px] text-[var(--text-muted)]">?utm_source=google&amp;utm_medium=cpc</span>
+        </div>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">The question mark separates path from parameters. Key-value pairs define campaign attribution for analytics engines.</p>
+      </div>
+
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/30 space-y-1.5">
+        <div class="flex items-center justify-between">
+          <span class="font-mono text-[var(--accent)] font-medium text-xs">4. Platform Click Identifiers (Custom Query)</span>
+          <span class="font-mono text-[11px] text-[var(--text-muted)]">&amp;gclid=AbC123XyZ</span>
+        </div>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">Auto-tagging tokens attached by ad platforms (Google Ads, Meta, TikTok) for conversion tracking and ad sync.</p>
+      </div>
+
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/30 space-y-1.5">
+        <div class="flex items-center justify-between">
+          <span class="font-mono text-[var(--text-secondary)] font-medium text-xs">5. Fragment / Anchor Identifier</span>
+          <span class="font-mono text-[11px] text-[var(--text-muted)]">#reviews</span>
+        </div>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">Directs the browser to scroll to a specific in-page element. Must always reside at the absolute end of the URL.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- How to Use Section -->
+  <section class="space-y-4">
+    <h2 class="text-lg sm:text-xl font-semibold tracking-[-0.015em] text-[var(--text-primary)]">
+      How to Inspect and Deconstruct Links with the UTM Parser
+    </h2>
+    <div class="space-y-3 text-sm text-[var(--text-secondary)]">
+      <div class="flex items-start gap-3.5 py-2">
+        <span class="w-6 h-6 rounded-full bg-[var(--bg-subtle)] text-[var(--text-primary)] border border-[var(--border-subtle)] font-medium flex items-center justify-center shrink-0 text-xs">1</span>
+        <div>
+          <strong class="text-[var(--text-primary)] font-medium">Paste Any Marketing URL:</strong>
+          <p class="text-xs text-[var(--text-muted)] mt-0.5 leading-relaxed">Paste links from ad platforms, emails, newsletters, or partner campaigns into the search bar above.</p>
+        </div>
+      </div>
+      <div class="flex items-start gap-3.5 py-2">
+        <span class="w-6 h-6 rounded-full bg-[var(--bg-subtle)] text-[var(--text-primary)] border border-[var(--border-subtle)] font-medium flex items-center justify-center shrink-0 text-xs">2</span>
+        <div>
+          <strong class="text-[var(--text-primary)] font-medium">Instant Parameter Separation:</strong>
+          <p class="text-xs text-[var(--text-muted)] mt-0.5 leading-relaxed">The parser separates base destination from parameters, decodes percent-encoded characters, and categorizes standard UTMs from custom parameters.</p>
+        </div>
+      </div>
+      <div class="flex items-start gap-3.5 py-2">
+        <span class="w-6 h-6 rounded-full bg-[var(--bg-subtle)] text-[var(--text-primary)] border border-[var(--border-subtle)] font-medium flex items-center justify-center shrink-0 text-xs">3</span>
+        <div>
+          <strong class="text-[var(--text-primary)] font-medium">Copy Individual Parameters or Rebuild:</strong>
+          <p class="text-xs text-[var(--text-muted)] mt-0.5 leading-relaxed">Quickly copy individual parameter values for reporting, or clean and transfer the parameters into the UTM Builder for adjustments.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Key Use Cases -->
+  <section class="space-y-4">
+    <h2 class="text-lg sm:text-xl font-semibold tracking-[-0.015em] text-[var(--text-primary)]">
+      Primary Use Cases for Marketing and Data Teams
+    </h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-sm">
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/20 space-y-1.5">
+        <h3 class="font-medium text-xs text-[var(--text-primary)]">Affiliate &amp; Influencer Link Auditing</h3>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+          Verify that partners and influencers are using correct tracking tags before paying commissions or sponsoring posts.
+        </p>
+      </div>
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/20 space-y-1.5">
+        <h3 class="font-medium text-xs text-[var(--text-primary)]">QA Testing Email Newsletters</h3>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+          Check test emails before scheduled blasts to confirm every CTA button and banner links to the right destination with distinct <code class="font-mono text-[11px]">utm_content</code> tags.
+        </p>
+      </div>
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/20 space-y-1.5">
+        <h3 class="font-medium text-xs text-[var(--text-primary)]">De-obfuscating Percent-Encoded URLs</h3>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+          Convert messy URL strings filled with <code class="font-mono text-[11px]">%20</code>, <code class="font-mono text-[11px]">%26</code>, and <code class="font-mono text-[11px]">%3F</code> into human-readable text instantaneously.
+        </p>
+      </div>
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/20 space-y-1.5">
+        <h3 class="font-medium text-xs text-[var(--text-primary)]">Competitor Campaign Analysis</h3>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+          Inspect competitor ads and social links to see their naming conventions, ad networks, audience targeting, and promotional themes.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tool FAQ Section — clean divider-based accordion -->
+  <section class="space-y-6 pt-4" id="faq">
+    <div class="space-y-1">
+      <h2 class="text-lg sm:text-xl font-semibold tracking-[-0.015em] text-[var(--text-primary)]">
+        Frequently Asked Questions About the UTM Parser
+      </h2>
+      <p class="text-xs text-[var(--text-muted)]">
+        Common questions about URL parsing, query deconstruction, and parameter inspection.
+      </p>
+    </div>
+
+    <div class="divide-y divide-[var(--border-hairline)] border-y border-[var(--border-hairline)]">
+      <details class="group py-4 transition-colors [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex items-center justify-between cursor-pointer font-medium text-sm text-[var(--text-primary)] select-none">
+          <span>What is the difference between the UTM Parser and the UTM Checker?</span>
+          <svg class="w-4 h-4 text-[var(--text-muted)] group-open:rotate-180 transition-transform duration-200 shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M19 9l-7 7-7-7" />
+          </svg>
+        </summary>
+        <div class="mt-3 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed pr-6">
+          The <strong class="text-[var(--text-primary)] font-medium">UTM Checker</strong> focuses on validation—testing whether links comply with RFC specs and GA4 requirements and fixing syntax errors. The <strong class="text-[var(--text-primary)] font-medium">UTM Parser</strong> focuses on deconstruction—breaking any URL into cleanly formatted components so you can inspect, copy, and analyze individual parameter values.
+        </div>
+      </details>
+
+      <details class="group py-4 transition-colors [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex items-center justify-between cursor-pointer font-medium text-sm text-[var(--text-primary)] select-none">
+          <span>Can the parser inspect ad network parameters like gclid and fbclid?</span>
+          <svg class="w-4 h-4 text-[var(--text-muted)] group-open:rotate-180 transition-transform duration-200 shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M19 9l-7 7-7-7" />
+          </svg>
+        </summary>
+        <div class="mt-3 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed pr-6">
+          Yes! The UTM Parser identifies and extracts all non-UTM query parameters—including Google Click IDs (<code class="font-mono text-[11px]">gclid</code>), Meta Click IDs (<code class="font-mono text-[11px]">fbclid</code>), TikTok Click IDs (<code class="font-mono text-[11px]">ttclid</code>), and custom session tokens—and displays them in a dedicated custom parameters table.
+        </div>
+      </details>
+
+      <details class="group py-4 transition-colors [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex items-center justify-between cursor-pointer font-medium text-sm text-[var(--text-primary)] select-none">
+          <span>Does the parser decode percent-encoded characters automatically?</span>
+          <svg class="w-4 h-4 text-[var(--text-muted)] group-open:rotate-180 transition-transform duration-200 shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M19 9l-7 7-7-7" />
+          </svg>
+        </summary>
+        <div class="mt-3 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed pr-6">
+          Yes. Any URI percent-encoded sequences (such as <code class="font-mono text-[11px]">%20</code> for spaces, <code class="font-mono text-[11px]">%2F</code> for slashes, or encoded query delimiters) are decoded into human-readable strings for clear visual inspection.
+        </div>
+      </details>
+
+      <details class="group py-4 transition-colors [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex items-center justify-between cursor-pointer font-medium text-sm text-[var(--text-primary)] select-none">
+          <span>Can I parse URLs that omit the https:// protocol?</span>
+          <svg class="w-4 h-4 text-[var(--text-muted)] group-open:rotate-180 transition-transform duration-200 shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M19 9l-7 7-7-7" />
+          </svg>
+        </summary>
+        <div class="mt-3 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed pr-6">
+          Yes. The parser accommodates protocol-less inputs (e.g. <code class="font-mono text-[11px]">example.com/promo?utm_source=google</code>) and automatically infers standard web protocol handling without failing or discarding query parameters.
+        </div>
+      </details>
+
+      <details class="group py-4 transition-colors [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex items-center justify-between cursor-pointer font-medium text-sm text-[var(--text-primary)] select-none">
+          <span>Are confidential or pre-launch marketing links sent to any server?</span>
+          <svg class="w-4 h-4 text-[var(--text-muted)] group-open:rotate-180 transition-transform duration-200 shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M19 9l-7 7-7-7" />
+          </svg>
+        </summary>
+        <div class="mt-3 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed pr-6">
+          No. Like all UTMVerify utilities, URL parsing runs entirely inside your browser's JavaScript environment. No links or parameters are logged, transmitted over the internet, or saved in any database.
+        </div>
+      </details>
+    </div>
+  </section>
+</article>
+
+<!-- Structured Data for FAQ -->
+<script type="application/ld+json" is:inline set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is the difference between the UTM Parser and the UTM Checker?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The UTM Checker focuses on validation and syntax correction, whereas the UTM Parser focuses on deconstructing any URL into cleanly isolated parameter rows for inspection and copying."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can the parser inspect ad network parameters like gclid and fbclid?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The UTM Parser extracts all non-UTM query parameters including Google Click IDs (gclid), Meta Click IDs (fbclid), and custom affiliate tokens."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does the parser decode percent-encoded characters automatically?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Any URI percent-encoded sequences such as %20 for spaces or %2F for slashes are decoded into human-readable strings."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I parse URLs that omit the https:// protocol?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The parser accommodates protocol-less inputs and automatically infers standard web protocol handling without discarding query parameters."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are confidential or pre-launch marketing links sent to any server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. All URL parsing runs strictly inside your local browser memory using JavaScript. No links or parameters are logged or transmitted."
+      }
+    }
+  ]
+})} />

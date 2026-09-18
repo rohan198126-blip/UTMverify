@@ -1,0 +1,254 @@
+---
+// Explanatory content, taxonomy frameworks, and FAQ for UTM Naming Generator
+---
+
+<article class="w-full max-w-3xl mx-auto pt-14 sm:pt-16 mt-14 sm:mt-16 border-t border-[var(--border-hairline)] space-y-12 text-[var(--text-primary)]">
+  <!-- Introduction & Overview -->
+  <section class="space-y-4">
+    <h2 class="text-xl sm:text-2xl font-semibold tracking-[-0.02em] text-[var(--text-primary)] leading-snug">
+      Why Consistent UTM Naming Conventions Matter
+    </h2>
+    <p class="text-sm text-[var(--text-secondary)] leading-relaxed">
+      In digital analytics, data quality is determined long before a user clicks an ad. When marketing teams lack a unified campaign naming convention, analytics reports quickly become fragmented. A single campaign executed across multiple teams or agencies easily splits into dozens of variations: <code class="font-mono text-[11px]">summer-sale</code>, <code class="font-mono text-[11px]">Summer_Sale</code>, <code class="font-mono text-[11px]">summer sale</code>, and <code class="font-mono text-[11px]">summersale</code>.
+    </p>
+    <p class="text-sm text-[var(--text-secondary)] leading-relaxed">
+      Analytics platforms like Google Analytics 4 treat every variation as an independent, unrelated campaign. This prevents automated rollup reporting, corrupts ROAS calculations, and forces analysts to spend hours manually reconciling spreadsheet exports. The UTM Naming Generator eliminates this friction by enforcing consistent taxonomy, delimiters, and casing before tracking URLs are generated.
+    </p>
+  </section>
+
+  <!-- Popular Taxonomy Frameworks -->
+  <section class="space-y-4">
+    <h2 class="text-lg sm:text-xl font-semibold tracking-[-0.015em] text-[var(--text-primary)]">
+      4 Standard UTM Naming Frameworks
+    </h2>
+    <p class="text-sm text-[var(--text-secondary)] leading-relaxed">
+      Select a pattern that matches your organization's reporting complexity:
+    </p>
+    <div class="space-y-3 text-sm">
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/30 space-y-1.5">
+        <div class="flex items-center justify-between">
+          <span class="font-mono text-[var(--accent)] font-medium text-xs">1. Simple Pattern</span>
+          <span class="font-mono text-[11px] text-[var(--text-muted)]">[source]-[campaign]</span>
+        </div>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+          Ideal for small teams, startups, and straightforward marketing funnels (e.g., <code class="font-mono text-[11px]">google-spring_launch</code>).
+        </p>
+      </div>
+
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/30 space-y-1.5">
+        <div class="flex items-center justify-between">
+          <span class="font-mono text-[var(--accent)] font-medium text-xs">2. Source-First Pattern</span>
+          <span class="font-mono text-[11px] text-[var(--text-muted)]">[source]-[medium]-[campaign]</span>
+        </div>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+          Groups campaigns in alphabetical reporting dashboards by acquisition channel first (e.g., <code class="font-mono text-[11px]">meta-paid_social-retargeting</code>).
+        </p>
+      </div>
+
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/30 space-y-1.5">
+        <div class="flex items-center justify-between">
+          <span class="font-mono text-[var(--accent)] font-medium text-xs">3. Campaign-First Pattern</span>
+          <span class="font-mono text-[11px] text-[var(--text-muted)]">[campaign]-[medium]-[source]</span>
+        </div>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+          Puts the strategic promotional initiative first, making it easy to filter all channels contributing to a shared objective (e.g., <code class="font-mono text-[11px]">black_friday-cpc-google</code>).
+        </p>
+      </div>
+
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/30 space-y-1.5">
+        <div class="flex items-center justify-between">
+          <span class="font-mono text-[var(--accent)] font-medium text-xs">4. Enterprise Taxonomy</span>
+          <span class="font-mono text-[11px] text-[var(--text-muted)]">[campaign]_[source]_[medium]_[audience]_[creative]</span>
+        </div>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+          Comprehensive naming structure for enterprise media buyers running complex A/B tests and multi-audience paid campaigns.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step-by-Step Usage -->
+  <section class="space-y-4">
+    <h2 class="text-lg sm:text-xl font-semibold tracking-[-0.015em] text-[var(--text-primary)]">
+      How to Standardize Campaign Names Step-by-Step
+    </h2>
+    <div class="space-y-3 text-sm text-[var(--text-secondary)]">
+      <div class="flex items-start gap-3.5 py-2">
+        <span class="w-6 h-6 rounded-full bg-[var(--bg-subtle)] text-[var(--text-primary)] border border-[var(--border-subtle)] font-medium flex items-center justify-center shrink-0 text-xs">1</span>
+        <div>
+          <strong class="text-[var(--text-primary)] font-medium">Select Your Team's Preset:</strong>
+          <p class="text-xs text-[var(--text-muted)] mt-0.5 leading-relaxed">Choose from standardized presets (Simple, Source-First, Campaign-First, or Full Taxonomy) to maintain pattern consistency.</p>
+        </div>
+      </div>
+      <div class="flex items-start gap-3.5 py-2">
+        <span class="w-6 h-6 rounded-full bg-[var(--bg-subtle)] text-[var(--text-primary)] border border-[var(--border-subtle)] font-medium flex items-center justify-center shrink-0 text-xs">2</span>
+        <div>
+          <strong class="text-[var(--text-primary)] font-medium">Fill in Core Initiative Fields:</strong>
+          <p class="text-xs text-[var(--text-muted)] mt-0.5 leading-relaxed">Enter campaign name, source platform, and medium. The generator automatically strips illegal characters and normalizes casing.</p>
+        </div>
+      </div>
+      <div class="flex items-start gap-3.5 py-2">
+        <span class="w-6 h-6 rounded-full bg-[var(--bg-subtle)] text-[var(--text-primary)] border border-[var(--border-subtle)] font-medium flex items-center justify-center shrink-0 text-xs">3</span>
+        <div>
+          <strong class="text-[var(--text-primary)] font-medium">Copy the Standardized Name:</strong>
+          <p class="text-xs text-[var(--text-muted)] mt-0.5 leading-relaxed">Copy the resulting standardized string directly into your ad campaign setup or into the UTM Builder for final URL generation.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 Golden Rules -->
+  <section class="space-y-4">
+    <h2 class="text-lg sm:text-xl font-semibold tracking-[-0.015em] text-[var(--text-primary)]">
+      5 Rules for Bulletproof Campaign Taxonomy
+    </h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-sm">
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/20 space-y-1.5">
+        <h3 class="font-medium text-xs text-[var(--text-primary)]">1. Enforce Lowercase Universally</h3>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+          Never allow mixed capitalization in campaign names. Converting all inputs to lowercase prevents duplicate campaign splits in GA4.
+        </p>
+      </div>
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/20 space-y-1.5">
+        <h3 class="font-medium text-xs text-[var(--text-primary)]">2. Pick One Delimiter Strategy</h3>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+          Choose either hyphens (<code class="font-mono text-[11px]">-</code>) or underscores (<code class="font-mono text-[11px]">_</code>) for token separation and commit to it across all marketing channels.
+        </p>
+      </div>
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/20 space-y-1.5">
+        <h3 class="font-medium text-xs text-[var(--text-primary)]">3. Standardize Date Formats</h3>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+          When including dates or fiscal quarters, use consistent formats like <code class="font-mono text-[11px]">2026q1</code> or <code class="font-mono text-[11px]">202609</code> for natural chronological sorting.
+        </p>
+      </div>
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/20 space-y-1.5">
+        <h3 class="font-medium text-xs text-[var(--text-primary)]">4. Avoid Cryptic Abbreviations</h3>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+          Use descriptive, recognizable tokens rather than obscure internal codes so external agencies and executives can interpret reports instantly.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tool FAQ Section — clean divider-based accordion -->
+  <section class="space-y-6 pt-4" id="faq">
+    <div class="space-y-1">
+      <h2 class="text-lg sm:text-xl font-semibold tracking-[-0.015em] text-[var(--text-primary)]">
+        Frequently Asked Questions About Campaign Naming
+      </h2>
+      <p class="text-xs text-[var(--text-muted)]">
+        Common questions on campaign naming structures, delimiters, and analytics best practices.
+      </p>
+    </div>
+
+    <div class="divide-y divide-[var(--border-hairline)] border-y border-[var(--border-hairline)]">
+      <details class="group py-4 transition-colors [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex items-center justify-between cursor-pointer font-medium text-sm text-[var(--text-primary)] select-none">
+          <span>Should our team use hyphens or underscores in campaign names?</span>
+          <svg class="w-4 h-4 text-[var(--text-muted)] group-open:rotate-180 transition-transform duration-200 shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M19 9l-7 7-7-7" />
+          </svg>
+        </summary>
+        <div class="mt-3 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed pr-6">
+          Both hyphens (<code class="font-mono text-[11px]">-</code>) and underscores (<code class="font-mono text-[11px]">_</code>) are fully supported across all analytics platforms and web servers. Many marketing teams use hyphens to separate words within a token (e.g. <code class="font-mono text-[11px]">summer-sale</code>) and underscores to separate discrete dimensions (e.g. <code class="font-mono text-[11px]">summer-sale_google_cpc</code>). The most important factor is team consistency.
+        </div>
+      </details>
+
+      <details class="group py-4 transition-colors [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex items-center justify-between cursor-pointer font-medium text-sm text-[var(--text-primary)] select-none">
+          <span>Why does the generator force lowercase characters?</span>
+          <svg class="w-4 h-4 text-[var(--text-muted)] group-open:rotate-180 transition-transform duration-200 shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M19 9l-7 7-7-7" />
+          </svg>
+        </summary>
+        <div class="mt-3 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed pr-6">
+          Analytics tools treat URL parameters as case-sensitive strings. A campaign entered as <code class="font-mono text-[11px]">Q4_Launch</code> and another as <code class="font-mono text-[11px]">q4_launch</code> will be reported as two separate rows in Google Analytics, splitting session counts and conversion attribution. Automatic lowercasing eliminates this issue.
+        </div>
+      </details>
+
+      <details class="group py-4 transition-colors [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex items-center justify-between cursor-pointer font-medium text-sm text-[var(--text-primary)] select-none">
+          <span>Can I include dates or year tags in campaign names?</span>
+          <svg class="w-4 h-4 text-[var(--text-muted)] group-open:rotate-180 transition-transform duration-200 shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M19 9l-7 7-7-7" />
+          </svg>
+        </summary>
+        <div class="mt-3 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed pr-6">
+          Yes! Adding timestamps (like <code class="font-mono text-[11px]">2026_q3</code> or <code class="font-mono text-[11px]">202609</code>) is an excellent practice for seasonal or recurring campaigns (e.g., Black Friday, annual renewals). It prevents historical data from mixing with current year results in analytics dashboards.
+        </div>
+      </details>
+
+      <details class="group py-4 transition-colors [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex items-center justify-between cursor-pointer font-medium text-sm text-[var(--text-primary)] select-none">
+          <span>How does standardized naming improve GA4 reporting?</span>
+          <svg class="w-4 h-4 text-[var(--text-muted)] group-open:rotate-180 transition-transform duration-200 shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M19 9l-7 7-7-7" />
+          </svg>
+        </summary>
+        <div class="mt-3 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed pr-6">
+          Standardized naming allows you to use regex and filter dimensions in GA4 explorations to aggregate performance by product line, region, or agency with zero data cleaning. It also unlocks automated Looker Studio dashboards that update reliably without manual curation.
+        </div>
+      </details>
+
+      <details class="group py-4 transition-colors [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex items-center justify-between cursor-pointer font-medium text-sm text-[var(--text-primary)] select-none">
+          <span>What should we do if our team already has messy historical UTM data?</span>
+          <svg class="w-4 h-4 text-[var(--text-muted)] group-open:rotate-180 transition-transform duration-200 shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M19 9l-7 7-7-7" />
+          </svg>
+        </summary>
+        <div class="mt-3 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed pr-6">
+          Establish a clean cutoff date (e.g., the beginning of the next quarter) and implement your standardized convention going forward. Historical data in GA4 cannot be retroactively altered, but adopting a structured naming framework now will permanently resolve future attribution issues.
+        </div>
+      </details>
+    </div>
+  </section>
+</article>
+
+<!-- Structured Data for FAQ -->
+<script type="application/ld+json" is:inline set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Should our team use hyphens or underscores in campaign names?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Both hyphens and underscores are fully supported across all analytics platforms. Many marketing teams use hyphens to separate words within a token and underscores to separate discrete dimensions."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does the generator force lowercase characters?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Analytics tools treat URL parameters as case-sensitive. Automatic lowercasing prevents duplicate campaign splits in Google Analytics 4."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I include dates or year tags in campaign names?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Adding timestamps like 2026_q3 or 202609 is an excellent practice for seasonal or recurring campaigns to prevent historical data from mixing with current results."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does standardized naming improve GA4 reporting?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Standardized naming allows regex and dimension filtering in GA4 explorations to aggregate performance with zero manual cleaning, unlocking automated Looker Studio dashboards."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What should we do if our team already has messy historical UTM data?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Establish a clean cutoff date and implement your standardized convention going forward to permanently resolve future attribution issues."
+      }
+    }
+  ]
+})} />

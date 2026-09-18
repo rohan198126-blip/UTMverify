@@ -5,77 +5,67 @@
     color-scheme: dark;
 
     /* Typography */
-    --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     --font-mono: ui-monospace, 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', monospace;
 
-    /* Backgrounds */
-    --bg-app: #050607;
-    --bg-surface: #0e0f14;
-    --bg-subtle: #14161d;
+    /* Palette — deep neutral blacks and charcoals, strictly no colorful tint */
+    --bg-app: #060709;
+    --bg-surface: #0d0f12;
+    --bg-subtle: #13151a;
     --bg-input: #090a0d;
 
-    /* Borders */
-    --border-subtle: rgba(255, 255, 255, 0.07);
-    --border-strong: rgba(255, 255, 255, 0.14);
-    --border-focus: rgba(167, 139, 250, 0.6);
+    /* Hairline borders */
+    --border-hairline: rgba(255, 255, 255, 0.07);
+    --border-subtle: rgba(255, 255, 255, 0.09);
+    --border-strong: rgba(255, 255, 255, 0.16);
+    --border-focus: rgba(255, 255, 255, 0.4);
 
     /* Text */
-    --text-primary: #f3f4f6;
+    --text-primary: #f9fafb;
     --text-secondary: #9ca3af;
-    --text-muted: #606775;
+    --text-muted: #6b7280;
 
-    /* Accent (violet) */
+    /* Functional accent — subtle violet, strictly for active tabs and focus rings */
     --accent: #a78bfa;
     --accent-hover: #c4b5fd;
-    --accent-subtle: rgba(167, 139, 250, 0.10);
+    --accent-subtle: rgba(167, 139, 250, 0.08);
 
-    /* Semantic colors — status only, never decorative */
-    --color-success: #34d399;  /* emerald-400: readable in dark UI */
-    --color-error: #f87171;    /* rose-400 */
-    --color-warning: #fbbf24;  /* amber-400 */
-
-    /* Shadows */
-    --card-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.5);
-
-    /* Spacing */
-    --space-section: 2rem;
-    --space-card: 1.25rem;
+    /* Status semantics — restrained, clean */
+    --color-success: #34d399;
+    --color-error: #f87171;
+    --color-warning: #fbbf24;
 
     /* Border radius */
     --radius-sm: 6px;
     --radius-md: 8px;
     --radius-lg: 10px;
-
-    /* Label typography */
-    --text-label: 0.6875rem;    /* 11px */
-    --tracking-label: 0.06em;
+    --radius-xl: 12px;
   }
 
   html.light {
     color-scheme: light;
 
-    --bg-app: #f9fafb;
+    --bg-app: #fafafa;
     --bg-surface: #ffffff;
-    --bg-subtle: #f3f4f6;
+    --bg-subtle: #f4f4f5;
     --bg-input: #ffffff;
 
-    --border-subtle: rgba(0, 0, 0, 0.08);
+    --border-hairline: rgba(0, 0, 0, 0.06);
+    --border-subtle: rgba(0, 0, 0, 0.09);
     --border-strong: rgba(0, 0, 0, 0.16);
-    --border-focus: rgba(139, 92, 246, 0.65);
+    --border-focus: rgba(0, 0, 0, 0.5);
 
-    --text-primary: #111827;
-    --text-secondary: #4b5563;
-    --text-muted: #9ca3af;
+    --text-primary: #09090b;
+    --text-secondary: #52525b;
+    --text-muted: #a1a1aa;
 
     --accent: #7c3aed;
     --accent-hover: #6d28d9;
-    --accent-subtle: rgba(124, 58, 237, 0.08);
+    --accent-subtle: rgba(124, 58, 237, 0.06);
 
     --color-success: #059669;
-    --color-error: #ef4444;
+    --color-error: #dc2626;
     --color-warning: #d97706;
-
-    --card-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.08), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
   }
 
   * {
@@ -83,7 +73,7 @@
   }
 
   html {
-    font-size: 14px;
+    font-size: 16px;
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
   }
@@ -92,8 +82,8 @@
     background-color: var(--bg-app);
     color: var(--text-primary);
     font-family: var(--font-sans);
-    font-size: 1rem;         /* 14px */
-    line-height: 1.6;
+    font-size: 1rem;
+    line-height: 1.65;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -106,7 +96,7 @@
 }
 
 /* ------------------------------------------------------------------ */
-/* Focus Ring                                                           */
+/* Focus Ring                                                         */
 /* ------------------------------------------------------------------ */
 .focus-ring {
   outline: none;
@@ -117,105 +107,66 @@
 }
 
 /* ------------------------------------------------------------------ */
-/* Scrollbar utilities                                                  */
+/* Typography Helpers                                                 */
 /* ------------------------------------------------------------------ */
-
-/* Hide scrollbar while keeping scroll functionality */
-.no-scrollbar::-webkit-scrollbar { display: none; }
-.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-/* Thin scrollbar for data tables */
-.thin-scrollbar::-webkit-scrollbar { height: 4px; width: 4px; }
-.thin-scrollbar::-webkit-scrollbar-track { background: transparent; }
-.thin-scrollbar::-webkit-scrollbar-thumb {
-  background: var(--border-strong);
-  border-radius: 2px;
-}
-.thin-scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: var(--border-strong) transparent;
-}
-
-/* ------------------------------------------------------------------ */
-/* Reduced motion                                                       */
-/* ------------------------------------------------------------------ */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
-/* ------------------------------------------------------------------ */
-/* Shared design utilities                                              */
-/* ------------------------------------------------------------------ */
-
-/* Uppercase tracking label — section headings, column headers */
-.label-caps {
-  font-size: var(--text-label);
+.eyebrow {
+  font-size: 0.8125rem;
   font-weight: 500;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
-  letter-spacing: var(--tracking-label);
   color: var(--text-muted);
 }
 
-/* Monospace result display — generated URLs, output values */
 .result-mono {
   font-family: var(--font-mono);
-  font-size: 0.8125rem;    /* 11.375px at 14px base */
-  line-height: 1.5;
+  font-size: 0.875rem;
+  line-height: 1.55;
   color: var(--text-primary);
   word-break: break-all;
 }
 
-/* Subtle horizontal divider */
-.divider {
-  border: none;
-  border-top: 1px solid var(--border-subtle);
-  margin: 0;
-}
-
 /* ------------------------------------------------------------------ */
-/* Button system                                                        */
+/* Buttons                                                            */
 /* ------------------------------------------------------------------ */
 
-/* Primary — high contrast, dominant action */
+/* Primary — confident solid button: white on dark, black on light */
 .btn-primary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.375rem;
-  height: 2.25rem;        /* h-9 */
-  padding: 0 1rem;
+  gap: 0.5rem;
+  height: 3rem;
+  padding: 0 1.5rem;
   border-radius: var(--radius-md);
   background: var(--text-primary);
   color: var(--bg-app);
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-size: 0.9375rem;
+  font-weight: 500;
   cursor: pointer;
   border: none;
   transition: opacity 0.15s ease;
   white-space: nowrap;
 }
-.btn-primary:hover { opacity: 0.88; }
-.btn-primary:disabled { opacity: 0.28; cursor: not-allowed; }
+.btn-primary:hover {
+  opacity: 0.88;
+}
+.btn-primary:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
 
-/* Secondary — transparent with border */
+/* Secondary — hairline border button */
 .btn-secondary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.375rem;
-  height: 2.25rem;
-  padding: 0 0.875rem;
+  gap: 0.5rem;
+  height: 3rem;
+  padding: 0 1.25rem;
   border-radius: var(--radius-md);
   background: transparent;
   color: var(--text-secondary);
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   font-weight: 500;
   border: 1px solid var(--border-subtle);
   cursor: pointer;
@@ -227,34 +178,36 @@
   border-color: var(--border-strong);
 }
 
-/* Ghost — text only, no border, no background */
+/* Ghost / text action */
 .btn-ghost {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.375rem;
-  height: 2.25rem;
-  padding: 0 0.5rem;
+  height: 2.75rem;
+  padding: 0 0.75rem;
   border-radius: var(--radius-sm);
   background: transparent;
   color: var(--text-muted);
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   font-weight: 500;
   border: none;
   cursor: pointer;
   transition: color 0.15s ease;
   white-space: nowrap;
 }
-.btn-ghost:hover { color: var(--text-primary); }
+.btn-ghost:hover {
+  color: var(--text-primary);
+}
 
-/* Inline text action — link-like, for label-row actions */
+/* Inline text action */
 .btn-inline {
   background: transparent;
   border: none;
   padding: 0 0.25rem;
-  font-size: 0.6875rem;
+  font-size: 0.8125rem;
   font-weight: 500;
-  color: var(--text-secondary);
+  color: var(--text-muted);
   cursor: pointer;
   border-radius: var(--radius-sm);
   transition: color 0.15s ease;
@@ -262,21 +215,20 @@
 }
 .btn-inline:hover {
   color: var(--text-primary);
-  text-decoration: underline;
 }
 
 /* ------------------------------------------------------------------ */
-/* Input field                                                          */
+/* Inputs                                                             */
 /* ------------------------------------------------------------------ */
 .input-field {
   width: 100%;
-  height: 2.5rem;          /* h-10 */
-  padding: 0 0.875rem;
+  height: 3rem;
+  padding: 0 1rem;
   border-radius: var(--radius-md);
   border: 1px solid var(--border-subtle);
   background: var(--bg-input);
   color: var(--text-primary);
-  font-size: 0.75rem;
+  font-size: 0.9375rem;
   font-family: var(--font-mono);
   outline: none;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
@@ -286,5 +238,46 @@
 }
 .input-field:focus {
   border-color: var(--border-focus);
-  box-shadow: 0 0 0 1px var(--border-focus);
+}
+
+@media (max-width: 640px) {
+  .btn-primary,
+  .btn-secondary,
+  .input-field {
+    height: 2.75rem;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Scrollbar Utilities                                                */
+/* ------------------------------------------------------------------ */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+.bulk-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+.bulk-scroll::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+.bulk-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.bulk-scroll::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 3px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Reduced motion                                                     */
+/* ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

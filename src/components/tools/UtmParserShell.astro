@@ -10,29 +10,32 @@ const { locale = 'en' } = Astro.props;
 const t = useTranslations(locale);
 ---
 
-<div class="w-full max-w-3xl mx-auto space-y-5" id="utm-parser-container">
-  <!-- Hero: clean floating typography, no card -->
-  <div class="text-center">
-    <h1 class="text-[23px] sm:text-[24px] font-semibold tracking-tight text-[var(--text-primary)]">
+<div class="w-full max-w-[980px] mx-auto space-y-6 sm:space-y-7" id="utm-parser-container">
+  <!-- Hero: clean editorial typography -->
+  <div class="text-center pt-4 sm:pt-8 pb-8 sm:pb-10 max-w-2xl mx-auto">
+    <p class="text-[13px] sm:text-sm font-medium tracking-wide text-[var(--text-muted)] mb-3">
+      UTMVerify
+    </p>
+    <h1 class="text-[2.25rem] sm:text-[2.85rem] md:text-[3.25rem] font-semibold tracking-[-0.035em] text-[var(--text-primary)] leading-[1.1]">
       {t('parser.heading')}
     </h1>
-    <p class="text-[13px] sm:text-[14px] text-[var(--text-secondary)] mt-1.5 max-w-sm mx-auto leading-relaxed">
+    <p class="text-[16px] sm:text-[17px] text-[var(--text-secondary)] mt-3.5 max-w-lg mx-auto leading-relaxed font-normal">
       {t('parser.subheading')}
     </p>
   </div>
 
-  <!-- Main Input -->
-  <div class="rounded-[var(--radius-lg)] border border-[var(--border-strong)] bg-[var(--bg-surface)] p-4 sm:p-5 shadow-[var(--card-shadow)] space-y-3.5">
-    <div class="space-y-1.5">
+  <!-- Main Input Surface -->
+  <div class="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-6 sm:p-8 space-y-5">
+    <div class="space-y-2.5">
       <div class="flex items-center justify-between">
-        <label for="parser-input" class="text-[13px] font-medium text-[var(--text-primary)]">
+        <label for="parser-input" class="text-sm font-medium text-[var(--text-secondary)]">
           {t('parser.inputLabel')}
         </label>
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2.5">
           <button
             type="button"
             id="parser-example-btn"
-            class="btn-inline focus-ring cursor-pointer"
+            class="btn-inline focus-ring cursor-pointer text-xs sm:text-[13px]"
           >
             {t('parser.useExample')}
           </button>
@@ -40,7 +43,7 @@ const t = useTranslations(locale);
           <button
             type="button"
             id="parser-clear-btn"
-            class="btn-inline text-[var(--text-muted)] focus-ring cursor-pointer"
+            class="btn-inline text-[var(--text-muted)] focus-ring cursor-pointer text-xs sm:text-[13px]"
           >
             {t('parser.clear')}
           </button>
@@ -55,12 +58,12 @@ const t = useTranslations(locale);
           spellcheck="false"
           autocomplete="off"
           placeholder={t('parser.inputPlaceholder')}
-          class="input-field flex-1 h-10 sm:h-11 focus-ring"
+          class="input-field flex-1 h-12 text-sm sm:text-base focus-ring"
         />
         <button
           type="button"
           id="parser-submit-btn"
-          class="btn-primary h-10 sm:h-11 px-5 text-[13px] focus-ring cursor-pointer shrink-0"
+          class="btn-primary h-12 px-7 text-sm sm:text-[15px] font-medium tracking-tight focus-ring cursor-pointer shrink-0"
         >
           <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
@@ -71,36 +74,29 @@ const t = useTranslations(locale);
     </div>
   </div>
 
-  <!-- Initial / Empty State — compact, no border -->
+  <!-- Initial / Empty State -->
   <div
     id="parser-empty-state"
-    class="py-6 text-center"
+    class="py-10 text-center border border-dashed border-[var(--border-hairline)] rounded-xl bg-[var(--bg-surface)]/30"
   >
-    <svg class="w-5 h-5 mx-auto mb-2 text-[var(--text-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
-    </svg>
-    <div class="text-xs font-semibold uppercase tracking-wider text-[var(--text-secondary)]">{t('parser.emptyTitle')}</div>
-    <p class="text-xs text-[var(--text-muted)] mt-0.5 max-w-xs mx-auto leading-relaxed">
+    <div class="text-sm font-medium text-[var(--text-secondary)]">{t('parser.emptyTitle')}</div>
+    <p class="text-xs sm:text-[13px] text-[var(--text-muted)] mt-1.5 max-w-sm mx-auto leading-relaxed">
       {t('parser.emptyDesc')}
     </p>
   </div>
 
-  <!--
-    Results — unified workspace card.
-    All sections flow top-to-bottom with internal dividers.
-    The eye doesn't have to jump between separate card borders.
-  -->
+  <!-- Results — unified workspace surface -->
   <div id="parser-results" class="hidden">
-    <div class="rounded-[var(--radius-lg)] border border-[var(--border-subtle)] bg-[var(--bg-surface)] shadow-[var(--card-shadow)] overflow-hidden">
+    <div class="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] overflow-hidden">
 
       <!-- 1. URL Overview -->
-      <div class="px-4 sm:px-5 pt-4 sm:pt-5 pb-4">
-        <div class="flex items-center justify-between mb-3">
-          <span class="label-caps">{t('parser.overview')}</span>
+      <div class="px-6 pt-6 pb-5">
+        <div class="flex items-center justify-between mb-3.5">
+          <span class="text-sm font-medium text-[var(--text-secondary)]">{t('parser.overview')}</span>
           <button
             type="button"
             id="copy-dest-btn"
-            class="btn-ghost h-7 px-2 text-[11px] focus-ring cursor-pointer"
+            class="btn-ghost h-7 px-2.5 text-[11px] focus-ring cursor-pointer"
             data-label-default={t('parser.copyDestination')}
             data-label-copied={t('parser.copied')}
           >
@@ -118,9 +114,9 @@ const t = useTranslations(locale);
       <!-- Duplicate Parameters Warning (inline, inside card) -->
       <div
         id="duplicates-card"
-        class="hidden mx-4 sm:mx-5 mb-4 p-3 rounded-[var(--radius-md)] border border-amber-500/25 bg-amber-500/6 text-[13px]"
+        class="hidden mx-5 mb-4 p-3 rounded-lg border border-amber-500/25 bg-amber-500/6 text-[13px]"
       >
-        <div class="flex items-center gap-2 font-semibold text-amber-500 mb-2">
+        <div class="flex items-center gap-2 font-medium text-amber-500 mb-2 text-xs">
           <svg class="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
           </svg>
@@ -131,18 +127,18 @@ const t = useTranslations(locale);
         </div>
       </div>
 
-      <!-- 2. Standard UTM Parameters — divider separated -->
-      <div id="utm-card" class="hidden border-t border-[var(--border-subtle)]">
-        <div class="px-4 sm:px-5 py-3.5">
+      <!-- 2. Standard UTM Parameters -->
+      <div id="utm-card" class="hidden border-t border-[var(--border-hairline)]">
+        <div class="px-5 py-4">
           <div class="flex items-center justify-between mb-3">
             <div class="flex items-center gap-2">
-              <span class="label-caps">{t('parser.utmParameters')}</span>
-              <span id="utm-count-badge" class="px-1.5 py-0.5 rounded-[var(--radius-sm)] text-[10px] font-mono bg-[var(--accent-subtle)] text-[var(--accent)] font-semibold">0</span>
+              <span class="text-xs font-medium text-[var(--text-secondary)]">{t('parser.utmParameters')}</span>
+              <span id="utm-count-badge" class="px-1.5 py-0.5 rounded text-[10px] font-mono bg-[var(--accent-subtle)] text-[var(--accent)] font-semibold">0</span>
             </div>
             <button
               type="button"
               id="copy-utm-btn"
-              class="btn-ghost h-7 px-2 text-[11px] focus-ring cursor-pointer"
+              class="btn-ghost h-7 px-2.5 text-[11px] focus-ring cursor-pointer"
               data-label-default={t('parser.copyUtm')}
               data-label-copied={t('parser.copied')}
             >
@@ -156,12 +152,12 @@ const t = useTranslations(locale);
           <div class="overflow-x-auto">
             <table class="w-full text-left text-[13px] font-mono">
               <thead>
-                <tr class="border-b border-[var(--border-subtle)] text-[var(--text-muted)] text-[11px]">
+                <tr class="border-b border-[var(--border-hairline)] text-[var(--text-muted)] text-[11px]">
                   <th class="py-2 pr-4 font-medium w-1/3">{t('parser.paramCol')}</th>
                   <th class="py-2 font-medium">{t('parser.valueCol')}</th>
                 </tr>
               </thead>
-              <tbody id="utm-tbody" class="divide-y divide-[var(--border-subtle)]/50">
+              <tbody id="utm-tbody" class="divide-y divide-[var(--border-hairline)]/50">
                 <!-- Injected via client script -->
               </tbody>
             </table>
@@ -169,18 +165,18 @@ const t = useTranslations(locale);
         </div>
       </div>
 
-      <!-- 3. Other Query Parameters — divider separated -->
-      <div id="custom-card" class="hidden border-t border-[var(--border-subtle)]">
-        <div class="px-4 sm:px-5 py-3.5">
+      <!-- 3. Other Query Parameters -->
+      <div id="custom-card" class="hidden border-t border-[var(--border-hairline)]">
+        <div class="px-5 py-4">
           <div class="flex items-center justify-between mb-3">
             <div class="flex items-center gap-2">
-              <span class="label-caps">{t('parser.otherParameters')}</span>
-              <span id="custom-count-badge" class="px-1.5 py-0.5 rounded-[var(--radius-sm)] text-[10px] font-mono bg-[var(--bg-subtle)] text-[var(--text-secondary)] font-semibold">0</span>
+              <span class="text-xs font-medium text-[var(--text-secondary)]">{t('parser.otherParameters')}</span>
+              <span id="custom-count-badge" class="px-1.5 py-0.5 rounded text-[10px] font-mono bg-[var(--bg-subtle)] text-[var(--text-secondary)] font-semibold">0</span>
             </div>
             <button
               type="button"
               id="copy-all-btn"
-              class="btn-ghost h-7 px-2 text-[11px] focus-ring cursor-pointer"
+              class="btn-ghost h-7 px-2.5 text-[11px] focus-ring cursor-pointer"
               data-label-default={t('parser.copyAll')}
               data-label-copied={t('parser.copied')}
             >
@@ -194,12 +190,12 @@ const t = useTranslations(locale);
           <div class="overflow-x-auto">
             <table class="w-full text-left text-[13px] font-mono">
               <thead>
-                <tr class="border-b border-[var(--border-subtle)] text-[var(--text-muted)] text-[11px]">
+                <tr class="border-b border-[var(--border-hairline)] text-[var(--text-muted)] text-[11px]">
                   <th class="py-2 pr-4 font-medium w-1/3">{t('parser.paramCol')}</th>
                   <th class="py-2 font-medium">{t('parser.valueCol')}</th>
                 </tr>
               </thead>
-              <tbody id="custom-tbody" class="divide-y divide-[var(--border-subtle)]/50">
+              <tbody id="custom-tbody" class="divide-y divide-[var(--border-hairline)]/50">
                 <!-- Injected via client script -->
               </tbody>
             </table>
@@ -210,7 +206,7 @@ const t = useTranslations(locale);
       <!-- 4. No Parameters Fallback -->
       <div
         id="no-params-card"
-        class="hidden px-4 sm:px-5 py-5 text-center text-[13px] text-[var(--text-secondary)] border-t border-[var(--border-subtle)]"
+        class="hidden px-5 py-5 text-center text-[13px] text-[var(--text-secondary)] border-t border-[var(--border-hairline)]"
       >
         {t('parser.noParameters')}
       </div>

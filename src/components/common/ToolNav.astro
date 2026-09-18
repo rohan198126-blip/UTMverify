@@ -26,18 +26,18 @@ const tools = [
 -->
 <nav
   aria-label="Tool selection"
-  class="w-full max-w-3xl mx-auto mb-5"
+  class="w-full max-w-[980px] mx-auto mb-8 sm:mb-10"
 >
-  <div class="flex items-end overflow-x-auto no-scrollbar border-b border-[var(--border-subtle)]">
+  <div class="flex items-center justify-start sm:justify-center overflow-x-auto no-scrollbar border-b border-[var(--border-hairline)] px-2 sm:px-0 gap-1 sm:gap-2">
     {tools.map((tool) => {
       const isActive = activeTool === tool.key;
       return (
         <a
           href={tool.path}
-          class={`tool-tab flex-shrink-0 px-4 pb-2.5 pt-0.5 text-[13px] font-medium whitespace-nowrap transition-colors duration-150 focus-ring relative ${
+          class={`tool-tab flex-shrink-0 px-4 py-3 text-[14px] sm:text-[15px] tracking-[-0.01em] whitespace-nowrap transition-colors duration-150 focus-ring relative ${
             isActive
-              ? 'text-[var(--text-primary)] tab-active'
-              : 'text-[var(--text-muted)] hover:text-[var(--text-secondary)]'
+              ? 'text-[var(--text-primary)] font-medium tab-active'
+              : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] font-normal'
           }`}
           aria-current={isActive ? 'page' : undefined}
         >
@@ -49,18 +49,14 @@ const tools = [
 </nav>
 
 <style>
-  /* Active tab: violet bottom border indicator */
-  .tool-tab.tab-active {
-    position: relative;
-  }
+  /* Active tab: subtle bottom border indicator */
   .tool-tab.tab-active::after {
     content: '';
     position: absolute;
-    bottom: -1px;   /* sits on top of the parent border-b */
-    left: 0;
-    right: 0;
+    bottom: -1px;
+    left: 16px;
+    right: 16px;
     height: 2px;
     background: var(--accent);
-    border-radius: 2px 2px 0 0;
   }
 </style>

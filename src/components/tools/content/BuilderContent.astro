@@ -1,0 +1,318 @@
+---
+// Explanatory content, best practices, presets, and FAQ for UTM Builder
+---
+
+<article class="w-full max-w-3xl mx-auto pt-14 sm:pt-16 mt-14 sm:mt-16 border-t border-[var(--border-hairline)] space-y-12 text-[var(--text-primary)]">
+  <!-- Introduction & Overview -->
+  <section class="space-y-4">
+    <h2 class="text-xl sm:text-2xl font-semibold tracking-[-0.02em] text-[var(--text-primary)] leading-snug">
+      What is the UTM Builder and Why Clean URL Generation Matters
+    </h2>
+    <p class="text-sm text-[var(--text-secondary)] leading-relaxed">
+      The UTM Builder is a specialized campaign URL generator that constructs clean, standards-compliant tracking links for digital marketing campaigns. Instead of manually editing URL query strings—which frequently introduces syntax errors, broken delimiters, and malformed encoding—the UTM Builder provides a guided, real-time interface that automatically formats, validates, and encodes every parameter.
+    </p>
+    <p class="text-sm text-[var(--text-secondary)] leading-relaxed">
+      Proper campaign tracking is the backbone of marketing attribution. When tracking tags are formulated with precision, analytics tools such as Google Analytics 4 (GA4), Mixpanel, and Adobe Analytics can cleanly attribute every session, purchase, and lead back to the exact ad creative, campaign theme, and marketing channel that produced it.
+    </p>
+  </section>
+
+  <!-- Parameter Blueprint Guide -->
+  <section class="space-y-4">
+    <h2 class="text-lg sm:text-xl font-semibold tracking-[-0.015em] text-[var(--text-primary)]">
+      The 5 Core UTM Parameters Blueprint
+    </h2>
+    <p class="text-sm text-[var(--text-secondary)] leading-relaxed">
+      A complete tracking URL combines your destination address with standardized query parameters:
+    </p>
+    <div class="space-y-3 text-sm">
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/30 space-y-1.5">
+        <div class="flex items-center justify-between">
+          <span class="font-mono text-[var(--accent)] font-medium text-xs">1. Destination URL</span>
+          <span class="text-[10px] text-emerald-400 font-sans uppercase font-medium">Required</span>
+        </div>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+          The webpage where visitors arrive after clicking your link (e.g., <code class="font-mono text-[11px]">https://example.com/summer-sale</code>). Can include existing query parameters or sub-paths.
+        </p>
+      </div>
+
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/30 space-y-1.5">
+        <div class="flex items-center justify-between">
+          <span class="font-mono text-[var(--accent)] font-medium text-xs">2. utm_source</span>
+          <span class="text-[10px] text-emerald-400 font-sans uppercase font-medium">Required</span>
+        </div>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+          The referrer or platform delivering the traffic (e.g., <code class="font-mono text-[11px]">google</code>, <code class="font-mono text-[11px]">facebook</code>, <code class="font-mono text-[11px]">linkedin</code>, <code class="font-mono text-[11px]">customerio</code>).
+        </p>
+      </div>
+
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/30 space-y-1.5">
+        <div class="flex items-center justify-between">
+          <span class="font-mono text-[var(--accent)] font-medium text-xs">3. utm_medium</span>
+          <span class="text-[10px] text-emerald-400 font-sans uppercase font-medium">Required</span>
+        </div>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+          The marketing mechanism or delivery medium. Must match GA4 Default Channel Grouping rules (e.g., <code class="font-mono text-[11px]">cpc</code>, <code class="font-mono text-[11px]">email</code>, <code class="font-mono text-[11px]">paid_social</code>, <code class="font-mono text-[11px]">referral</code>).
+        </p>
+      </div>
+
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/30 space-y-1.5">
+        <div class="flex items-center justify-between">
+          <span class="font-mono text-[var(--accent)] font-medium text-xs">4. utm_campaign</span>
+          <span class="text-[10px] text-emerald-400 font-sans uppercase font-medium">Required</span>
+        </div>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+          The strategic name, promotion, or campaign ID (e.g., <code class="font-mono text-[11px]">spring_clearance</code>, <code class="font-mono text-[11px]">brand_awareness_2026</code>).
+        </p>
+      </div>
+
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/30 space-y-1.5">
+        <div class="flex items-center justify-between">
+          <span class="font-mono text-[var(--text-secondary)] font-medium text-xs">5. utm_term &amp; utm_content</span>
+          <span class="text-[10px] text-[var(--text-muted)] font-sans uppercase">Optional</span>
+        </div>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+          <code class="font-mono text-[11px]">utm_term</code> records targeted keywords or audiences, while <code class="font-mono text-[11px]">utm_content</code> differentiates ad creatives, button designs, or link positions.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step by step usage -->
+  <section class="space-y-4">
+    <h2 class="text-lg sm:text-xl font-semibold tracking-[-0.015em] text-[var(--text-primary)]">
+      How to Build Campaign Links Step-by-Step
+    </h2>
+    <div class="space-y-3 text-sm text-[var(--text-secondary)]">
+      <div class="flex items-start gap-3.5 py-2">
+        <span class="w-6 h-6 rounded-full bg-[var(--bg-subtle)] text-[var(--text-primary)] border border-[var(--border-subtle)] font-medium flex items-center justify-center shrink-0 text-xs">1</span>
+        <div>
+          <strong class="text-[var(--text-primary)] font-medium">Enter Destination URL:</strong>
+          <p class="text-xs text-[var(--text-muted)] mt-0.5 leading-relaxed">Specify the exact landing page. If you omit the protocol, the builder automatically maintains standard web protocol conventions.</p>
+        </div>
+      </div>
+      <div class="flex items-start gap-3.5 py-2">
+        <span class="w-6 h-6 rounded-full bg-[var(--bg-subtle)] text-[var(--text-primary)] border border-[var(--border-subtle)] font-medium flex items-center justify-center shrink-0 text-xs">2</span>
+        <div>
+          <strong class="text-[var(--text-primary)] font-medium">Apply a Preset or Enter Custom Tags:</strong>
+          <p class="text-xs text-[var(--text-muted)] mt-0.5 leading-relaxed">Choose a pre-configured channel preset (Google Ads, Meta Ads, Email, LinkedIn) or input custom source, medium, and campaign identifiers.</p>
+        </div>
+      </div>
+      <div class="flex items-start gap-3.5 py-2">
+        <span class="w-6 h-6 rounded-full bg-[var(--bg-subtle)] text-[var(--text-primary)] border border-[var(--border-subtle)] font-medium flex items-center justify-center shrink-0 text-xs">3</span>
+        <div>
+          <strong class="text-[var(--text-primary)] font-medium">Copy the Encoded Campaign Link:</strong>
+          <p class="text-xs text-[var(--text-muted)] mt-0.5 leading-relaxed">The tool automatically escapes special characters, encodes spaces as <code class="font-mono text-[11px]">%20</code>, and generates an optimized URL ready for deployment.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Preset Reference Table -->
+  <section class="space-y-4">
+    <h2 class="text-lg sm:text-xl font-semibold tracking-[-0.015em] text-[var(--text-primary)]">
+      Recommended Source &amp; Medium Combinations for GA4
+    </h2>
+    <p class="text-sm text-[var(--text-secondary)] leading-relaxed">
+      Google Analytics 4 uses rigid rules to categorize sessions into Default Channel Groups. Following these combinations prevents your traffic from falling into Unassigned:
+    </p>
+    <div class="overflow-x-auto rounded-lg border border-[var(--border-hairline)]">
+      <table class="w-full text-left text-xs border-collapse">
+        <thead>
+          <tr class="border-b border-[var(--border-hairline)] bg-[var(--bg-subtle)]/40 text-[var(--text-muted)] text-[11px] font-mono">
+            <th class="py-2.5 px-4 font-medium">Channel</th>
+            <th class="py-2.5 px-4 font-medium">utm_source</th>
+            <th class="py-2.5 px-4 font-medium">utm_medium</th>
+            <th class="py-2.5 px-4 font-medium">GA4 Channel Group</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-[var(--border-hairline)] text-xs">
+          <tr>
+            <td class="py-2.5 px-4 font-medium text-[var(--text-primary)]">Google Search Ads</td>
+            <td class="py-2.5 px-4 font-mono text-[var(--accent)]">google</td>
+            <td class="py-2.5 px-4 font-mono text-[var(--accent)]">cpc</td>
+            <td class="py-2.5 px-4 text-emerald-400">Paid Search</td>
+          </tr>
+          <tr>
+            <td class="py-2.5 px-4 font-medium text-[var(--text-primary)]">Meta (Facebook/IG) Ads</td>
+            <td class="py-2.5 px-4 font-mono text-[var(--accent)]">facebook / instagram</td>
+            <td class="py-2.5 px-4 font-mono text-[var(--accent)]">cpc / paid_social</td>
+            <td class="py-2.5 px-4 text-emerald-400">Paid Social</td>
+          </tr>
+          <tr>
+            <td class="py-2.5 px-4 font-medium text-[var(--text-primary)]">Email Newsletter</td>
+            <td class="py-2.5 px-4 font-mono text-[var(--accent)]">newsletter</td>
+            <td class="py-2.5 px-4 font-mono text-[var(--accent)]">email</td>
+            <td class="py-2.5 px-4 text-emerald-400">Email</td>
+          </tr>
+          <tr>
+            <td class="py-2.5 px-4 font-medium text-[var(--text-primary)]">LinkedIn Organic Posts</td>
+            <td class="py-2.5 px-4 font-mono text-[var(--accent)]">linkedin</td>
+            <td class="py-2.5 px-4 font-mono text-[var(--accent)]">social</td>
+            <td class="py-2.5 px-4 text-emerald-400">Organic Social</td>
+          </tr>
+          <tr>
+            <td class="py-2.5 px-4 font-medium text-[var(--text-primary)]">Affiliate Partner</td>
+            <td class="py-2.5 px-4 font-mono text-[var(--accent)]">[partner_name]</td>
+            <td class="py-2.5 px-4 font-mono text-[var(--accent)]">affiliate</td>
+            <td class="py-2.5 px-4 text-emerald-400">Affiliates</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 5 Critical Rules -->
+  <section class="space-y-4">
+    <h2 class="text-lg sm:text-xl font-semibold tracking-[-0.015em] text-[var(--text-primary)]">
+      5 Critical URL Building Guidelines
+    </h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-sm">
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/20 space-y-1.5">
+        <h3 class="font-medium text-xs text-[var(--text-primary)]">1. Encode Spaces with %20</h3>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+          While some legacy systems use <code class="font-mono text-[11px]">+</code> for spaces, modern web standards and RFC 3986 recommend <code class="font-mono text-[11px]">%20</code> to avoid ambiguity with literal plus symbols.
+        </p>
+      </div>
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/20 space-y-1.5">
+        <h3 class="font-medium text-xs text-[var(--text-primary)]">2. Preserve Existing Query Keys</h3>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+          If your destination URL already contains parameters (e.g. <code class="font-mono text-[11px]">?variant=12</code>), the builder attaches UTM tags using ampersands (<code class="font-mono text-[11px]">&amp;</code>) automatically.
+        </p>
+      </div>
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/20 space-y-1.5">
+        <h3 class="font-medium text-xs text-[var(--text-primary)]">3. Keep Hash Fragments at the End</h3>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+          Page anchors like <code class="font-mono text-[11px]">#pricing</code> must remain at the very end of the URL. Placing query parameters after the hash prevents servers from reading them.
+        </p>
+      </div>
+      <div class="p-4 rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-subtle)]/20 space-y-1.5">
+        <h3 class="font-medium text-xs text-[var(--text-primary)]">4. Never Store Personally Identifiable Data</h3>
+        <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+          Do not include customer email addresses, account IDs, or phone numbers in UTM fields. Doing so violates privacy laws (GDPR, CCPA) and analytics terms.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tool FAQ Section — clean divider-based accordion -->
+  <section class="space-y-6 pt-4" id="faq">
+    <div class="space-y-1">
+      <h2 class="text-lg sm:text-xl font-semibold tracking-[-0.015em] text-[var(--text-primary)]">
+        Frequently Asked Questions About the UTM Builder
+      </h2>
+      <p class="text-xs text-[var(--text-muted)]">
+        Common questions on creating, encoding, and deploying UTM campaign links.
+      </p>
+    </div>
+
+    <div class="divide-y divide-[var(--border-hairline)] border-y border-[var(--border-hairline)]">
+      <details class="group py-4 transition-colors [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex items-center justify-between cursor-pointer font-medium text-sm text-[var(--text-primary)] select-none">
+          <span>What happens if my destination URL already has query parameters?</span>
+          <svg class="w-4 h-4 text-[var(--text-muted)] group-open:rotate-180 transition-transform duration-200 shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M19 9l-7 7-7-7" />
+          </svg>
+        </summary>
+        <div class="mt-3 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed pr-6">
+          The UTM Builder intelligently detects existing query parameters (such as <code class="font-mono text-[11px]">?ref=partner</code> or <code class="font-mono text-[11px]">?id=123</code>) and seamlessly appends UTM tags with ampersands (<code class="font-mono text-[11px]">&amp;</code>). It never adds duplicate question marks, preserving your URL's technical integrity.
+        </div>
+      </details>
+
+      <details class="group py-4 transition-colors [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex items-center justify-between cursor-pointer font-medium text-sm text-[var(--text-primary)] select-none">
+          <span>Why does the builder use %20 instead of + for spaces?</span>
+          <svg class="w-4 h-4 text-[var(--text-muted)] group-open:rotate-180 transition-transform duration-200 shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M19 9l-7 7-7-7" />
+          </svg>
+        </summary>
+        <div class="mt-3 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed pr-6">
+          Standard RFC 3986 specifies that spaces in URLs are encoded as <code class="font-mono text-[11px]">%20</code>. While HTML form data historically used plus signs (<code class="font-mono text-[11px]">+</code>), many modern JavaScript frameworks, web routers, and analytics APIs parse <code class="font-mono text-[11px]">+</code> literally rather than as a space, causing attribution discrepancies.
+        </div>
+      </details>
+
+      <details class="group py-4 transition-colors [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex items-center justify-between cursor-pointer font-medium text-sm text-[var(--text-primary)] select-none">
+          <span>Which UTM parameters are strictly required for GA4?</span>
+          <svg class="w-4 h-4 text-[var(--text-muted)] group-open:rotate-180 transition-transform duration-200 shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M19 9l-7 7-7-7" />
+          </svg>
+        </summary>
+        <div class="mt-3 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed pr-6">
+          Technically, any single parameter will be processed, but best practice and GA4 attribution modeling require at least <strong class="text-[var(--text-primary)] font-medium">utm_source</strong>, <strong class="text-[var(--text-primary)] font-medium">utm_medium</strong>, and <strong class="text-[var(--text-primary)] font-medium">utm_campaign</strong>. Without these three core dimensions, sessions cannot be grouped into primary acquisition channels accurately.
+        </div>
+      </details>
+
+      <details class="group py-4 transition-colors [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex items-center justify-between cursor-pointer font-medium text-sm text-[var(--text-primary)] select-none">
+          <span>Does UTMVerify store or log the URLs I build?</span>
+          <svg class="w-4 h-4 text-[var(--text-muted)] group-open:rotate-180 transition-transform duration-200 shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M19 9l-7 7-7-7" />
+          </svg>
+        </summary>
+        <div class="mt-3 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed pr-6">
+          No. UTMVerify runs completely client-side in your web browser. Neither your destination landing pages nor your UTM tags are transmitted to our servers, saved in a database, or tracked. Your campaign strategy remains 100% confidential.
+        </div>
+      </details>
+
+      <details class="group py-4 transition-colors [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex items-center justify-between cursor-pointer font-medium text-sm text-[var(--text-primary)] select-none">
+          <span>When should I use Bulk UTM Builder instead of this single builder?</span>
+          <svg class="w-4 h-4 text-[var(--text-muted)] group-open:rotate-180 transition-transform duration-200 shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M19 9l-7 7-7-7" />
+          </svg>
+        </summary>
+        <div class="mt-3 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed pr-6">
+          Use the UTM Builder for individual links, ad creatives, or one-off social posts. If you are planning an omni-channel launch requiring 5, 10, or 50+ URLs across multiple ad sets and newsletters, use the <a href="./bulk-utm-builder" class="text-[var(--accent)] hover:underline font-medium">Bulk UTM Builder</a> to configure and export links in a spreadsheet matrix.
+        </div>
+      </details>
+    </div>
+  </section>
+</article>
+
+<!-- Structured Data for FAQ -->
+<script type="application/ld+json" is:inline set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What happens if my destination URL already has query parameters?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The UTM Builder intelligently detects existing query parameters and seamlessly appends UTM tags with ampersands (&), avoiding duplicate question marks."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does the builder use %20 instead of + for spaces?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Standard RFC 3986 specifies that spaces in URLs are encoded as %20. Many modern web routers and analytics APIs parse + literally rather than as a space, causing attribution errors."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which UTM parameters are strictly required for GA4?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Best practice and GA4 attribution modeling require at least utm_source, utm_medium, and utm_campaign to group sessions accurately into primary acquisition channels."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does UTMVerify store or log the URLs I build?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. UTMVerify runs completely client-side in your web browser. Neither your destination landing pages nor your UTM tags are transmitted to our servers or saved."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "When should I use Bulk UTM Builder instead of this single builder?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Use the single UTM Builder for individual links and one-off creatives. If you are planning a campaign with dozens of URLs across channels, use the Bulk UTM Builder for matrix generation."
+      }
+    }
+  ]
+})} />

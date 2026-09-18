@@ -2,9 +2,12 @@
 import RootLayout from '../../layouts/RootLayout.astro';
 import ToolNav from '../../components/common/ToolNav.astro';
 import BulkUtmShell from '../../components/tools/BulkUtmShell.astro';
+import BulkContent from '../../components/tools/content/BulkContent.astro';
 import OtherToolsGrid from '../../components/common/OtherToolsGrid.astro';
 import { SUPPORTED_LOCALES, type SupportedLocale } from '../../i18n/ui';
 import { useTranslations } from '../../i18n/utils';
+
+import { TOOLS } from '../../lib/seo/siteConfig';
 
 export function getStaticPaths() {
   return SUPPORTED_LOCALES.map((locale) => ({
@@ -15,18 +18,20 @@ export function getStaticPaths() {
 const { locale } = Astro.params as { locale: SupportedLocale };
 const t = useTranslations(locale);
 const canonicalPath = `/${locale}/bulk-utm-builder`;
-const title = `${t('tools.bulk.name')} | UTMVerify`;
+const title = locale === 'en' ? TOOLS.bulk.title : `${t('tools.bulk.name')} | UTMVerify`;
+const description = locale === 'en' ? TOOLS.bulk.description : t('tools.bulk.shortDesc');
 ---
 
 <RootLayout
   title={title}
-  description={t('tools.bulk.shortDesc')}
+  description={description}
   canonicalPath={canonicalPath}
   locale={locale}
 >
   <div class="space-y-5">
     <ToolNav locale={locale} activeTool="bulk" />
     <BulkUtmShell locale={locale} />
+    <BulkContent />
     <OtherToolsGrid locale={locale} currentTool="bulk" />
   </div>
 </RootLayout>
